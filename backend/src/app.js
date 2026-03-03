@@ -41,8 +41,8 @@ app.use('/api/restaurant-audio-map', restaurantAudioMapRoutes);
 const scanHistoryRoutes = require('./routes/scanHistoryRoutes');
 app.use('/api/scan-history', scanHistoryRoutes);
 const PORT = process.env.PORT || 3000;
-
-app.use('/uploads', express.static('uploads'));
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);
 });
