@@ -23,7 +23,7 @@ const User = {
   },
 
   // Cập nhật thông tin (chỉ name và language, token_balance có thể thêm nếu cần)
-  update: async (id_account, { name, language }) => {
+  update: async (id_account, { name, language, avatar_url }) => {
     const updates = [];
     const values = [];
     let paramIndex = 1;
@@ -43,6 +43,12 @@ const User = {
       paramIndex++;
     }
 
+    if (avatar_url !== undefined) {
+      updates.push(`avatar_url = $${paramIndex}`);
+      values.push(avatar_url);
+      paramIndex++;
+    }
+
     // Nếu không có gì để update thì trả về user hiện tại
     if (updates.length === 0) {
       return await User.findByAccountId(id_account);
@@ -54,7 +60,7 @@ const User = {
       UPDATE users
       SET ${updates.join(', ')}
       WHERE id_account = $${paramIndex}
-      RETURNING id_user, id_account, name, language, token_balance, created_at
+      RETURNING *
     `;
 
     const result = await pool.query(query, values);
@@ -74,6 +80,23 @@ const User = {
       [newBalance, id_account]
     );
     return result.rows[0]?.token_balance;
+  },
+
+  // ==================== THÊM HÀM XÓA MỀM ====================
+  softDelete: async (id_account) => {
+    const result = await pool.query(
+      `UPDATE users 
+       SET status = 'inactive' 
+       WHERE id_account = $1 
+       RETURNING id_user, id_account, name, avatar_url, status, language, token_balance, created_at`,
+      [id_account]
+    );
+
+    if (result.rowCount === 0) {
+      throw new Error('Không tìm thấy user với id_account này');
+    }
+
+    return result.rows[0];
   },
 };
 
