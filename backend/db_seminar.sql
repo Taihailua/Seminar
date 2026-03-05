@@ -100,6 +100,7 @@ CREATE TABLE IF NOT EXISTS "scripts" (
 	"id_script" UUID DEFAULT gen_random_uuid(),
 	"content" TEXT NOT NULL,
 	"created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	"status" VARCHAR(20) DEFAULT 'active'
 	PRIMARY KEY("id_script")
 );
 
