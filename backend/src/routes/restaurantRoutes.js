@@ -6,6 +6,7 @@ const {
   updateRestaurant,
   getRestaurantById,
   getAllRestaurants,
+  softDeleteRestaurant
 } = require('../controllers/restaurantController');
 
 const router = express.Router();
@@ -19,9 +20,9 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/restaurant:
+ * /api/restaurant/create:
  *   post:
- *     summary: Tạo nhà hàng mới (hỗ trợ upload ảnh qua field "image")
+ *     summary: Tạo nhà hàng mới (hỗ trợ upload ảnh và gán chủ sở hữu)
  *     tags: [Restaurant]
  *     consumes:
  *       - multipart/form-data
@@ -33,11 +34,12 @@ const router = express.Router();
  *             type: object
  *             required:
  *               - name
+ *               - id_user
  *             properties:
  *               image:
  *                 type: string
  *                 format: binary
- *                 description: Chọn file ảnh nhà hàng (jpeg/jpg/png, tối đa 5MB)
+ *                 description: Ảnh nhà hàng (jpeg/jpg/png, tối đa 5MB)
  *               name:
  *                 type: string
  *                 example: Quán Phở Bò Kobe
@@ -53,11 +55,16 @@ const router = express.Router();
  *               longitude:
  *                 type: number
  *                 example: 106.8241234
+ *               id_user:                  # ← THÊM
+ *                 type: string
+ *                 format: uuid
+ *                 example: "123e4567-e89b-12d3-a456-426614174000"
+ *                 description: ID của người dùng làm chủ nhà hàng
  *     responses:
  *       201:
- *         description: Tạo thành công (tự động generate QR và lưu ảnh nếu có)
+ *         description: Tạo thành công
  *       400:
- *         description: Dữ liệu không hợp lệ hoặc file ảnh không đúng định dạng
+ *         description: Thiếu name hoặc id_user
  *       500:
  *         description: Lỗi server
  */
@@ -147,6 +154,32 @@ router.get('/:id_restaurant', getRestaurantById);
  *       500:
  *         description: Lỗi server
  */
-router.put('/:id', uploadRestaurant.single('image'), updateRestaurant);
+router.put('/:id_restaurant', uploadRestaurant.single('image'), updateRestaurant);
+
+/**
+ * @swagger
+ * /api/restaurant/{id_restaurant}/soft-delete:
+ *   put:
+ *     summary: Xóa mềm nhà hàng (đổi status thành 'deleted')
+ *     tags: [Restaurant]
+ *     parameters:
+ *       - in: path
+ *         name: id_restaurant
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID của nhà hàng cần xóa mềm
+ *     responses:
+ *       200:
+ *         description: Xóa mềm thành công
+ *       400:
+ *         description: Thiếu ID
+ *       404:
+ *         description: Không tìm thấy nhà hàng
+ *       500:
+ *         description: Lỗi server
+ */
+router.put('/:id_restaurant/soft-delete', softDeleteRestaurant);
 
 module.exports = router;

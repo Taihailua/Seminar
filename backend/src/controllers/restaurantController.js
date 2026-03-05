@@ -2,6 +2,7 @@
 const Restaurant = require('../models/restaurantModel');
 const { validationResult } = require('express-validator');
 const QRCode = require('qrcode');
+const Auth = require('../models/authModel');
 
 const createRestaurant = async (req, res) => {
   try {
@@ -10,20 +11,23 @@ const createRestaurant = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, description, address, latitude, longitude } = req.body;
+    const { name, description, address, latitude, longitude, id_user } = req.body;
 
     if (!name) {
       return res.status(400).json({ message: 'Tên nhà hàng là bắt buộc' });
     }
 
+    if (!id_user) {
+      return res.status(400).json({ message: 'id_user là bắt buộc khi tạo nhà hàng' });
+    }
+
     let image_url = null;
 
-    // Nếu có file ảnh upload
     if (req.file) {
       image_url = `${req.protocol}://${req.get('host')}/uploads/restaurants/${req.file.filename}`;
     }
 
-    // Tạo nhà hàng mới
+    // 🔥 FIX: thêm qr_code tạm để insert không lỗi
     const newRestaurant = await Restaurant.create({
       name,
       description: description || null,
@@ -31,19 +35,26 @@ const createRestaurant = async (req, res) => {
       latitude: latitude || null,
       longitude: longitude || null,
       image_url,
+      id_user,
+      qr_code: 'TEMP_QR', // 👈 QUAN TRỌNG
     });
 
     const id = newRestaurant.id_restaurant;
 
-    // Tạo QR code
-    const qrData = `http://localhost:3000/api/restaurant/r/${id}`;
+    // 🔥 Tạo QR thật
+    const qrData = `http://${req.get('host')}/api/restaurant/r/${id}`;
     const filePath = `./qrcodes/${id}.png`;
     await QRCode.toFile(filePath, qrData);
 
-    // Update qr_code vào DB
-    const updatedRestaurant = await Restaurant.update(id, {
-      qr_code: qrData,
-    });
+    // 🔥 Update lại QR thật
+    const updatedRestaurant = await Restaurant.updateQr(id, qrData);
+
+    // update role
+    try {
+      await Auth.updateRole(id_user, 'owner');
+    } catch (err) {
+      console.error('Lỗi cập nhật role owner:', err);
+    }
 
     res.status(201).json({
       message: 'Tạo nhà hàng thành công',
@@ -51,9 +62,41 @@ const createRestaurant = async (req, res) => {
       qr_image: `${req.protocol}://${req.get('host')}/qrcodes/${id}.png`,
       image_url: image_url || null,
     });
+
   } catch (err) {
     console.error('Lỗi tạo nhà hàng:', err);
     res.status(500).json({ message: 'Lỗi server khi tạo nhà hàng' });
+  }
+};
+
+const softDeleteRestaurant = async (req, res) => {
+  try {
+    const { id_restaurant } = req.params;
+
+    if (!id_restaurant) {
+      return res.status(400).json({ message: 'Thiếu id_restaurant' });
+    }
+
+    // Kiểm tra nhà hàng có tồn tại không
+    const existing = await Restaurant.findById(id_restaurant);
+    if (!existing) {
+      return res.status(404).json({ message: 'Không tìm thấy nhà hàng' });
+    }
+
+    // Thực hiện xóa mềm
+    const deletedRestaurant = await Restaurant.softDelete(id_restaurant);
+
+    if (!deletedRestaurant) {
+      return res.status(500).json({ message: 'Không thể xóa nhà hàng' });
+    }
+
+    res.json({
+      message: 'Xóa mềm nhà hàng thành công (status = deleted)',
+      restaurant: deletedRestaurant
+    });
+  } catch (err) {
+    console.error('Lỗi xóa mềm nhà hàng:', err);
+    res.status(500).json({ message: 'Lỗi server khi xóa nhà hàng' });
   }
 };
 
@@ -148,4 +191,5 @@ module.exports = {
   updateRestaurant,
   getRestaurantById,
   getAllRestaurants,
+  softDeleteRestaurant
 };
