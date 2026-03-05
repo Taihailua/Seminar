@@ -26,9 +26,6 @@ app.use('/api/restaurant', restaurantRoutes);
 const menuItemRoutes = require('./routes/menuItemRoutes');
 app.use('/api/menu-item', menuItemRoutes);
 
-const restaurantAudioRoutes = require('./routes/restaurantAudioRoutes');
-app.use('/api/restaurant-audio', restaurantAudioRoutes);
-
 const restaurantOwnerRoutes = require('./routes/restaurantOwnerRoutes');
 app.use('/api/restaurant-owner', restaurantOwnerRoutes);
 
@@ -40,6 +37,12 @@ app.use('/api/restaurant-audio-map', restaurantAudioMapRoutes);
 
 const scanHistoryRoutes = require('./routes/scanHistoryRoutes');
 app.use('/api/scan-history', scanHistoryRoutes);
+
+const scriptRoutes = require('./routes/scriptRoutes');
+app.use('/api/scripts', scriptRoutes);
+
+const restaurantScriptMapRoutes = require('./routes/restaurantScriptMapRoutes');
+app.use('/api/restaurant-script-map', restaurantScriptMapRoutes);
 const PORT = process.env.PORT || 3000;
 const path = require('path');
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
