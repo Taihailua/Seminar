@@ -14,15 +14,19 @@ Backend API cho ứng dụng **Food Tour** — hệ thống quản lý nhà hàn
 ## 🎨 Giao diện dự án
 
 ![Chọn ngôn ngữ](/assets/anh_chon_ngon_ngu.jpg)
+
 *Ảnh giao diện chọn ngôn ngữ*
 
 ![Đăng ký](/assets/anh_dang_ky.jpg)
+
 *Ảnh giao diện đăng ký*
 
 ![Đăng nhập](/assets/anh_dang_nhap.jpg)
+
 *Ảnh giao diện đăng nhập*
 
 ![Trang chủ](/assets/anh_home.jpg)
+
 *Ảnh giao diện trang chủ*
 
 ---
