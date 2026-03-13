@@ -3,6 +3,7 @@ const {
   getAllScanHistories,
   getScanHistoryById,
   getScanHistoryByUser,
+  createScanHistory
 } = require('../controllers/scanHistoryController');
 
 const router = express.Router();
@@ -27,6 +28,34 @@ const router = express.Router();
  *         description: Lỗi server
  */
 router.get('/', getAllScanHistories);
+
+/**
+ * @swagger
+ * /api/scan-history/user/{id_user}:
+ *   get:
+ *     summary: Lấy danh sách lịch sử quét của một user
+ *     tags: [ScanHistory]
+ *     parameters:
+ *       - in: path
+ *         name: id_user
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Số lượng bản ghi tối đa (default 50)
+ *     responses:
+ *       200:
+ *         description: Thành công
+ *       400:
+ *         description: Thiếu id_user
+ *       500:
+ *         description: Lỗi server
+ */
+router.get('/user/:id_user', getScanHistoryByUser);
 
 /**
  * @swagger
@@ -59,30 +88,41 @@ router.get('/:id_user/:id_restaurant', getScanHistoryById);
 
 /**
  * @swagger
- * /api/scan-history/user/{id_user}:
- *   get:
- *     summary: Lấy danh sách lịch sử quét của một user
+ * /api/scan-history:
+ *   post:
+ *     summary: Tạo mới hoặc cập nhật lịch sử quét (upsert)
  *     tags: [ScanHistory]
- *     parameters:
- *       - in: path
- *         name: id_user
- *         required: true
- *         schema:
- *           type: string
- *           format: uuid
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *         description: Số lượng bản ghi tối đa (default 50)
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id_user
+ *               - id_restaurant
+ *             properties:
+ *               id_user:
+ *                 type: string
+ *                 format: uuid
+ *                 example: "123e4567-e89b-12d3-a456-426614174000"
+ *               id_restaurant:
+ *                 type: string
+ *                 format: uuid
+ *                 example: "987fcdeb-51a2-43e8-9b12-3456789abcde"
+ *               token_used:
+ *                 type: integer
+ *                 default: 50
+ *                 description: Số token sử dụng (mặc định 50)
  *     responses:
- *       200:
- *         description: Thành công
+ *       201:
+ *         description: Tạo/cập nhật thành công
  *       400:
- *         description: Thiếu id_user
+ *         description: Dữ liệu không hợp lệ
  *       500:
  *         description: Lỗi server
  */
-router.get('/user/:id_user', getScanHistoryByUser);
+router.post('/', createScanHistory);
+
 
 module.exports = router;

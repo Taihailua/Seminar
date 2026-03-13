@@ -74,7 +74,8 @@ const login = async (req, res) => {
     res.json({
       message: 'Đăng nhập thành công',
       user: {
-        id: user.id_account,
+        id_account: user.id_account,
+        id_user: user.id_user,
         email: user.email,
         name: user.name,
         avatar_url: user.avatar_url || DEFAULT_AVATAR,

@@ -68,25 +68,27 @@ const ScanHistory = {
     return result.rowCount > 0;
   },
 
-  /**
-   * Thêm hoặc cập nhật lịch sử quét (upsert)
-   * - Nếu đã tồn tại → cập nhật scan_time và tăng token_used
-   * - Nếu chưa → tạo mới với token_used = 0 hoặc giá trị truyền vào
-   */
-  upsert: async (id_user, id_restaurant, token_used = 0) => {
+  update: async (id_user, id_restaurant, token_used = 50) => {
+      const result = await pool.query(
+        `UPDATE scan_history 
+        SET scan_time = CURRENT_TIMESTAMP,
+            token_used = token_used + $3
+        WHERE id_user = $1 AND id_restaurant = $2
+        RETURNING id_user, id_restaurant, scan_time, token_used`,
+        [id_user, id_restaurant, token_used]
+      );
+      return result.rows[0] || null;
+    },
+
+    insert: async (id_user, id_restaurant, token_used = 50) => {
     const result = await pool.query(
       `INSERT INTO scan_history (id_user, id_restaurant, scan_time, token_used)
        VALUES ($1, $2, CURRENT_TIMESTAMP, $3)
-       ON CONFLICT (id_user, id_restaurant)
-       DO UPDATE SET
-         scan_time = CURRENT_TIMESTAMP,
-         token_used = scan_history.token_used + $3
        RETURNING id_user, id_restaurant, scan_time, token_used`,
       [id_user, id_restaurant, token_used]
     );
-    return result.rows[0] || null;
+    return result.rows[0];
   },
-
   /**
    * (Tùy chọn) Xóa một bản ghi lịch sử cụ thể
    */
