@@ -98,6 +98,55 @@ const User = {
 
     return result.rows[0];
   },
+
+  updateInfo: async (id_account, { name, language }) => {
+    const updates = [];
+    const values = [];
+    let paramIndex = 1;
+
+    if (name !== undefined) {
+      updates.push(`name = $${paramIndex}`);
+      values.push(name);
+      paramIndex++;
+    }
+
+    if (language !== undefined) {
+      if (!['vi', 'en'].includes(language)) {
+        throw new Error('Language chỉ được là "vi" hoặc "en"');
+      }
+      updates.push(`language = $${paramIndex}`);
+      values.push(language);
+      paramIndex++;
+    }
+
+    if (updates.length === 0) {
+      return await User.findByAccountId(id_account);
+    }
+
+    values.push(id_account);
+
+    const query = `
+      UPDATE users
+      SET ${updates.join(', ')}
+      WHERE id_account = $${paramIndex}
+      RETURNING *
+    `;
+
+    const result = await pool.query(query, values);
+    return result.rows[0] || null;
+  },
+
+  updateAvatar: async (id_account, avatar_url) => {
+    const result = await pool.query(
+      `UPDATE users 
+       SET avatar_url = $1 
+       WHERE id_account = $2 
+       RETURNING *`,
+      [avatar_url, id_account]
+    );
+    return result.rows[0] || null;
+  },
+
 };
 
 module.exports = User;
