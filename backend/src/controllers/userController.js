@@ -122,4 +122,84 @@ const softDeleteUser = async (req, res) => {
   }
 };
 
-module.exports = { updateProfile, getProfile, softDeleteUser };
+const updateUserInfo = async (req, res) => {
+  try {
+    const { id_account, name, language } = req.body;
+
+    if (!id_account) {
+      return res.status(400).json({ message: 'Thiếu id_account' });
+    }
+
+    if (name === undefined && language === undefined) {
+      return res.status(400).json({ message: 'Không có thông tin nào để cập nhật' });
+    }
+
+    const updatedUser = await User.updateInfo(id_account, { name, language });
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'Không tìm thấy profile user' });
+    }
+
+    res.json({
+      message: 'Cập nhật thông tin thành công',
+      user: {
+        id_user: updatedUser.id_user,
+        id_account: updatedUser.id_account,
+        name: updatedUser.name,
+        avatar_url: updatedUser.avatar_url,
+        status: updatedUser.status,
+        language: updatedUser.language,
+        token_balance: updatedUser.token_balance,
+        created_at: updatedUser.created_at,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    if (err.message?.includes('Language chỉ được là')) {
+      return res.status(400).json({ message: err.message });
+    }
+    res.status(500).json({ message: 'Lỗi server khi cập nhật thông tin' });
+  }
+};
+
+const updateAvatar = async (req, res) => {
+  try {
+    const { id_account } = req.body;
+
+    if (!id_account) {
+      if (req.file) await fs.unlink(req.file.path).catch(() => {});
+      return res.status(400).json({ message: 'Thiếu id_account' });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'Vui lòng chọn ảnh avatar' });
+    }
+
+    const avatar_url = `/uploads/avatars/${req.file.filename}`;
+
+    const updatedUser = await User.updateAvatar(id_account, avatar_url);
+
+    if (!updatedUser) {
+      await fs.unlink(req.file.path).catch(() => {});
+      return res.status(404).json({ message: 'Không tìm thấy profile user' });
+    }
+
+    res.json({
+      message: 'Cập nhật avatar thành công',
+      user: {
+        id_user: updatedUser.id_user,
+        id_account: updatedUser.id_account,
+        avatar_url: updatedUser.avatar_url,
+        name: updatedUser.name,
+        status: updatedUser.status,
+        language: updatedUser.language, 
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    if (req.file) await fs.unlink(req.file.path).catch(() => {});
+    res.status(500).json({ message: 'Lỗi server khi cập nhật avatar' });
+  }
+};
+
+module.exports = { updateProfile, getProfile, softDeleteUser, updateUserInfo, updateAvatar };

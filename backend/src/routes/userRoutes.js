@@ -1,7 +1,12 @@
 // routes/userRoutes.js
 const express = require('express');
-const { uploadAvatar } = require('../config/multer');   
-const { updateProfile, getProfile, softDeleteUser } = require('../controllers/userController');
+const { uploadAvatar } = require('../config/multer');
+const { 
+  updateUserInfo, 
+  updateAvatar, 
+  getProfile, 
+  softDeleteUser 
+} = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -9,14 +14,17 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: User
- *   description: Quản lý thông tin profile user (name, language, token_balance)
+ *   description: Quản lý thông tin profile user (name, language, avatar, xóa mềm)
  */
 
+// ===================================================================
+// GET PROFILE
+// ===================================================================
 /**
  * @swagger
  * /api/user/profile/{id_account}:
  *   get:
- *     summary: Lấy toàn bộ thông tin profile user theo id_account
+ *     summary: Lấy thông tin profile user theo id_account
  *     tags: [User]
  *     parameters:
  *       - in: path
@@ -30,40 +38,8 @@ const router = express.Router();
  *     responses:
  *       200:
  *         description: Lấy thông tin profile thành công
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 user:
- *                   type: object
- *                   properties:
- *                     id_user:
- *                       type: string
- *                       format: uuid
- *                     id_account:
- *                       type: string
- *                       format: uuid
- *                     name:
- *                       type: string
- *                       nullable: true
- *                     avatar_url:
- *                       type: string
- *                       nullable: true
- *                     status:
- *                       type: string
- *                       enum: [active, inactive, banned]
- *                     language:
- *                       type: string
- *                       example: vi
- *                     token_balance:
- *                       type: integer
- *                       example: 999
- *                     created_at:
- *                       type: string
- *                       format: date-time
  *       400:
- *         description: id_account thiếu hoặc không hợp lệ
+ *         description: Thiếu id_account
  *       404:
  *         description: Không tìm thấy profile user
  *       500:
@@ -71,18 +47,19 @@ const router = express.Router();
  */
 router.get('/profile/:id_account', getProfile);
 
+// ===================================================================
+// UPDATE USER INFO (Name + Language)
+// ===================================================================
 /**
  * @swagger
- * /api/user/profile:
+ * /api/user/profile/info:
  *   put:
- *     summary: Cập nhật thông tin profile (name, language và avatar)
+ *     summary: Cập nhật thông tin cá nhân (name và language)
  *     tags: [User]
- *     consumes:
- *       - multipart/form-data
  *     requestBody:
  *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
  *             required:
@@ -94,72 +71,72 @@ router.get('/profile/:id_account', getProfile);
  *                 example: 550e8400-e29b-41d4-a716-446655440000
  *               name:
  *                 type: string
- *                 example: Nguyễn Văn Phong
  *                 nullable: true
+ *                 example: Nguyễn Văn Phong
  *               language:
  *                 type: string
  *                 enum: [vi, en]
  *                 example: vi
- *                 nullable: true
- *               avatar:
- *                 type: string
- *                 format: binary
  *     responses:
  *       200:
- *         description: Cập nhật profile thành công
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: Cập nhật thông tin thành công
- *                 user:
- *                   type: object
- *                   properties:
- *                     id_user:
- *                       type: string
- *                       format: uuid
- *                     id_account:
- *                       type: string
- *                       format: uuid
- *                     email:
- *                       type: string
- *                       example: example@gmail.com
- *                     role:
- *                       type: string
- *                       example: user
- *                     name:
- *                       type: string
- *                     avatar_url:
- *                       type: string
- *                     status:
- *                       type: string
- *                       enum: [active, inactive, banned]
- *                     language:
- *                       type: string
- *                       enum: [vi, en]
- *                     token_balance:
- *                       type: integer
- *                       example: 999
- *                     created_at:
- *                       type: string
- *                       format: date-time
+ *         description: Cập nhật thông tin thành công
  *       400:
- *         description: Thiếu id_account hoặc dữ liệu không hợp lệ
+ *         description: Thiếu id_account hoặc không có dữ liệu cập nhật
  *       404:
  *         description: Không tìm thấy user
  *       500:
  *         description: Lỗi server
  */
-router.put('/profile', uploadAvatar.single('avatar'), updateProfile);
+router.put('/profile/info', updateUserInfo);
 
+// ===================================================================
+// UPDATE AVATAR
+// ===================================================================
+/**
+ * @swagger
+ * /api/user/profile/avatar:
+ *   put:
+ *     summary: Cập nhật avatar cho user
+ *     tags: [User]
+ *     consumes:
+ *       - multipart/form-data
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id_account
+ *               - avatar
+ *             properties:
+ *               id_account:
+ *                 type: string
+ *                 format: uuid
+ *                 example: 550e8400-e29b-41d4-a716-446655440000
+ *               avatar:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Cập nhật avatar thành công
+ *       400:
+ *         description: Thiếu id_account hoặc không có file avatar
+ *       404:
+ *         description: Không tìm thấy user
+ *       500:
+ *         description: Lỗi server
+ */
+router.put('/profile/avatar', uploadAvatar.single('avatar'), updateAvatar);
+
+// ===================================================================
+// SOFT DELETE USER
+// ===================================================================
 /**
  * @swagger
  * /api/user/{id_account}:
  *   delete:
- *     summary: Xóa mềm user (cập nhật status thành inactive)
+ *     summary: Xóa mềm user (cập nhật status = inactive)
  *     tags: [User]
  *     parameters:
  *       - in: path
@@ -172,37 +149,7 @@ router.put('/profile', uploadAvatar.single('avatar'), updateProfile);
  *         example: 550e8400-e29b-41d4-a716-446655440000
  *     responses:
  *       200:
- *         description: Xóa mềm thành công
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                 user:
- *                   type: object
- *                   properties:
- *                     id_user:
- *                       type: string
- *                       format: uuid
- *                     id_account:
- *                       type: string
- *                       format: uuid
- *                     name:
- *                       type: string
- *                     avatar_url:
- *                       type: string
- *                     status:
- *                       type: string
- *                       example: inactive
- *                     language:
- *                       type: string
- *                     token_balance:
- *                       type: integer
- *                     created_at:
- *                       type: string
- *                       format: date-time
+ *         description: Xóa mềm user thành công
  *       400:
  *         description: Thiếu id_account
  *       404:
