@@ -9,9 +9,9 @@ let currentRestaurant = null;
 // ── Auth Guard ────────────────────────────────────────────────────────────────
 function checkAuth() {
   const { token, role } = getAuth();
-  if (!token) { window.location.href = '/pages/login.html'; return false; }
+  if (!token) { window.location.href = 'login.html'; return false; }
   if (role !== 'owner' && role !== 'admin') {
-    window.location.href = '/pages/map.html';
+    window.location.href = 'map.html';
     return false;
   }
   return true;
@@ -346,7 +346,7 @@ function wireLogout() {
   document.querySelectorAll('[class*="logout"], [class*="đăng-xuất"], .logout-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       clearAuth();
-      window.location.href = '/pages/login.html';
+      window.location.href = 'login.html';
     });
   });
 }
@@ -387,7 +387,7 @@ async function init() {
     console.error('Owner dashboard init error:', err);
     if (err.message?.includes('401')) {
       clearAuth();
-      window.location.href = '/pages/login.html';
+      window.location.href = 'login.html';
     }
   }
 }

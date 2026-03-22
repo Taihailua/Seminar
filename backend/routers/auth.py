@@ -4,8 +4,7 @@ routers/auth.py — Register, Login, and Me endpoints
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from passlib.context import CryptContext
-
+import bcrypt
 from database import get_db
 from models import User, UserRole
 from schemas import UserCreate, UserLogin, TokenResponse, UserOut
@@ -13,15 +12,16 @@ from auth.jwt import create_access_token
 from auth.dependencies import get_current_user
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    return pwd_context.verify(plain, hashed)
+    try:
+        return bcrypt.checkpw(plain.encode('utf-8'), hashed.encode('utf-8'))
+    except Exception:
+        return False
 
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)

@@ -99,70 +99,53 @@
   </style>
   </head>
 <body class="bg-surface-dim text-on-surface font-body selection:bg-primary/30 overflow-hidden">
+<!-- Drawer Navigation Overlay -->
+<div class="drawer-overlay fixed inset-0 bg-black/60 z-[60] backdrop-blur-sm" style="display: none;"></div>
+<div class="side-menu fixed top-0 left-0 h-full w-64 bg-[#181828] z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl border-r border-[#242437]/30">
+    <div class="p-6 flex flex-col h-full gap-6">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary avatar">?</div>
+            <div>
+                <p class="font-bold text-on-surface user-name">Đang tải...</p>
+                <p class="text-[10px] text-primary uppercase nav-role">Khách hàng</p>
+            </div>
+        </div>
+        <div class="h-[1px] bg-white/10 w-full"></div>
+        <nav class="flex flex-col gap-4">
+            <a href="map.html" class="flex items-center gap-3 font-bold text-primary text-sm p-3 bg-primary/10 rounded-xl">
+                <span class="material-symbols-outlined">map</span> Bản đồ
+            </a>
+            <a href="#" onclick="alert('Tính năng đang phát triển'); return false;" class="flex items-center gap-3 font-bold text-white/50 hover:text-white transition-colors text-sm p-3">
+                <span class="material-symbols-outlined">explore</span> Khám phá
+            </a>
+            <a href="#" onclick="alert('Tính năng đang phát triển'); return false;" class="flex items-center gap-3 font-bold text-white/50 hover:text-white transition-colors text-sm p-3">
+                <span class="material-symbols-outlined">favorite</span> Đã lưu
+            </a>
+        </nav>
+        <div class="mt-auto">
+            <button class="logout w-full h-12 rounded-xl bg-error/10 text-error font-bold flex items-center justify-center gap-2 active:bg-error/20 transition-colors">
+                <span class="material-symbols-outlined text-sm">logout</span> Đăng xuất
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- Map Canvas (Full Screen) -->
-<div class="fixed inset-0 z-0 bg-surface-container-lowest overflow-hidden">
-<img class="w-full h-full object-cover opacity-40 grayscale contrast-125" data-alt="stylized dark night map of Ho Chi Minh City streets with deep blue and black tones and neon orange highlights" data-location="Ho Chi Minh City" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBW3Quu1rnSCCAo8JzI3-XCy6cXYwiycRtKW3qSYcWZMHfYhtWDsZx1YYZhoOZkS4MjEZQ0b8l2NNcOBojCufTi25UCiJsmYmjQwyklD0HwPTINU-DjU6Lk_RdFhF8E_fJWUv0ki7LZfYrvw_RjYuiS2C7WE56ILkMr7V6-5EWFElCryWX9tR-piROkQOMwk8lyGpE3MjQeTEkEDbmjimOJozQN8P_kWwx5tL8EnQ77Jt5N9b3U1RrqTnVjRzeWA9u56eiiZtMBa60"/>
-<!-- Interactive Markers Layer -->
-<div class="absolute inset-0 z-10 pointer-events-none">
-<!-- Marker 1 (Selected) -->
-<div class="absolute top-[42%] left-[45%] pointer-events-auto flex flex-col items-center">
-<div class="relative">
-<div class="bg-primary text-on-primary-container p-2 rounded-full border-2 border-white marker-pulse shadow-[0_0_20px_rgba(255,145,85,0.8)]">
-<span class="material-symbols-outlined text-sm block" style="font-variation-settings: 'FILL' 1;">restaurant</span>
-</div>
-<!-- Selected Popup -->
-<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-56 bg-surface-container/90 backdrop-blur-xl p-4 rounded-2xl shadow-2xl border border-white/5 animate-in fade-in slide-in-from-bottom-2">
-<h3 class="font-headline font-bold text-base leading-tight">Quán Bún Bò Minh Tâm</h3>
-<div class="flex items-center gap-1 mt-1">
-<span class="material-symbols-outlined text-tertiary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold">4.8</span>
-<span class="text-on-surface-variant text-[10px] ml-1">(23 đánh giá)</span>
-</div>
-<a class="inline-block mt-3 text-primary font-bold text-xs hover:underline decoration-2" href="#">Xem chi tiết →</a>
-<div class="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-t-surface-container/90"></div>
-</div>
-</div>
-</div>
-<!-- Marker 2 -->
-<div class="absolute top-[25%] left-[30%] pointer-events-auto">
-<div class="bg-primary/80 text-on-primary-container p-1.5 rounded-full border border-white/50 shadow-lg">
-<span class="material-symbols-outlined text-xs block">restaurant</span>
-</div>
-</div>
-<!-- Marker 3 -->
-<div class="absolute top-[60%] left-[20%] pointer-events-auto">
-<div class="bg-primary/80 text-on-primary-container p-1.5 rounded-full border border-white/50 shadow-lg">
-<span class="material-symbols-outlined text-xs block">restaurant</span>
-</div>
-</div>
-<!-- Marker 4 -->
-<div class="absolute top-[35%] left-[70%] pointer-events-auto">
-<div class="bg-primary/80 text-on-primary-container p-1.5 rounded-full border border-white/50 shadow-lg">
-<span class="material-symbols-outlined text-xs block">restaurant</span>
-</div>
-</div>
-<!-- Marker 5 -->
-<div class="absolute top-[75%] left-[65%] pointer-events-auto">
-<div class="bg-primary/80 text-on-primary-container p-1.5 rounded-full border border-white/50 shadow-lg">
-<span class="material-symbols-outlined text-xs block">restaurant</span>
-</div>
-</div>
-</div>
-</div>
+<div id="map-container" class="fixed inset-0 z-0 bg-surface-container-lowest" style="height: 100dvh; width: 100vw;"></div>
 <!-- Top App Bar -->
 <header class="fixed top-0 w-full z-50 bg-[#181828]/70 backdrop-blur-xl flex justify-between items-center px-4 h-16 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-<button class="p-2 hover:bg-[#242437]/50 rounded-full transition-all text-primary">
+<button class="nav-toggle p-2 hover:bg-[#242437]/50 rounded-full transition-all text-primary">
 <span class="material-symbols-outlined">menu</span>
 </button>
 <h1 class="font-headline font-bold tracking-tight text-lg text-on-surface">
             Phố Vĩnh Khánh 📍
         </h1>
 <div class="flex items-center gap-3">
-<button class="text-primary drop-shadow-[0_0_8px_rgba(255,145,85,0.4)]">
+<button class="btn-scan-qr text-primary drop-shadow-[0_0_8px_rgba(255,145,85,0.4)] hover:scale-110 transition-transform">
 <span class="material-symbols-outlined">qr_code_scanner</span>
 </button>
 <div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden">
-<span class="text-[10px] font-bold text-secondary">VT</span>
+<span class="user-avatar text-[10px] font-bold text-secondary">VT</span>
 </div>
 </div>
 </header>
@@ -177,69 +160,30 @@
 <button class="text-primary text-xs font-bold uppercase tracking-widest">Tất cả</button>
 </div>
 <!-- Horizontal Scrollable Cards -->
-<div class="flex gap-4 overflow-x-auto px-6 pb-4 no-scrollbar">
-<!-- Card 1 -->
-<div class="min-w-[280px] bg-surface-container rounded-2xl p-4 flex gap-4 items-center ring-1 ring-white/5 shadow-xl">
-<div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
-<img class="w-full h-full object-cover" data-alt="Traditional Vietnamese spicy beef noodle soup in a bowl with fresh herbs on a dark table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0x2ufQX3dDJ5INAAUeBbwmFqof8L61dq3GAp8lG0BTiIPNMOpMvrqykWff-D6KNiT8TciTt2r6VLE_isSUJEZUl087rWmAWOF4GGIz8akpdbzF_tNUxgXzVNuMr0pkolewmPHfjpQyH8O1h8L7vMqbqtbJhK-pQcOrqrmJU1dW2H96myWEUBpdaL4SrOH6Titc8Wg2OnoX6t3OOPqN3oPNxeuoU6FaP6LYdv4WWVrtg59Oq0f-5vFQ-bF7zIpye2HMdmEhQV71qI"/>
-</div>
-<div class="flex-grow">
-<h4 class="font-bold text-on-surface line-clamp-1">Quán Bún Bò Minh Tâm</h4>
-<div class="flex items-center gap-1 mt-1">
-<span class="material-symbols-outlined text-tertiary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold">4.8</span>
-</div>
-<p class="text-[10px] text-on-surface-variant mt-1 italic">123 Vĩnh Khánh, Q4</p>
-</div>
-</div>
-<!-- Card 2 -->
-<div class="min-w-[280px] bg-surface-container-low/50 rounded-2xl p-4 flex gap-4 items-center ring-1 ring-white/5 opacity-80 scale-95 origin-left">
-<div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
-<img class="w-full h-full object-cover" data-alt="Hot steaming Thai hotpot with seafood and aromatic vegetables at a street market" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgynMcC9HgL_kgM3pGwK3n5b46X9BxGVm2UZG0xwVi_-ZIUR16XU6kym5WEqtMkh4P3bT1MZ9o2DAoSXAM5xn8jqeGBrIGx4u1AqXMEltZgGCtDqoK1_hU09r1ZlDksODFTpXEbwubGdc4gNDvJDrrEjeTl3vky0fzcDY0Lw4W63APxScOSy75DODSi_5p4ltydTdT3oT7CeKRJlrSZkvlRzp_t49yw7IOARha1bWf5gsvgKBx6ZRIPqapxm5MJJsRU_aJF59blYM"/>
-</div>
-<div class="flex-grow">
-<h4 class="font-bold text-on-surface line-clamp-1">Lẩu Thái Sapa</h4>
-<div class="flex items-center gap-1 mt-1">
-<span class="material-symbols-outlined text-tertiary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold">4.5</span>
-</div>
-</div>
-</div>
-<!-- Card 3 -->
-<div class="min-w-[280px] bg-surface-container-low/50 rounded-2xl p-4 flex gap-4 items-center ring-1 ring-white/5 opacity-60 scale-90 origin-left">
-<div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
-<img class="w-full h-full object-cover" data-alt="Vietnamese broken rice dish with grilled pork chop and pickled vegetables on a dark plate" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWjExrdY3Vys0xGpU1FFGF9N6u1NDm0KlOf1R1vAAjxgFG2_F3Tb56_MyEhn8iZ988785KfCuKwXDMV96quB19JCz2efvXU9B8GtIi4Z8bPooLrKUtobgQYPRKo1wdqnveWCQJ0QTgzwlxBykR-9Km8UD2Bs_VpPANdVnTAX8lAwysLj7Hnsr5WFNEuf-IqytTNtwWmh_nMkUZXwmup_K_67DHw-nC9QPGstjNbJQgiYUqEglhG2nMHN8eeO0_Jal2oD6cuaGsiUM"/>
-</div>
-<div class="flex-grow">
-<h4 class="font-bold text-on-surface line-clamp-1">Cơm Tấm Số 7</h4>
-<div class="flex items-center gap-1 mt-1">
-<span class="material-symbols-outlined text-tertiary text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-xs font-bold">4.6</span>
-</div>
-</div>
-</div>
+<div class="restaurant-cards flex gap-4 overflow-x-auto px-6 pb-4 no-scrollbar">
+    <!-- Populated dynamically via JS -->
 </div>
 </section>
 <!-- FAB -->
-<button class="fixed right-6 bottom-28 z-50 bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-5 h-14 rounded-full flex items-center gap-3 shadow-[0_8px_24px_rgba(242,108,13,0.4)] active:scale-95 transition-transform">
+<button class="btn-scan-qr fixed right-6 bottom-28 z-50 bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-5 h-14 rounded-full flex items-center gap-3 shadow-[0_8px_24px_rgba(242,108,13,0.4)] active:scale-95 transition-transform hover:shadow-[0_12px_28px_rgba(242,108,13,0.6)]">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
 <span class="font-bold text-sm">Quét QR</span>
 </button>
 <!-- Bottom Navigation Bar -->
 <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-6 pb-4 bg-[#181828]/70 backdrop-blur-xl rounded-t-[2rem] z-50 border-t border-[#242437]/30 shadow-[0_-8px_24px_rgba(242,108,13,0.15)]">
-<a class="flex flex-col items-center justify-center text-[#ff9155] drop-shadow-[0_0_8px_rgba(255,145,85,0.6)]" href="#">
+<a class="flex flex-col items-center justify-center text-[#ff9155] drop-shadow-[0_0_8px_rgba(255,145,85,0.6)]" href="map.html">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
 <span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Bản Đồ</span>
 </a>
-<a class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#ff9155] transition-colors" href="#">
+<a class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#ff9155] transition-colors" href="#" onclick="alert('Tính năng Khám Phá đang được cập nhật!'); return false;">
 <span class="material-symbols-outlined">restaurant_menu</span>
 <span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Khám Phá</span>
 </a>
-<a class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#ff9155] transition-colors" href="#">
+<a class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#ff9155] transition-colors" href="#" onclick="alert('Tính năng Lưu Trữ đang được cập nhật!'); return false;">
 <span class="material-symbols-outlined">bookmark</span>
 <span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Lưu Trữ</span>
 </a>
-<a class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#ff9155] transition-colors" href="#">
+<a href="profile.html" class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#ff9155] transition-colors cursor-pointer">
 <span class="material-symbols-outlined">person</span>
 <span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Cá Nhân</span>
 </a>

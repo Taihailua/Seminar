@@ -138,16 +138,16 @@
       <div class="feature-desc">Tự động dừng khi rời khỏi quán</div>
     </div>
   </div>
-  <a href="/pages/login.html" class="btn-primary">🚀 Bắt đầu khám phá</a>
-  <a href="/pages/map.html" class="btn-secondary">🗺️ Xem bản đồ (Khách)</a>
+  <a href="pages/login.html" class="btn-primary">🚀 Bắt đầu khám phá</a>
+  <a href="pages/map.html" class="btn-secondary">🗺️ Xem bản đồ (Khách)</a>
 </div>
 <script>
   // If already logged in, redirect
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
   if(token && role){
-    const redirects = {user:'/pages/map.html',owner:'/pages/owner-dashboard.html',admin:'/pages/admin-dashboard.html'};
-    window.location.href = redirects[role] || '/pages/map.html';
+    const redirects = {user:'pages/map.html',owner:'pages/owner-dashboard.html',admin:'pages/admin-dashboard.html'};
+    window.location.href = redirects[role] || 'pages/map.html';
   }
 </script>
 </body>

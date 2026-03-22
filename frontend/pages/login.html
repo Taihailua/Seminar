@@ -143,7 +143,7 @@
 <div class="space-y-2">
 <div class="flex justify-between items-center px-1">
 <label class="block text-xs font-semibold text-on-surface/60">Mật khẩu</label>
-<a class="text-xs font-bold text-primary hover:opacity-80 transition-opacity" href="#">Quên mật khẩu?</a>
+<a class="text-xs font-bold text-primary hover:opacity-80 transition-opacity" href="#" onclick="alert('Tính năng khôi phục mật khẩu đang phát triển!'); return false;">Quên mật khẩu?</a>
 </div>
 <div class="relative group">
 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -168,19 +168,32 @@
 </div>
 <!-- Social Buttons -->
 <div class="flex space-x-4">
-<button class="flex-1 h-12 rounded-xl bg-surface-container-highest/40 flex items-center justify-center border border-white/5 hover:bg-surface-container-highest/60 transition-colors">
+<button class="flex-1 h-12 rounded-xl bg-surface-container-highest/40 flex items-center justify-center border border-white/5 hover:bg-surface-container-highest/60 transition-colors" onclick="alert('Đăng nhập Google đang phát triển!');">
 <img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYTGMSAfiP3v10z_hiJP_p7L4UnSUFiye0i8AlMEiiVKUtaLCSKQHtd0MbJjWtZfCp6dgJTAHXFa-dI4EQTyR-scdHUIQoasybvBlJ_oBCO7LeexPNeq8iRmqvTuzpxuTx8saVbjvMtuAPyZ9ShNkHqJVdmToUK_3q9_prUU-Tlp1DNngRElg54gTiOEjoPl-oLuz_x3fTFc2tmBk006qUNahwtEnyBS9YVAqDphxmav9ZvpIzVXJe10X6vFylol5Hgl2aPFB3H-c"/>
 </button>
-<button class="flex-1 h-12 rounded-xl bg-surface-container-highest/40 flex items-center justify-center border border-white/5 hover:bg-surface-container-highest/60 transition-colors">
+<button class="flex-1 h-12 rounded-xl bg-surface-container-highest/40 flex items-center justify-center border border-white/5 hover:bg-surface-container-highest/60 transition-colors" onclick="alert('Đăng nhập Facebook đang phát triển!');">
 <img alt="Facebook" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjlYhabUVlyyWBP-invm7KdatmNDBeuaG-dVx2aTwD9x1_sfXojF0FxBPi8CEuHx9QyKKAl19ESXyCnog3ScEHjP0xCZkDVQNs80s-aj9K_P1yIBRiIvf7rd7Fg5rP6WI-rTyXxduH3QsOQpGHY_LdZ4TjsQYGZ3NFs5Etvrx5fCNJizoLmU0nglel5nLIyxYhPmQh-QPxqUSr4k0KRNIx_Flt95fi_7WoXIFx-2vLSkuj96eak4IiBDJztsO2WTS_4v-cQhX0lKs"/>
 </button>
 </div>
 </div>
 </div>
+<!-- Hidden Template Structure for Register (As requested, secondary tab content) -->
+<div id="register-panel" style="display:none;" class="p-8 space-y-4">
+<form id="register-form" onsubmit="return false;">
+<input id="reg-username" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 px-4 text-on-surface mb-3" placeholder="Tên tài khoản *" type="text"/>
+<input id="reg-email" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 px-4 text-on-surface mb-3" placeholder="Email *" type="email"/>
+<input id="reg-password" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 px-4 text-on-surface mb-4" placeholder="Mật khẩu *" type="password"/>
+<div class="flex p-1 bg-surface-container-lowest rounded-xl mb-4">
+<button type="button" data-role="user" class="role-pill active flex-1 py-2 text-xs font-bold rounded-lg bg-primary-container text-on-primary-container transition-all">Khách hàng</button>
+<button type="button" data-role="owner" class="role-pill flex-1 py-2 text-xs font-bold rounded-lg text-on-surface/40 transition-all">Chủ quán</button>
+</div>
+<button type="submit" class="w-full h-14 bg-gradient-to-r from-primary-dim to-primary rounded-xl text-on-primary font-extrabold tracking-wide shadow-lg">TẠO TÀI KHOẢN</button>
+</form>
+</div>
 <!-- Footer Help -->
 <p class="text-center mt-12 text-on-surface/40 text-xs">
             Bằng cách đăng nhập, bạn đồng ý với <br/>
-<a class="text-on-surface/60 underline decoration-primary/30 underline-offset-4" href="#">Điều khoản dịch vụ</a> và <a class="text-on-surface/60 underline decoration-primary/30 underline-offset-4" href="#">Chính sách bảo mật</a>
+<a class="text-on-surface/60 underline decoration-primary/30 underline-offset-4" href="#" onclick="alert('Nội dung Điều khoản đang được cập nhật.'); return false;">Điều khoản dịch vụ</a> và <a class="text-on-surface/60 underline decoration-primary/30 underline-offset-4" href="#" onclick="alert('Nội dung Chính sách đang được cập nhật.'); return false;">Chính sách bảo mật</a>
 </p>
 </main>
 <!-- Visual Anchor / Bottom Element -->
@@ -204,20 +217,6 @@
 </div>
 </div>
 </div>
-<!-- Hidden Template Structure for Register (As requested, secondary tab content) -->
-<!-- This would normally be toggled via JS; shown here as hidden visual logic -->
-<div id="register-panel" style="display:none;" class="p-8 space-y-4">
-<form id="register-form" onsubmit="return false;">
-<input id="reg-username" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 px-4 text-on-surface mb-3" placeholder="Tên tài khoản *" type="text"/>
-<input id="reg-email" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 px-4 text-on-surface mb-3" placeholder="Email *" type="email"/>
-<input id="reg-password" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 px-4 text-on-surface mb-4" placeholder="Mật khẩu *" type="password"/>
-<div class="flex p-1 bg-surface-container-lowest rounded-xl mb-4">
-<button type="button" data-role="user" class="role-pill active flex-1 py-2 text-xs font-bold rounded-lg bg-primary-container text-on-primary-container transition-all">Khách hàng</button>
-<button type="button" data-role="owner" class="role-pill flex-1 py-2 text-xs font-bold rounded-lg text-on-surface/40 transition-all">Chủ quán</button>
-</div>
-<button type="submit" class="w-full h-14 bg-gradient-to-r from-primary-dim to-primary rounded-xl text-on-primary font-extrabold tracking-wide shadow-lg">TẠO TÀI KHOẢN</button>
-</form>
-</div>
 <script type="module" src="../js/auth.js"></script>
 <script>
 // Tab switching for login/register
@@ -235,51 +234,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if(loginContent) loginContent.style.display = 'none';
       if(registerPanel) registerPanel.style.display = 'block';
       tabBtns[1].classList.add('text-primary'); tabBtns[0].classList.remove('text-primary');
-    });
-  }
-  // Wire login submit 
-  var loginForm = document.getElementById('login-form');
-  if(loginForm) {
-    loginForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      var u = document.getElementById('login-username')?.value?.trim();
-      var p = document.getElementById('login-password')?.value;
-      if(!u||!p){alert('Vui lòng nhập đầy đủ thông tin');return;}
-      try{
-        var res = await fetch('http://localhost:8000/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
-        var data = await res.json();
-        if(!res.ok) throw new Error(data.detail||'Đăng nhập thất bại');
-        localStorage.setItem('token',data.access_token);
-        localStorage.setItem('role',data.role);
-        localStorage.setItem('userId',data.user_id);
-        localStorage.setItem('username',data.username);
-        var redirects = {user:'/pages/map.html',owner:'/pages/owner-dashboard.html',admin:'/pages/admin-dashboard.html'};
-        window.location.href = redirects[data.role]||'/pages/map.html';
-      }catch(err){alert('Lỗi: '+err.message);}
-    });
-  }
-  // Wire register submit
-  var regForm = document.getElementById('register-form');
-  if(regForm) {
-    regForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      var u = document.getElementById('reg-username')?.value?.trim();
-      var em = document.getElementById('reg-email')?.value?.trim();
-      var pw = document.getElementById('reg-password')?.value;
-      var roleEl = document.querySelector('.role-pill.active');
-      var role = (roleEl?.dataset.role) || 'user';
-      if(!u||!em||!pw){alert('Vui lòng điền đầy đủ');return;}
-      try{
-        var res = await fetch('http://localhost:8000/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,email:em,password:pw,role})});
-        var data = await res.json();
-        if(!res.ok) throw new Error(data.detail||'Đăng ký thất bại');
-        localStorage.setItem('token',data.access_token);
-        localStorage.setItem('role',data.role);
-        localStorage.setItem('userId',data.user_id);
-        localStorage.setItem('username',data.username);
-        var redirects = {user:'/pages/map.html',owner:'/pages/owner-dashboard.html',admin:'/pages/admin-dashboard.html'};
-        window.location.href = redirects[data.role]||'/pages/map.html';
-      }catch(err){alert('Lỗi: '+err.message);}
     });
   }
   // Role pill toggle

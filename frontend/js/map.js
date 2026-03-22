@@ -82,7 +82,7 @@ function renderMarkers(restaurants) {
         <div style="font-size:12px;color:#aba9bb;margin-bottom:8px;">
           ${ratingDisplay} · 📍 ${r.address || 'Phố Vĩnh Khánh'}
         </div>
-        <a href="/pages/restaurant.html?id=${r.id}"
+        <a href="restaurant.html?id=${r.id}"
            style="
              display:block;text-align:center;padding:8px 16px;
              background:linear-gradient(135deg,#ff9155,#ff7a27);
@@ -164,7 +164,7 @@ function renderRestaurantList(restaurants) {
   const navRestaurants = document.querySelector('.nav-restaurants, [class*="drawer"] .restaurant-list');
   if (navRestaurants && !listContainers.length) {
     navRestaurants.innerHTML = restaurants.slice(0, 5).map((r) => `
-      <a href="/pages/restaurant.html?id=${r.id}" style="
+      <a href="restaurant.html?id=${r.id}" style="
         display:block;padding:8px 16px 8px 32px;
         color:#e9e6f9;text-decoration:none;font-size:14px;
         transition:color 0.2s;
@@ -209,7 +209,7 @@ function setupDrawer() {
   document.querySelectorAll('[class*="logout"], [class*="dang-xuat"]').forEach((btn) => {
     btn.addEventListener('click', () => {
       clearAuth();
-      window.location.href = '/pages/login.html';
+      window.location.href = 'login.html';
     });
   });
 }

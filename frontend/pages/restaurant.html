@@ -102,7 +102,7 @@
 <span class="material-symbols-outlined">arrow_back</span>
 </button>
 <h1 class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-lg text-[#ff9155]">Night Market Guide</h1>
-<button class="text-[#ff9155] active:scale-95 duration-200">
+<button class="text-[#ff9155] active:scale-95 duration-200" onclick="alert('Tùy chọn phụ đang cập nhật.');">
 <span class="material-symbols-outlined">more_vert</span>
 </button>
 </header>
@@ -154,11 +154,11 @@
 <div class="w-1/3 h-full bg-gradient-to-r from-primary to-secondary"></div>
 </div>
 <div class="flex items-center justify-between w-full px-4">
-<button class="text-on-surface-variant"><span class="material-symbols-outlined text-3xl">replay_10</span></button>
+<button class="text-on-surface-variant" onclick="alert('Tính năng tua nhanh đang nâng cấp');"><span class="material-symbols-outlined text-3xl">replay_10</span></button>
 <button id="play-btn" class="audio-play-btn w-[72px] h-[72px] rounded-full bg-gradient-to-tr from-[#ff9155] to-[#f26c0d] shadow-[0px_8px_24px_rgba(242,108,13,0.4)] flex items-center justify-center text-white active:scale-95 transition-transform">
 <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
 </button>
-<button class="text-on-surface-variant"><span class="material-symbols-outlined text-3xl">forward_10</span></button>
+<button class="text-on-surface-variant" onclick="alert('Tính năng tua nhanh đang nâng cấp');"><span class="material-symbols-outlined text-3xl">forward_10</span></button>
 </div>
 <span id="tts-status" class="tts-status text-on-surface-variant text-xs font-medium italic">Nhấn để nghe thuyết minh...</span>
 </div>
@@ -167,7 +167,7 @@
 <section>
 <h3 class="font-bold text-xl mb-3 text-white">Giới Thiệu</h3>
 <p class="restaurant-description text-on-surface-variant leading-relaxed">Đang tải...</p>
-<button class="text-primary font-bold text-sm mt-2 flex items-center">Xem thêm <span class="material-symbols-outlined text-[18px] ml-1">arrow_forward</span></button>
+<button class="text-primary font-bold text-sm mt-2 flex items-center" onclick="alert('Chi tiết toàn bộ trang mô tả đang hỗ trợ biên soạn...');">Xem thêm <span class="material-symbols-outlined text-[18px] ml-1">arrow_forward</span></button>
 </section>
 <!-- 4. Menu Section -->
 <section>
@@ -186,53 +186,10 @@
 </div>
 <!-- DYNAMIC REVIEW LOOP rendered by restaurant.js -->
 <div id="reviews-container" class="space-y-3">
-<!-- Loading placeholder until restaurant.js populates this -->
-<div class="bg-surface-container-low p-4 rounded-xl space-y-2">
-<div class="flex justify-between">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="Portrait of a young Vietnamese woman, modern lifestyle photography, soft focus background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5UmThVfqxXuAPlu2EU_XPjS9Ny7PhLY08HUkFlhiRF5ysaRlIvXBYT8kGnD1JvSjt6ErSGiSDPiVj8rTTnEl3iiERUkf_nJwgjBJZ8wul7vt8_5GkQEFRIbwpMWBscHzTpNUtr4y4cxxvXvE_4dNTQKJ1bIWyDlzdZbGNksYmMcBNYZRmxbw-QgHpc5nE6PPcY8JZInravESkURpemCKoZl_sCsR2i9usEpQEyhQUIhy7L0nuJA3E3Icdf1O7MGdMfnM2V7TAxcs"/>
-</div>
-<div>
-<p class="text-sm font-bold text-white">Linh Nguyễn</p>
-<p class="text-[10px] text-on-surface-variant">2 ngày trước</p>
+    <!-- Populated dynamically by JS -->
 </div>
 </div>
-<div class="flex text-[#ffb37a]">
-<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-</div>
-</div>
-<p class="text-sm text-on-surface-variant">Bún bò rất ngon, nước lèo đậm đà đúng vị. Quán hơi đông vào buổi tối nhưng phục vụ khá nhanh.</p>
-</div>
-<!-- Review 2 -->
-<div class="bg-surface-container-low p-4 rounded-xl space-y-2">
-<div class="flex justify-between">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="Candid portrait of a traveler with a camera, urban night background with city lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCS52nRMVdXWBWuCZU7hweb5yNWpNxOJv7qpIVIoaLb851E6Z8nd4y7lC-AyVeDxBiMB40XOP-MZatbOpDbyBOelpfSZvnCtNelTtJUDswZiqwv0U_bZhOAuamAAe4SSadAKQmSQJJGrhd3g_gBIVOhyiWZEfuQUYEoEZDEa7TfNo_Lxn7Wt8Hwy7AwqvFL1fYZ-vLE2gRVAV1ZjcqClxQpKBrrmilbrzlWNqEYILI6baxKcoy87rQJlzA9iAhZarKNJbjHhJQE3k4"/>
-</div>
-<div>
-<p class="text-sm font-bold text-white">James Wilson</p>
-<p class="text-[10px] text-on-surface-variant">Tuần trước</p>
-</div>
-</div>
-<div class="flex text-[#ffb37a]">
-<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="material-symbols-outlined text-xs">star</span>
-</div>
-</div>
-<p class="text-sm text-on-surface-variant">Amazing food! The audio guide really helped me understand what to order and the history of the place.</p>
-</div>
-</div>
-</div>
-<button class="w-full h-14 rounded-xl border border-primary/30 text-primary font-bold text-sm flex items-center justify-center gap-2 active:bg-primary/5 transition-colors">
+<button class="w-full h-14 rounded-xl border border-primary/30 text-primary font-bold text-sm flex items-center justify-center gap-2 active:bg-primary/5 transition-colors" onclick="document.getElementById('review-form').style.display = document.getElementById('review-form').style.display === 'none' ? 'block' : 'none';">
 <span class="material-symbols-outlined">rate_review</span>
 Viết đánh giá
 </button>
@@ -245,12 +202,11 @@ Viết đánh giá
 <!-- 6. Bottom Navigation Anchor -->
 <nav class="fixed bottom-0 w-full z-50 rounded-t-2xl bg-[#242437]/70 backdrop-blur-[20px] flex justify-around items-center h-20 px-6 pb-2 shadow-2xl">
 <!-- Back to Map (Inactive but themed) -->
-<a class="flex flex-col items-center justify-center text-[#e9e6f9] py-2 px-6 hover:bg-[#ffffff10] transition-all active:scale-[0.98]" href="/pages/map.html">
+<a class="flex flex-col items-center justify-center text-[#e9e6f9] py-2 px-6 hover:bg-[#ffffff10] transition-all active:scale-[0.98]" href="map.html">
 <span class="material-symbols-outlined">map</span>
 <span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-wider mt-1">Back to Map</span>
 </a>
-<!-- Share (Active style applied as requested per hierarchy) -->
-<a class="flex flex-col items-center justify-center bg-gradient-to-tr from-[#ff9155] to-[#f26c0d] text-white rounded-xl py-2 px-6 shadow-[0px_8px_24px_rgba(242,108,13,0.3)] active:scale-[0.98]" href="#">
+<a class="flex flex-col items-center justify-center bg-gradient-to-tr from-[#ff9155] to-[#f26c0d] text-white rounded-xl py-2 px-6 shadow-[0px_8px_24px_rgba(242,108,13,0.3)] active:scale-[0.98]" href="#" onclick="navigator.clipboard.writeText(window.location.href); alert('Đã sao chép link nhà hàng vào clipboard!'); return false;">
 <span class="material-symbols-outlined">share</span>
 <span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-wider mt-1">Share</span>
 </a>

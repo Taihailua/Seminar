@@ -28,13 +28,23 @@ export async function apiFetch(path, options = {}) {
 
   if (response.status === 401) {
     localStorage.clear();
-    window.location.href = '/pages/login.html';
+    window.location.href = 'login.html';
     throw new Error('Unauthorized — redirecting to login');
   }
 
   if (!response.ok) {
     const err = await response.json().catch(() => ({ detail: response.statusText }));
-    throw new Error(err.detail || `HTTP ${response.status}`);
+    let errorMsg = err.detail || `HTTP ${response.status}`;
+    if (Array.isArray(err.detail)) {
+      // Handle Pydantic validation errors
+      errorMsg = err.detail.map(d => {
+        const field = d.loc && d.loc.length > 1 ? d.loc[d.loc.length - 1] : '';
+        return field ? `${field}: ${d.msg}` : d.msg;
+      }).join('; ');
+    } else if (typeof err.detail === 'object') {
+      errorMsg = JSON.stringify(err.detail);
+    }
+    throw new Error(errorMsg);
   }
 
   if (response.status === 204) return null;
@@ -76,11 +86,11 @@ export function clearAuth() {
 export function requireAuth(requiredRole = null) {
   const { token, role } = getAuth();
   if (!token) {
-    window.location.href = '/pages/login.html';
+    window.location.href = 'login.html';
     return false;
   }
   if (requiredRole && role !== requiredRole && role !== 'admin') {
-    window.location.href = '/pages/map.html';
+    window.location.href = 'map.html';
     return false;
   }
   return true;

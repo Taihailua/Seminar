@@ -7,8 +7,8 @@ import { api, getAuth, clearAuth } from './api.js';
 // ── Auth Guard ────────────────────────────────────────────────────────────────
 function checkAuth() {
   const { token, role } = getAuth();
-  if (!token) { window.location.href = '/pages/login.html'; return false; }
-  if (role !== 'admin') { window.location.href = '/pages/map.html'; return false; }
+  if (!token) { window.location.href = 'login.html'; return false; }
+  if (role !== 'admin') { window.location.href = 'map.html'; return false; }
   return true;
 }
 
@@ -238,7 +238,7 @@ function wireLogout() {
   document.querySelectorAll('[class*="logout"], [class*="đăng-xuất"]').forEach((btn) => {
     btn.addEventListener('click', () => {
       clearAuth();
-      window.location.href = '/pages/login.html';
+      window.location.href = 'login.html';
     });
   });
 }
@@ -274,7 +274,7 @@ async function init() {
     console.error('Admin init error:', err);
     if (err.message?.includes('401') || err.message?.includes('403')) {
       clearAuth();
-      window.location.href = '/pages/login.html';
+      window.location.href = 'login.html';
     }
   }
 }
