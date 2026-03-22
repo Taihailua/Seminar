@@ -13,10 +13,10 @@
                 extend: {
                     "colors": {
                         "inverse-surface": "#fcf8ff",
-                        "primary-fixed": "#ff7a27",
+                        "primary-fixed": "#0284c7",
                         "tertiary-fixed": "#fcb825",
                         "on-secondary-container": "#fff6f2",
-                        "surface-tint": "#ff9155",
+                        "surface-tint": "#0ea5e9",
                         "on-secondary-fixed": "#542900",
                         "surface-container-high": "#1e1e2f",
                         "on-tertiary-fixed-variant": "#5f4200",
@@ -27,11 +27,11 @@
                         "on-secondary": "#4c2400",
                         "on-background": "#e9e6f9",
                         "inverse-on-surface": "#545363",
-                        "primary-container": "#ff7a27",
+                        "primary-container": "#0284c7",
                         "tertiary-dim": "#ecaa12",
                         "surface-dim": "#0d0d1a",
-                        "secondary": "#fd9338",
-                        "primary-dim": "#ff751a",
+                        "secondary": "#38bdf8",
+                        "primary-dim": "#0284c7",
                         "secondary-fixed": "#ffc69d",
                         "on-tertiary": "#5f4200",
                         "on-surface": "#e9e6f9",
@@ -51,7 +51,7 @@
                         "on-surface-variant": "#aba9bb",
                         "on-error": "#450900",
                         "error": "#ff7351",
-                        "primary": "#ff9155",
+                        "primary": "#0ea5e9",
                         "tertiary": "#ffc968",
                         "secondary-container": "#934b00",
                         "surface-bright": "#2a2a3f",
@@ -87,9 +87,9 @@
             animation: pulse-orange 2s infinite;
         }
         @keyframes pulse-orange {
-            0% { box-shadow: 0 0 0 0 rgba(255, 145, 85, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 145, 85, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 145, 85, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(14, 165, 233, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
         }
     </style>
 <style>
@@ -141,16 +141,16 @@
             Phố Vĩnh Khánh 📍
         </h1>
 <div class="flex items-center gap-3">
-<button class="btn-scan-qr text-primary drop-shadow-[0_0_8px_rgba(255,145,85,0.4)] hover:scale-110 transition-transform">
+<button class="btn-scan-qr text-primary drop-shadow-[0_0_8px_rgba(14, 165, 233,0.4)] hover:scale-110 transition-transform">
 <span class="material-symbols-outlined">qr_code_scanner</span>
 </button>
-<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden">
+<a href="profile.html" class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden hover:border-primary/50 transition-colors">
 <span class="user-avatar text-[10px] font-bold text-secondary">VT</span>
-</div>
+</a>
 </div>
 </header>
 <!-- Bottom Drawer (Partially Visible) -->
-<section class="fixed bottom-0 left-0 w-full z-40 bg-[#181828]/70 backdrop-blur-xl rounded-t-[2rem] pt-6 pb-24 shadow-[0_-8px_24px_rgba(242,108,13,0.15)] border-t border-[#242437]/30">
+<section class="fixed bottom-0 left-0 w-full z-40 bg-[#181828]/70 backdrop-blur-xl rounded-t-[2rem] pt-6 pb-24 shadow-[0_-8px_24px_rgba(14,165,233,0.15)] border-t border-[#242437]/30">
 <!-- Drawer Handle -->
 <div class="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-outline-variant rounded-full opacity-30"></div>
 <div class="px-6 mb-4 flex justify-between items-center">
@@ -165,25 +165,25 @@
 </div>
 </section>
 <!-- FAB -->
-<button class="btn-scan-qr fixed right-6 bottom-28 z-50 bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-5 h-14 rounded-full flex items-center gap-3 shadow-[0_8px_24px_rgba(242,108,13,0.4)] active:scale-95 transition-transform hover:shadow-[0_12px_28px_rgba(242,108,13,0.6)]">
+<button class="btn-scan-qr fixed right-6 bottom-28 z-50 bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-5 h-14 rounded-full flex items-center gap-3 shadow-[0_8px_24px_rgba(14,165,233,0.4)] active:scale-95 transition-transform hover:shadow-[0_12px_28px_rgba(14,165,233,0.6)]">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
 <span class="font-bold text-sm">Quét QR</span>
 </button>
 <!-- Bottom Navigation Bar -->
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-6 pb-4 bg-[#181828]/70 backdrop-blur-xl rounded-t-[2rem] z-50 border-t border-[#242437]/30 shadow-[0_-8px_24px_rgba(242,108,13,0.15)]">
-<a class="flex flex-col items-center justify-center text-[#ff9155] drop-shadow-[0_0_8px_rgba(255,145,85,0.6)]" href="map.html">
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-6 pb-4 bg-[#181828]/70 backdrop-blur-xl rounded-t-[2rem] z-50 border-t border-[#242437]/30 shadow-[0_-8px_24px_rgba(14,165,233,0.15)]">
+<a class="flex flex-col items-center justify-center text-[#0ea5e9] drop-shadow-[0_0_8px_rgba(14, 165, 233,0.6)]" href="map.html">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
 <span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Bản Đồ</span>
 </a>
-<a class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#ff9155] transition-colors" href="#" onclick="alert('Tính năng Khám Phá đang được cập nhật!'); return false;">
+<a class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#0ea5e9] transition-colors" href="#" onclick="alert('Tính năng Khám Phá đang được cập nhật!'); return false;">
 <span class="material-symbols-outlined">restaurant_menu</span>
 <span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Khám Phá</span>
 </a>
-<a class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#ff9155] transition-colors" href="#" onclick="alert('Tính năng Lưu Trữ đang được cập nhật!'); return false;">
+<a class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#0ea5e9] transition-colors" href="#" onclick="alert('Tính năng Lưu Trữ đang được cập nhật!'); return false;">
 <span class="material-symbols-outlined">bookmark</span>
 <span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Lưu Trữ</span>
 </a>
-<a href="profile.html" class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#ff9155] transition-colors cursor-pointer">
+<a href="profile.html" class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#0ea5e9] transition-colors cursor-pointer">
 <span class="material-symbols-outlined">person</span>
 <span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Cá Nhân</span>
 </a>

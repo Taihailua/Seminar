@@ -12,16 +12,6 @@ from auth.jwt import create_access_token
 from auth.dependencies import get_current_user
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
-def hash_password(password: str) -> str:
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
-
-
-def verify_password(plain: str, hashed: str) -> bool:
-    try:
-        return bcrypt.checkpw(plain.encode('utf-8'), hashed.encode('utf-8'))
-    except Exception:
-        return False
 
 
 @router.post("/register", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)
@@ -44,7 +34,7 @@ async def register(data: UserCreate, db: AsyncSession = Depends(get_db)):
     user = User(
         username=data.username,
         email=data.email,
-        password_hash=hash_password(data.password),
+        password=data.password,
         role=UserRole(data.role),
     )
     db.add(user)
@@ -65,7 +55,7 @@ async def login(data: UserLogin, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.username == data.username))
     user = result.scalar_one_or_none()
 
-    if not user or not verify_password(data.password, user.password_hash):
+    if not user or data.password != user.password:
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     if not user.is_active:

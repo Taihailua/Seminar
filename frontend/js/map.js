@@ -21,7 +21,7 @@ function initMap() {
   });
 
   // Dark tile layer (CartoDB dark matter)
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CartoDB',
     maxZoom: 20,
   }).addTo(map);
@@ -35,16 +35,16 @@ function initMap() {
 /** Create a custom orange marker icon */
 function createOrangeMarker(isSelected = false) {
   const size = isSelected ? 44 : 36;
-  const glow = isSelected ? 'filter:drop-shadow(0 0 12px #f26c0d);' : '';
+  const glow = isSelected ? 'filter:drop-shadow(0 0 12px #0ea5e9);' : '';
   return L.divIcon({
     className: '',
     html: `<div style="
       width:${size}px;height:${size}px;
-      background:linear-gradient(135deg,#ff9155,#ff7a27);
+      background:linear-gradient(135deg,#0ea5e9,#0284c7);
       border-radius:50% 50% 50% 0;
       transform:rotate(-45deg);
       border:3px solid #fff;
-      box-shadow:0 4px 16px rgba(242,108,13,0.5);
+      box-shadow:0 4px 16px rgba(14,165,233,0.5);
       ${glow}
     ">
       <div style="
@@ -76,7 +76,7 @@ function renderMarkers(restaurants) {
         background:#1a1a2e;color:#e9e6f9;padding:12px;
         border-radius:12px;min-width:200px;font-family:'Plus Jakarta Sans',sans-serif;
       ">
-        <div style="font-weight:700;font-size:15px;color:#ff9155;margin-bottom:4px;">
+        <div style="font-weight:700;font-size:15px;color:#0ea5e9;margin-bottom:4px;">
           ${r.name}
         </div>
         <div style="font-size:12px;color:#aba9bb;margin-bottom:8px;">
@@ -85,7 +85,7 @@ function renderMarkers(restaurants) {
         <a href="restaurant.html?id=${r.id}"
            style="
              display:block;text-align:center;padding:8px 16px;
-             background:linear-gradient(135deg,#ff9155,#ff7a27);
+             background:linear-gradient(135deg,#0ea5e9,#0284c7);
              color:#521f00;border-radius:8px;text-decoration:none;
              font-weight:700;font-size:13px;
            ">
@@ -133,7 +133,7 @@ function renderRestaurantList(restaurants) {
           <div style="font-weight:700;color:#e9e6f9;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
             ${r.name}
           </div>
-          <div style="font-size:12px;color:#ff9155;margin-top:2px;">
+          <div style="font-size:12px;color:#0ea5e9;margin-top:2px;">
             ${r.avg_rating ? `⭐ ${r.avg_rating.toFixed(1)}` : '⭐ Mới'}
           </div>
           <div style="font-size:11px;color:#aba9bb;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
@@ -143,7 +143,7 @@ function renderRestaurantList(restaurants) {
       `;
       card.addEventListener('mouseenter', () => {
         card.style.transform = 'translateX(4px)';
-        card.style.boxShadow = '0 4px 16px rgba(242,108,13,0.2)';
+        card.style.boxShadow = '0 4px 16px rgba(14,165,233,0.2)';
       });
       card.addEventListener('mouseleave', () => {
         card.style.transform = '';
@@ -168,7 +168,7 @@ function renderRestaurantList(restaurants) {
         display:block;padding:8px 16px 8px 32px;
         color:#e9e6f9;text-decoration:none;font-size:14px;
         transition:color 0.2s;
-      " onmouseenter="this.style.color='#ff9155'" onmouseleave="this.style.color='#e9e6f9'">
+      " onmouseenter="this.style.color='#0ea5e9'" onmouseleave="this.style.color='#e9e6f9'">
         🍜 ${r.name}
       </a>
     `).join('');
@@ -236,7 +236,7 @@ function openScannerModal() {
   modal.innerHTML = `
     <div style="background:#181828;border-radius:16px;padding:24px;width:90%;max-width:400px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <h3 style="color:#ff9155;font-family:'Plus Jakarta Sans',sans-serif;margin:0;">📷 Quét Mã QR</h3>
+        <h3 style="color:#0ea5e9;font-family:'Plus Jakarta Sans',sans-serif;margin:0;">📷 Quét Mã QR</h3>
         <button id="close-scanner" style="
           background:none;border:none;color:#aba9bb;font-size:24px;cursor:pointer;
         ">✕</button>
