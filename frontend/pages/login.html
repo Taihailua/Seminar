@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.glass-card {
+    background: rgba(24, 24, 40, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px)
+    }
+.glow-orange {
+    box-shadow: 0 0 15px rgba(242, 108, 13, 0.3)
+    }
+.bg-street-pattern {
+    background-image: linear-gradient(to top, rgba(13, 13, 26, 1) 0%, rgba(13, 13, 26, 0.4) 100%), url(https://lh3.googleusercontent.com/aida-public/AB6AXuAFMmTjYHrkZDS_32jwV-AYhncYDOMZq6Vsr9fqhivZo7Pxjx6GT3_nw5jpXV4vaz89X_NQavQvREqEK1rMO47ZCJj4Hl5s388KOfshJlX0OZbXMPZA0A3Quv2sbtZAB1bRBJ3QXBYMO4jhimOcGaPKEXtRtiIqH-7JX76fxROvGzJZlzpi4xtQO3RFBk8K6tbO1H9I0UQCXyRdu8l1jfCktF_akxRKPRa5Ov15QW5ZRSdoGXgvZT6INIhrJALA6dQ7ZFxIjG7NBco);
+    background-size: cover;
+    background-position: center
+    }</style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#e9e6f9",
+                      "on-secondary": "#4c2400",
+                      "on-secondary-fixed-variant": "#7e4000",
+                      "secondary-dim": "#ed862b",
+                      "on-tertiary-fixed-variant": "#5f4200",
+                      "surface-container-low": "#121220",
+                      "surface-tint": "#ff9155",
+                      "error": "#ff7351",
+                      "background": "#0d0d1a",
+                      "on-surface-variant": "#aba9bb",
+                      "secondary-fixed": "#ffc69d",
+                      "outline-variant": "#474656",
+                      "on-primary": "#521f00",
+                      "surface-dim": "#0d0d1a",
+                      "primary-fixed": "#ff7a27",
+                      "primary": "#ff9155",
+                      "surface-container-lowest": "#000000",
+                      "on-tertiary-container": "#543a00",
+                      "inverse-primary": "#9f4300",
+                      "on-error": "#450900",
+                      "on-secondary-fixed": "#542900",
+                      "tertiary-fixed-dim": "#ecaa12",
+                      "surface": "#0d0d1a",
+                      "secondary-container": "#934b00",
+                      "surface-variant": "#242437",
+                      "surface-bright": "#2a2a3f",
+                      "on-error-container": "#ffd2c8",
+                      "tertiary-dim": "#ecaa12",
+                      "surface-container-high": "#1e1e2f",
+                      "inverse-surface": "#fcf8ff",
+                      "on-primary-container": "#3f1600",
+                      "on-background": "#e9e6f9",
+                      "secondary-fixed-dim": "#ffb37a",
+                      "surface-container": "#181828",
+                      "primary-fixed-dim": "#f16b0b",
+                      "inverse-on-surface": "#545363",
+                      "tertiary": "#ffc968",
+                      "on-primary-fixed-variant": "#4e1d00",
+                      "error-container": "#b92902",
+                      "tertiary-fixed": "#fcb825",
+                      "error-dim": "#d53d18",
+                      "secondary": "#fd9338",
+                      "primary-container": "#ff7a27",
+                      "on-primary-fixed": "#000000",
+                      "surface-container-highest": "#242437",
+                      "tertiary-container": "#fcb825",
+                      "outline": "#757485",
+                      "on-tertiary-fixed": "#3a2600",
+                      "on-tertiary": "#5f4200",
+                      "primary-dim": "#ff751a",
+                      "on-secondary-container": "#fff6f2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Plus Jakarta Sans"],
+                      "body": ["Plus Jakarta Sans"],
+                      "label": ["Plus Jakarta Sans"]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body overflow-x-hidden min-h-screen flex flex-col items-center justify-start">
+<!-- Hero Background Section (The Street Mood) -->
+<div class="fixed inset-0 z-0 opacity-40 bg-street-pattern" data-alt="cinematic long shot of a bustling saigon night market street with vibrant neon signs reflecting on wet pavement and warm food stall lights"></div>
+<!-- App Header -->
+<header class="relative z-10 w-full pt-12 pb-8 flex flex-col items-center justify-center">
+<div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-container rounded-2xl flex items-center justify-center glow-orange mb-4 shadow-lg transform rotate-3">
+<span class="material-symbols-outlined text-on-primary-container text-4xl" data-icon="ramen_dining">ramen_dining</span>
+</div>
+<h1 class="text-3xl font-headline font-extrabold tracking-tight text-on-surface">
+            Phố Vĩnh Khánh
+        </h1>
+<p class="text-primary font-medium tracking-[0.2em] text-xs mt-1">AUDIO GUIDE</p>
+</header>
+<!-- Main Auth Canvas -->
+<main class="relative z-10 w-full px-6 mb-12 max-w-md">
+<div class="glass-card rounded-[24px] overflow-hidden shadow-2xl border border-white/5">
+<!-- Tabs -->
+<div class="flex border-b border-white/5">
+<button class="flex-1 py-5 text-sm font-bold text-primary relative">
+                    Đăng Nhập
+                    <div class="absolute bottom-0 left-0 w-full h-[3px] bg-primary rounded-t-full shadow-[0_0_8px_rgba(242,108,13,0.8)]"></div>
+</button>
+<button class="flex-1 py-5 text-sm font-bold text-on-surface/50 hover:text-on-surface transition-colors">
+                    Đăng Ký
+                </button>
+</div>
+<!-- Content Area (Login View) -->
+<div class="p-8 space-y-6">
+<!-- Username Field -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold text-on-surface/60 ml-1">Tên đăng nhập</label>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface/40 group-focus-within:text-primary transition-colors" data-icon="person">person</span>
+</div>
+<input id="login-username" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-on-surface/20 focus:ring-1 focus:ring-primary/40 transition-all" placeholder="Tên đăng nhập" type="text"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<label class="block text-xs font-semibold text-on-surface/60">Mật khẩu</label>
+<a class="text-xs font-bold text-primary hover:opacity-80 transition-opacity" href="#">Quên mật khẩu?</a>
+</div>
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface/40 group-focus-within:text-primary transition-colors" data-icon="lock">lock</span>
+</div>
+<input id="login-password" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 pl-12 pr-12 text-on-surface placeholder:text-on-surface/20 focus:ring-1 focus:ring-primary/40 transition-all" placeholder="••••••••" type="password"/>
+<button class="absolute inset-y-0 right-0 pr-4 flex items-center text-on-surface/40 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="visibility">visibility</span>
+</button>
+</div>
+</div>
+<!-- CTA Button -->
+<form id="login-form" onsubmit="return false;"><button id="login-submit-btn" class="w-full h-14 bg-gradient-to-r from-primary-dim to-primary rounded-xl flex items-center justify-center space-x-3 shadow-[0_8px_24px_rgba(242,108,13,0.3)] active:scale-95 transition-transform">
+<span class="text-on-primary font-extrabold tracking-wide">ĐĂNG NHẬP</span>
+<span class="material-symbols-outlined text-on-primary" data-icon="arrow_forward">arrow_forward</span>
+</button></form>
+<!-- Social Login Separator -->
+<div class="flex items-center space-x-4 pt-4">
+<div class="flex-1 h-[1px] bg-white/5"></div>
+<span class="text-[10px] font-bold text-on-surface/30 tracking-widest">HOẶC TIẾP TỤC VỚI</span>
+<div class="flex-1 h-[1px] bg-white/5"></div>
+</div>
+<!-- Social Buttons -->
+<div class="flex space-x-4">
+<button class="flex-1 h-12 rounded-xl bg-surface-container-highest/40 flex items-center justify-center border border-white/5 hover:bg-surface-container-highest/60 transition-colors">
+<img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYTGMSAfiP3v10z_hiJP_p7L4UnSUFiye0i8AlMEiiVKUtaLCSKQHtd0MbJjWtZfCp6dgJTAHXFa-dI4EQTyR-scdHUIQoasybvBlJ_oBCO7LeexPNeq8iRmqvTuzpxuTx8saVbjvMtuAPyZ9ShNkHqJVdmToUK_3q9_prUU-Tlp1DNngRElg54gTiOEjoPl-oLuz_x3fTFc2tmBk006qUNahwtEnyBS9YVAqDphxmav9ZvpIzVXJe10X6vFylol5Hgl2aPFB3H-c"/>
+</button>
+<button class="flex-1 h-12 rounded-xl bg-surface-container-highest/40 flex items-center justify-center border border-white/5 hover:bg-surface-container-highest/60 transition-colors">
+<img alt="Facebook" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjlYhabUVlyyWBP-invm7KdatmNDBeuaG-dVx2aTwD9x1_sfXojF0FxBPi8CEuHx9QyKKAl19ESXyCnog3ScEHjP0xCZkDVQNs80s-aj9K_P1yIBRiIvf7rd7Fg5rP6WI-rTyXxduH3QsOQpGHY_LdZ4TjsQYGZ3NFs5Etvrx5fCNJizoLmU0nglel5nLIyxYhPmQh-QPxqUSr4k0KRNIx_Flt95fi_7WoXIFx-2vLSkuj96eak4IiBDJztsO2WTS_4v-cQhX0lKs"/>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer Help -->
+<p class="text-center mt-12 text-on-surface/40 text-xs">
+            Bằng cách đăng nhập, bạn đồng ý với <br/>
+<a class="text-on-surface/60 underline decoration-primary/30 underline-offset-4" href="#">Điều khoản dịch vụ</a> và <a class="text-on-surface/60 underline decoration-primary/30 underline-offset-4" href="#">Chính sách bảo mật</a>
+</p>
+</main>
+<!-- Visual Anchor / Bottom Element -->
+<div class="mt-auto w-full max-w-md px-6 pb-8 relative z-10 overflow-hidden">
+<div class="flex items-end justify-between opacity-20 grayscale brightness-150">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-4xl mb-[-4px]" data-icon="storefront">storefront</span>
+<div class="w-12 h-1 bg-on-surface/20 rounded-full"></div>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-5xl mb-[-4px]" data-icon="local_dining">local_dining</span>
+<div class="w-16 h-1 bg-on-surface/20 rounded-full"></div>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-4xl mb-[-4px]" data-icon="festival">festival</span>
+<div class="w-10 h-1 bg-on-surface/20 rounded-full"></div>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-6xl mb-[-4px]" data-icon="directions_bike">directions_bike</span>
+<div class="w-20 h-1 bg-on-surface/20 rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Hidden Template Structure for Register (As requested, secondary tab content) -->
+<!-- This would normally be toggled via JS; shown here as hidden visual logic -->
+<div id="register-panel" style="display:none;" class="p-8 space-y-4">
+<form id="register-form" onsubmit="return false;">
+<input id="reg-username" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 px-4 text-on-surface mb-3" placeholder="Tên tài khoản *" type="text"/>
+<input id="reg-email" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 px-4 text-on-surface mb-3" placeholder="Email *" type="email"/>
+<input id="reg-password" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 px-4 text-on-surface mb-4" placeholder="Mật khẩu *" type="password"/>
+<div class="flex p-1 bg-surface-container-lowest rounded-xl mb-4">
+<button type="button" data-role="user" class="role-pill active flex-1 py-2 text-xs font-bold rounded-lg bg-primary-container text-on-primary-container transition-all">Khách hàng</button>
+<button type="button" data-role="owner" class="role-pill flex-1 py-2 text-xs font-bold rounded-lg text-on-surface/40 transition-all">Chủ quán</button>
+</div>
+<button type="submit" class="w-full h-14 bg-gradient-to-r from-primary-dim to-primary rounded-xl text-on-primary font-extrabold tracking-wide shadow-lg">TẠO TÀI KHOẢN</button>
+</form>
+</div>
+<script type="module" src="../js/auth.js"></script>
+<script>
+// Tab switching for login/register
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('[class*="flex-1 py-5"]');
+  const loginContent = document.querySelector('.p-8.space-y-6');
+  const registerPanel = document.getElementById('register-panel');
+  if (tabBtns.length >= 2) {
+    tabBtns[0].addEventListener('click', function() {
+      if(loginContent) loginContent.style.display = '';
+      if(registerPanel) registerPanel.style.display = 'none';
+      tabBtns[0].classList.add('text-primary'); tabBtns[1].classList.remove('text-primary');
+    });
+    tabBtns[1].addEventListener('click', function() {
+      if(loginContent) loginContent.style.display = 'none';
+      if(registerPanel) registerPanel.style.display = 'block';
+      tabBtns[1].classList.add('text-primary'); tabBtns[0].classList.remove('text-primary');
+    });
+  }
+  // Wire login submit 
+  var loginForm = document.getElementById('login-form');
+  if(loginForm) {
+    loginForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var u = document.getElementById('login-username')?.value?.trim();
+      var p = document.getElementById('login-password')?.value;
+      if(!u||!p){alert('Vui lòng nhập đầy đủ thông tin');return;}
+      try{
+        var res = await fetch('http://localhost:8000/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})});
+        var data = await res.json();
+        if(!res.ok) throw new Error(data.detail||'Đăng nhập thất bại');
+        localStorage.setItem('token',data.access_token);
+        localStorage.setItem('role',data.role);
+        localStorage.setItem('userId',data.user_id);
+        localStorage.setItem('username',data.username);
+        var redirects = {user:'/pages/map.html',owner:'/pages/owner-dashboard.html',admin:'/pages/admin-dashboard.html'};
+        window.location.href = redirects[data.role]||'/pages/map.html';
+      }catch(err){alert('Lỗi: '+err.message);}
+    });
+  }
+  // Wire register submit
+  var regForm = document.getElementById('register-form');
+  if(regForm) {
+    regForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var u = document.getElementById('reg-username')?.value?.trim();
+      var em = document.getElementById('reg-email')?.value?.trim();
+      var pw = document.getElementById('reg-password')?.value;
+      var roleEl = document.querySelector('.role-pill.active');
+      var role = (roleEl?.dataset.role) || 'user';
+      if(!u||!em||!pw){alert('Vui lòng điền đầy đủ');return;}
+      try{
+        var res = await fetch('http://localhost:8000/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,email:em,password:pw,role})});
+        var data = await res.json();
+        if(!res.ok) throw new Error(data.detail||'Đăng ký thất bại');
+        localStorage.setItem('token',data.access_token);
+        localStorage.setItem('role',data.role);
+        localStorage.setItem('userId',data.user_id);
+        localStorage.setItem('username',data.username);
+        var redirects = {user:'/pages/map.html',owner:'/pages/owner-dashboard.html',admin:'/pages/admin-dashboard.html'};
+        window.location.href = redirects[data.role]||'/pages/map.html';
+      }catch(err){alert('Lỗi: '+err.message);}
+    });
+  }
+  // Role pill toggle
+  document.querySelectorAll('.role-pill').forEach(function(p){
+    p.addEventListener('click',function(){
+      document.querySelectorAll('.role-pill').forEach(function(x){
+        x.classList.remove('active','bg-primary-container','text-on-primary-container');
+        x.classList.add('text-on-surface/40');
+      });
+      p.classList.add('active','bg-primary-container','text-on-primary-container');
+      p.classList.remove('text-on-surface/40');
+    });
+  });
+});
+</script>
+</body></html>
