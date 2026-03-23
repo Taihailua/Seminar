@@ -107,13 +107,29 @@
 <!-- App Header -->
 <header class="relative z-10 w-full pt-12 pb-8 flex flex-col items-center justify-center">
 <div class="w-16 h-16 bg-gradient-to-br from-primary to-primary-container rounded-2xl flex items-center justify-center glow-orange mb-4 shadow-lg transform rotate-3">
-<span class="material-symbols-outlined text-on-primary-container text-4xl" data-icon="ramen_dining">ramen_dining</span>
+<span class="material-symbols-outlined text-on-primary-container text-4xl notranslate" data-icon="ramen_dining">ramen_dining</span>
 </div>
 <h1 class="text-3xl font-headline font-extrabold tracking-tight text-on-surface">
             Phố Vĩnh Khánh
         </h1>
 <p class="text-primary font-medium tracking-[0.2em] text-xs mt-1">AUDIO GUIDE</p>
 </header>
+<!-- Language Selector -->
+<div class="relative z-10 flex gap-4 mb-6">
+    <button onclick="changeLanguage('vi')" class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/10 hover:border-primary transition-all active:scale-95" title="Tiếng Việt">
+        <img src="https://flagcdn.com/vn.svg" class="w-full h-full object-cover">
+    </button>
+    <button onclick="changeLanguage('en')" class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/10 hover:border-primary transition-all active:scale-95" title="English">
+        <img src="https://flagcdn.com/us.svg" class="w-full h-full object-cover">
+    </button>
+    <button onclick="changeLanguage('ko')" class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/10 hover:border-primary transition-all active:scale-95" title="한국어">
+        <img src="https://flagcdn.com/kr.svg" class="w-full h-full object-cover">
+    </button>
+    <button onclick="changeLanguage('zh-CN')" class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/10 hover:border-primary transition-all active:scale-95" title="中文">
+        <img src="https://flagcdn.com/cn.svg" class="w-full h-full object-cover">
+    </button>
+</div>
+
 <!-- Main Auth Canvas -->
 <main class="relative z-10 w-full px-6 mb-12 max-w-md">
 <div class="glass-card rounded-[24px] overflow-hidden shadow-2xl border border-white/5">
@@ -128,13 +144,13 @@
                 </button>
 </div>
 <!-- Content Area (Login View) -->
-<div class="p-8 space-y-6">
+<form id="login-form" onsubmit="return false;" class="p-8 space-y-6">
 <!-- Username Field -->
 <div class="space-y-2">
 <label class="block text-xs font-semibold text-on-surface/60 ml-1">Tên đăng nhập</label>
 <div class="relative group">
 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-<span class="material-symbols-outlined text-on-surface/40 group-focus-within:text-primary transition-colors" data-icon="person">person</span>
+<span class="material-symbols-outlined text-on-surface/40 group-focus-within:text-primary transition-colors notranslate" data-icon="person">person</span>
 </div>
 <input id="login-username" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 pl-12 pr-4 text-on-surface placeholder:text-on-surface/20 focus:ring-1 focus:ring-primary/40 transition-all" placeholder="Tên đăng nhập" type="text"/>
 </div>
@@ -147,19 +163,20 @@
 </div>
 <div class="relative group">
 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-<span class="material-symbols-outlined text-on-surface/40 group-focus-within:text-primary transition-colors" data-icon="lock">lock</span>
+<span class="material-symbols-outlined text-on-surface/40 group-focus-within:text-primary transition-colors notranslate" data-icon="lock">lock</span>
 </div>
 <input id="login-password" class="w-full bg-surface-container-high/60 border-none rounded-xl py-3.5 pl-12 pr-12 text-on-surface placeholder:text-on-surface/20 focus:ring-1 focus:ring-primary/40 transition-all" placeholder="••••••••" type="password"/>
 <button class="absolute inset-y-0 right-0 pr-4 flex items-center text-on-surface/40 hover:text-on-surface transition-colors">
-<span class="material-symbols-outlined text-sm" data-icon="visibility">visibility</span>
+<span class="material-symbols-outlined text-sm notranslate" data-icon="visibility">visibility</span>
 </button>
 </div>
 </div>
 <!-- CTA Button -->
-<form id="login-form" onsubmit="return false;"><button id="login-submit-btn" class="w-full h-14 bg-gradient-to-r from-primary-dim to-primary rounded-xl flex items-center justify-center space-x-3 shadow-[0_8px_24px_rgba(14,165,233,0.3)] active:scale-95 transition-transform">
+<button id="login-submit-btn" class="w-full h-14 bg-gradient-to-r from-primary-dim to-primary rounded-xl flex items-center justify-center space-x-3 shadow-[0_8px_24px_rgba(14,165,233,0.3)] active:scale-95 transition-transform">
 <span class="text-on-primary font-extrabold tracking-wide">ĐĂNG NHẬP</span>
-<span class="material-symbols-outlined text-on-primary" data-icon="arrow_forward">arrow_forward</span>
-</button></form>
+<span class="material-symbols-outlined text-on-primary notranslate" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</form>
 <!-- Social Login Separator -->
 <div class="flex items-center space-x-4 pt-4">
 <div class="flex-1 h-[1px] bg-white/5"></div>
@@ -203,19 +220,19 @@
 <div class="mt-auto w-full max-w-md px-6 pb-8 relative z-10 overflow-hidden">
 <div class="flex items-end justify-between opacity-20 grayscale brightness-150">
 <div class="flex flex-col items-center">
-<span class="material-symbols-outlined text-4xl mb-[-4px]" data-icon="storefront">storefront</span>
+<span class="material-symbols-outlined text-4xl mb-[-4px] notranslate" data-icon="storefront">storefront</span>
 <div class="w-12 h-1 bg-on-surface/20 rounded-full"></div>
 </div>
 <div class="flex flex-col items-center">
-<span class="material-symbols-outlined text-5xl mb-[-4px]" data-icon="local_dining">local_dining</span>
+<span class="material-symbols-outlined text-5xl mb-[-4px] notranslate" data-icon="local_dining">local_dining</span>
 <div class="w-16 h-1 bg-on-surface/20 rounded-full"></div>
 </div>
 <div class="flex flex-col items-center">
-<span class="material-symbols-outlined text-4xl mb-[-4px]" data-icon="festival">festival</span>
+<span class="material-symbols-outlined text-4xl mb-[-4px] notranslate" data-icon="festival">festival</span>
 <div class="w-10 h-1 bg-on-surface/20 rounded-full"></div>
 </div>
 <div class="flex flex-col items-center">
-<span class="material-symbols-outlined text-6xl mb-[-4px]" data-icon="directions_bike">directions_bike</span>
+<span class="material-symbols-outlined text-6xl mb-[-4px] notranslate" data-icon="directions_bike">directions_bike</span>
 <div class="w-20 h-1 bg-on-surface/20 rounded-full"></div>
 </div>
 </div>
@@ -252,4 +269,5 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
+<script src="../js/translator.js"></script>
 </body></html>

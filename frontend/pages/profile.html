@@ -43,7 +43,7 @@
   <!-- Top AppBar -->
   <header class="w-full top-0 sticky z-50 bg-[#0d0d1a]/80 backdrop-blur-md shadow-[0px_4px_20px_rgba(14,165,233,0.1)] flex items-center px-6 h-16 gap-4">
     <button id="back-btn" class="text-primary active:scale-95 transition-transform flex items-center justify-center -ml-2 p-2">
-      <span class="material-symbols-outlined">arrow_back</span>
+      <span class="material-symbols-outlined notranslate">arrow_back</span>
     </button>
     <h1 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#0ea5e9] to-[#0ea5e9] font-headline tracking-tight">Hồ Sơ Cá Nhân</h1>
   </header>
@@ -53,7 +53,7 @@
     <div class="relative mb-6">
       <div id="profile-avatar" class="w-28 h-28 rounded-full border-4 border-primary/30 bg-surface-container-highest flex items-center justify-center font-bold text-primary text-4xl shadow-[0_0_24px_rgba(14, 165, 233,0.2)]">?</div>
       <div class="absolute bottom-0 right-0 w-8 h-8 bg-surface border-2 border-primary/30 rounded-full flex items-center justify-center">
-        <span class="material-symbols-outlined text-[#4ade80] text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+        <span class="material-symbols-outlined text-[#4ade80] text-lg notranslate" style="font-variation-settings: 'FILL' 1;">check_circle</span>
       </div>
     </div>
 
@@ -64,7 +64,7 @@
     <div class="w-full flex flex-col gap-4 mb-10">
       <div class="bg-surface-container p-4 rounded-2xl flex items-center gap-4">
         <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-          <span class="material-symbols-outlined text-primary">mail</span>
+          <span class="material-symbols-outlined text-primary notranslate">mail</span>
         </div>
         <div class="flex-1 overflow-hidden">
           <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">Email</p>
@@ -74,7 +74,7 @@
 
       <div class="bg-surface-container p-4 rounded-2xl flex items-center gap-4">
         <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-          <span class="material-symbols-outlined text-primary">calendar_month</span>
+          <span class="material-symbols-outlined text-primary notranslate">calendar_month</span>
         </div>
         <div>
           <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">Ngày tham gia</p>
@@ -87,15 +87,15 @@
     <div class="w-full flex flex-col gap-3">
       <button class="w-full bg-surface-container-highest p-4 rounded-xl flex items-center justify-between hover:bg-surface-container transition-colors" onclick="alert('Chức năng đổi mật khẩu đang được phát triển!')">
         <div class="flex items-center gap-3">
-          <span class="material-symbols-outlined text-on-surface-variant">lock</span>
+          <span class="material-symbols-outlined text-on-surface-variant notranslate">lock</span>
           <span class="font-semibold text-sm">Đổi mật khẩu</span>
         </div>
-        <span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
+        <span class="material-symbols-outlined text-on-surface-variant text-sm notranslate">chevron_right</span>
       </button>
 
       <button id="logout-btn" class="w-full bg-error/10 border border-error/20 p-4 rounded-xl flex items-center justify-between text-error hover:bg-error/20 transition-colors active:scale-[0.98]">
         <div class="flex items-center gap-3">
-          <span class="material-symbols-outlined">logout</span>
+          <span class="material-symbols-outlined notranslate">logout</span>
           <span class="font-bold text-sm">Đăng xuất khỏi hệ thống</span>
         </div>
       </button>
@@ -103,5 +103,6 @@
   </main>
 
   <script type="module" src="../js/profile.js"></script>
+<script src="../js/translator.js"></script>
 </body>
 </html>
