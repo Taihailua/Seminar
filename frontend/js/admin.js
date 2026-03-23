@@ -147,7 +147,7 @@ function renderUsersTable(users) {
 
   const roleColors = {
     admin: { bg: 'rgba(239,68,68,0.2)', color: '#f87171', label: '⚙️ Admin' },
-    owner: { bg: 'rgba(255,145,85,0.2)', color: '#ff9155', label: '🏪 Chủ quán' },
+    owner: { bg: 'rgba(14, 165, 233,0.2)', color: '#0ea5e9', label: '🏪 Chủ quán' },
     user: { bg: 'rgba(59,130,246,0.2)', color: '#60a5fa', label: '👤 User' },
   };
 
@@ -163,7 +163,7 @@ function renderUsersTable(users) {
     row.innerHTML = `
       <div style="
         width:40px;height:40px;border-radius:50%;
-        background:linear-gradient(135deg,#ff9155,#ff7a27);
+        background:linear-gradient(135deg,#0ea5e9,#0284c7);
         display:flex;align-items:center;justify-content:center;
         font-weight:700;color:#521f00;font-size:15px;flex-shrink:0;
       ">${initial}</div>

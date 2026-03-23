@@ -77,8 +77,8 @@ function updatePlayButton(playing) {
       ? '⏸'
       : '▶';
     btn.style.boxShadow = playing
-      ? '0 0 24px rgba(242,108,13,0.7)'
-      : '0 0 16px rgba(242,108,13,0.3)';
+      ? '0 0 24px rgba(14,165,233,0.7)'
+      : '0 0 16px rgba(14,165,233,0.3)';
   });
 }
 
@@ -122,7 +122,7 @@ window.simulateGeofence = function(dist) {
   simulatedDist = dist;
   handleGeofenceUpdate(dist);
   if (simulatedDist !== null) {
-    document.querySelector('#geofence-badge').style.boxShadow = '0 0 10px #ff9155';
+    document.querySelector('#geofence-badge').style.boxShadow = '0 0 10px #0ea5e9';
   }
 }
 window.clearSimulation = function() {
@@ -193,7 +193,7 @@ function renderDishes(dishes) {
       ">${dish.image_url ? '' : '🍽️'}</div>
       <div style="padding:10px;">
         <div style="font-weight:700;color:#e9e6f9;font-size:13px;line-height:1.3;">${dish.name}</div>
-        <div style="color:#ff9155;font-weight:700;font-size:14px;margin-top:4px;">
+        <div style="color:#0ea5e9;font-weight:700;font-size:14px;margin-top:4px;">
           ${dish.price ? Number(dish.price).toLocaleString('vi-VN') + 'đ' : 'Liên hệ'}
         </div>
         <div style="margin-top:6px;">
@@ -245,7 +245,7 @@ function renderReviews(reviews, avgRating) {
     card.innerHTML = `
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
         <div style="
-          width:40px;height:40px;background:linear-gradient(135deg,#ff9155,#ff7a27);
+          width:40px;height:40px;background:linear-gradient(135deg,#0ea5e9,#0284c7);
           border-radius:50%;display:flex;align-items:center;justify-content:center;
           font-weight:700;color:#521f00;font-size:16px;flex-shrink:0;
         ">${initial}</div>
@@ -383,7 +383,7 @@ function buildLanguageSelector() {
 
       if (code === selectedLang || (i === 0 && !uniqueLangs.has(selectedLang))) {
         selectedLang = code;
-        pill.style.background = 'linear-gradient(135deg,#ff9155,#ff7a27)';
+        pill.style.background = 'linear-gradient(135deg,#0ea5e9,#0284c7)';
         pill.style.color = '#521f00';
         pill.classList.add('active');
       }
@@ -394,7 +394,7 @@ function buildLanguageSelector() {
           p.style.color = '#aba9bb';
           p.classList.remove('active');
         });
-        pill.style.background = 'linear-gradient(135deg,#ff9155,#ff7a27)';
+        pill.style.background = 'linear-gradient(135deg,#0ea5e9,#0284c7)';
         pill.style.color = '#521f00';
         pill.classList.add('active');
         selectedLang = code;
@@ -480,9 +480,9 @@ function wirePlayButton() {
       playBtn.textContent = '▶';
       playBtn.style.cssText = `
         width:72px;height:72px;border-radius:50%;border:none;cursor:pointer;
-        background:linear-gradient(135deg,#ff9155,#ff7a27);
+        background:linear-gradient(135deg,#0ea5e9,#0284c7);
         font-size:28px;color:#521f00;
-        box-shadow:0 0 16px rgba(242,108,13,0.3);
+        box-shadow:0 0 16px rgba(14,165,233,0.3);
         transition:all 0.2s;display:block;margin:16px auto;
       `;
       playBtn.addEventListener('click', () => {
@@ -525,7 +525,7 @@ async function init() {
   const restaurantId = urlParams.get('id');
 
   if (!restaurantId) {
-    document.body.innerHTML = '<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy ID nhà hàng. <a href="map.html" style="color:#ff9155;">Quay lại bản đồ</a></div>';
+    document.body.innerHTML = '<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy ID nhà hàng. <a href="map.html" style="color:#0ea5e9;">Quay lại bản đồ</a></div>';
     return;
   }
 
@@ -542,7 +542,7 @@ async function init() {
   try {
     restaurant = await api.get(`/api/restaurants/${restaurantId}`);
   } catch (err) {
-    document.body.innerHTML = `<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy nhà hàng. <a href="map.html" style="color:#ff9155;">Quay lại bản đồ</a></div>`;
+    document.body.innerHTML = `<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy nhà hàng. <a href="map.html" style="color:#0ea5e9;">Quay lại bản đồ</a></div>`;
     return;
   }
 
