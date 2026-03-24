@@ -100,8 +100,8 @@
   </head>
 <body class="bg-surface-dim text-on-surface font-body selection:bg-primary/30 overflow-hidden">
 <!-- Drawer Navigation Overlay -->
-<div class="drawer-overlay fixed inset-0 bg-black/60 z-[60] backdrop-blur-sm" style="display: none;"></div>
-<div class="side-menu fixed top-0 left-0 h-full w-64 bg-[#181828] z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl border-r border-[#242437]/30">
+<div id="drawer-overlay" class="drawer-overlay fixed inset-0 bg-black/60 z-[60] backdrop-blur-sm" style="display: none;"></div>
+<div id="side-menu" class="side-menu fixed top-0 left-0 h-full w-64 bg-[#181828] z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl border-r border-[#242437]/30">
     <div class="p-6 flex flex-col h-full gap-6">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary avatar notranslate">?</div>
@@ -123,7 +123,7 @@
             </a>
         </nav>
         <div class="mt-auto">
-            <button class="logout w-full h-12 rounded-xl bg-error/10 text-error font-bold flex items-center justify-center gap-2 active:bg-error/20 transition-colors">
+            <button id="btn-logout" class="btn-logout w-full h-12 rounded-xl bg-error/10 text-error font-bold flex items-center justify-center gap-2 active:bg-error/20 transition-colors">
                 <span class="material-symbols-outlined text-sm notranslate">logout</span> Đăng xuất
             </button>
         </div>
@@ -134,14 +134,14 @@
 <div id="map-container" class="fixed inset-0 z-0 bg-surface-container-lowest" style="height: 100dvh; width: 100vw;"></div>
 <!-- Top App Bar -->
 <header class="fixed top-0 w-full z-50 bg-[#181828]/70 backdrop-blur-xl flex justify-between items-center px-4 h-16 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-<button class="nav-toggle p-2 hover:bg-[#242437]/50 rounded-full transition-all text-primary">
+<button id="menu-toggle" class="nav-toggle p-2 hover:bg-[#242437]/50 rounded-full transition-all text-primary">
 <span class="material-symbols-outlined notranslate">menu</span>
 </button>
 <h1 class="font-headline font-bold tracking-tight text-lg text-on-surface">
             Phố Vĩnh Khánh 📍
         </h1>
 <div class="flex items-center gap-3">
-<button class="btn-scan-qr text-primary drop-shadow-[0_0_8px_rgba(14, 165, 233,0.4)] hover:scale-110 transition-transform">
+<button id="qr-scan-btn" class="btn-scan-qr text-primary drop-shadow-[0_0_8px_rgba(14, 165, 233,0.4)] hover:scale-110 transition-transform">
 <span class="material-symbols-outlined notranslate">qr_code_scanner</span>
 </button>
 <a href="profile.html" class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden hover:border-primary/50 transition-colors">
@@ -165,7 +165,7 @@
 </div>
 </section>
 <!-- FAB -->
-<button class="btn-scan-qr fixed right-6 bottom-28 z-50 bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-5 h-14 rounded-full flex items-center gap-3 shadow-[0_8px_24px_rgba(14,165,233,0.4)] active:scale-95 transition-transform hover:shadow-[0_12px_28px_rgba(14,165,233,0.6)]">
+<button id="qr-scan-btn-fab" class="btn-scan-qr fixed right-6 bottom-28 z-50 bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-5 h-14 rounded-full flex items-center gap-3 shadow-[0_8px_24px_rgba(14,165,233,0.4)] active:scale-95 transition-transform hover:shadow-[0_12px_28px_rgba(14,165,233,0.6)]">
 <span class="material-symbols-outlined notranslate" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
 <span class="font-bold text-sm">Quét QR</span>
 </button>
