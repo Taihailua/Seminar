@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neon Gastronome Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#1e1e2f",
+                    "primary-fixed": "#0284c7",
+                    "on-secondary-container": "#fff6f2",
+                    "tertiary": "#ffc968",
+                    "on-primary": "#521f00",
+                    "error": "#ff7351",
+                    "on-tertiary-container": "#543a00",
+                    "secondary-fixed": "#ffc69d",
+                    "on-background": "#e9e6f9",
+                    "on-secondary": "#4c2400",
+                    "secondary-dim": "#ed862b",
+                    "secondary-fixed-dim": "#ffb37a",
+                    "surface": "#0d0d1a",
+                    "error-dim": "#d53d18",
+                    "on-surface": "#e9e6f9",
+                    "on-error": "#450900",
+                    "inverse-surface": "#fcf8ff",
+                    "on-tertiary": "#5f4200",
+                    "outline-variant": "#474656",
+                    "tertiary-fixed-dim": "#ecaa12",
+                    "tertiary-dim": "#ecaa12",
+                    "secondary": "#38bdf8",
+                    "primary-fixed-dim": "#f16b0b",
+                    "tertiary-container": "#fcb825",
+                    "error-container": "#b92902",
+                    "on-tertiary-fixed": "#3a2600",
+                    "surface-variant": "#242437",
+                    "inverse-on-surface": "#545363",
+                    "on-tertiary-fixed-variant": "#5f4200",
+                    "on-primary-fixed-variant": "#4e1d00",
+                    "inverse-primary": "#9f4300",
+                    "background": "#0d0d1a",
+                    "primary-dim": "#0284c7",
+                    "primary": "#0ea5e9",
+                    "surface-container": "#181828",
+                    "on-primary-container": "#3f1600",
+                    "surface-tint": "#0ea5e9",
+                    "surface-container-low": "#121220",
+                    "on-error-container": "#ffd2c8",
+                    "on-secondary-fixed": "#542900",
+                    "primary-container": "#0284c7",
+                    "on-secondary-fixed-variant": "#7e4000",
+                    "surface-bright": "#2a2a3f",
+                    "secondary-container": "#934b00",
+                    "on-primary-fixed": "#000000",
+                    "tertiary-fixed": "#fcb825",
+                    "surface-container-lowest": "#000000",
+                    "surface-dim": "#0d0d1a",
+                    "outline": "#757485",
+                    "on-surface-variant": "#aba9bb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Plus Jakarta Sans"],
+                    "label": ["Plus Jakarta Sans"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card {
+            background: rgba(36, 36, 55, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .orange-glow {
+            text-shadow: 0 0 10px rgba(14, 165, 233, 0.4);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#181828]/70 backdrop-blur-xl flex justify-between items-center px-6 h-16 shadow-2xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#0ea5e9] active:scale-95 transition-transform cursor-pointer notranslate">menu</span>
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-lg text-[#0ea5e9] drop-shadow-[0_0_8px_rgba(14,165,233,0.4)]">
+                NEON GASTRONOME ADMIN
+            </h1>
+</div>
+<div class="relative active:scale-95 transition-transform cursor-pointer" onclick="window.location.href='profile.html';">
+<img alt="Admin" class="w-10 h-10 rounded-full object-cover border-2 border-primary-fixed" data-alt="professional portrait of a confident male administrator in a modern tech office setting with warm ambient lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsqPDb3_vcc0pzBvX_QFEJQZEI78_yImxwXphda3xs7UAHjokBKAE2mL0FPShFAIxJdKEdewmRBgxBxEaGflt3SX40EnUSM81THsaA9iahWwvyBsygCHiRF6TxfCFQZnIreFWFPi5D4Sji1OUa5JhvRr-ofl1qkrgefReGAkkHlhAE9lQHt7S_9yC84ORRPduEMgCR2sUIixOP3vnyRU4f6ewyQXJTurgxLdFOCcitj0YPBkT4PgPMUfDTfB3uUHN4_tT6ayQR9jE"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-[#181828] rounded-full"></div>
+</div>
+</header>
+<main class="pt-20 px-4 space-y-8">
+<!-- Welcome & Branding -->
+<section class="mt-4">
+<div class="flex items-center gap-2 mb-1">
+<h2 class="text-2xl font-extrabold tracking-tight">⚙️ Admin Dashboard</h2>
+<span class="bg-error-container text-on-error-container text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-widest">ADMIN</span>
+</div>
+<p class="text-on-surface-variant text-sm font-medium">Phố Vĩnh Khánh — Quản Trị Hệ Thống</p>
+</section>
+<!-- Global Stats Section -->
+<section>
+<div class="grid grid-cols-2 gap-4">
+<!-- Large Card (Bento Style) -->
+<div class="col-span-2 glass-card p-5 rounded-2xl shadow-lg flex justify-between items-center overflow-hidden relative">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl"></div>
+<div>
+<p class="text-on-surface-variant text-xs font-bold uppercase tracking-widest mb-1">📷 Tổng quét QR</p>
+<h3 class="stat-scans text-4xl font-extrabold text-primary-fixed tracking-tighter">0</h3>
+</div>
+<span class="material-symbols-outlined text-primary/30 text-5xl notranslate">qr_code_2</span>
+</div>
+<div class="glass-card p-4 rounded-2xl shadow-md border-l-4 border-primary/20">
+<p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mb-2">👥 Người dùng</p>
+<h3 class="stat-users text-2xl font-bold text-primary">0</h3>
+</div>
+<div class="glass-card p-4 rounded-2xl shadow-md border-l-4 border-primary/20">
+<p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mb-2">🏪 Nhà hàng</p>
+<h3 class="stat-restaurants text-2xl font-bold text-primary">0</h3>
+</div>
+<div class="glass-card p-4 rounded-2xl shadow-md relative overflow-hidden bg-primary/5">
+<div class="flex items-center gap-2 mb-2">
+<p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">⏳ Chờ duyệt</p>
+<span class="flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+</div>
+<h3 class="stat-pending text-2xl font-bold text-primary">0</h3>
+</div>
+<div class="glass-card p-4 rounded-2xl shadow-md">
+<p class="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest mb-2">⭐ Đánh giá</p>
+<h3 class="stat-reviews text-2xl font-bold text-primary">0</h3>
+</div>
+</div>
+</section>
+<!-- Pending Approval Section -->
+<section class="space-y-4">
+<div class="flex justify-between items-end px-1">
+<h3 class="text-xl font-bold tracking-tight">⏳ Nhà Hàng Chờ Duyệt (<span class="pending-count">0</span>)</h3>
+<button class="text-primary text-sm font-bold active:scale-95 transition-transform" onclick="alert('Module xem tổng quan danh sách đang phát triển');">Xem tất cả</button>
+</div>
+<!-- DYNAMIC PENDING LIST rendered by admin.js -->
+<div id="pending-list" class="space-y-4"></div>
+</section>
+<!-- User Management Section -->
+<section class="space-y-4">
+<h3 class="text-xl font-bold tracking-tight px-1 flex items-center gap-2">
+<span class="material-symbols-outlined notranslate">group</span> Quản Lý Người Dùng
+            </h3>
+<div class="glass-card p-2 rounded-2xl flex items-center px-4 gap-3 bg-surface-container-high/50">
+<span class="material-symbols-outlined text-on-surface-variant notranslate">search</span>
+<input id="user-search" class="bg-transparent border-none focus:ring-0 text-sm w-full py-2 placeholder-on-surface-variant/50" placeholder="Tìm kiếm người dùng..." type="text"/>
+</div>
+<!-- DYNAMIC USER LIST rendered by admin.js -->
+<div id="users-list" class="users-table space-y-3"></div>
+</section>
+<!-- Quick Actions Section -->
+<section class="space-y-4">
+<h3 class="text-xl font-bold tracking-tight px-1">Tiện ích nhanh</h3>
+<div class="grid grid-cols-3 gap-3">
+<button class="glass-card aspect-square rounded-2xl flex flex-col items-center justify-center gap-2 text-primary p-4 active:scale-95 transition-transform" onclick="alert('Chức năng Xuất báo cáo CSV/PDF đang phát triển');">
+<span class="material-symbols-outlined text-3xl notranslate">summarize</span>
+<span class="text-[10px] font-bold text-on-surface text-center uppercase leading-tight">Xuất báo cáo</span>
+</button>
+<button class="glass-card aspect-square rounded-2xl flex flex-col items-center justify-center gap-2 text-primary p-4 active:scale-95 transition-transform" onclick="alert('Hệ thống gửi Broadcast Notifications đang phát triển');">
+<span class="material-symbols-outlined text-3xl notranslate">campaign</span>
+<span class="text-[10px] font-bold text-on-surface text-center uppercase leading-tight">Gửi thông báo</span>
+</button>
+<button class="glass-card aspect-square rounded-2xl flex flex-col items-center justify-center gap-2 text-primary p-4 active:scale-95 transition-transform" onclick="alert('Trang cài đặt toàn cục hệ thống đang phát triển');">
+<span class="material-symbols-outlined text-3xl notranslate">settings</span>
+<span class="text-[10px] font-bold text-on-surface text-center uppercase leading-tight">Cài đặt hệ thống</span>
+</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-2xl bg-[#181828]/70 backdrop-blur-xl flex justify-around items-center h-20 px-4 shadow-[0_-8px_24px_rgba(14,165,233,0.15)]">
+<a class="flex flex-col items-center justify-center text-[#0ea5e9] scale-110 drop-shadow-[0_0_5px_rgba(14, 165, 233,0.6)] active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined notranslate">dashboard</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#e9e6f9]/60 hover:text-[#0ea5e9] transition-all active:scale-90 transition-transform" href="#" onclick="alert('Bảng phân quyền User đang nâng cấp'); return false;">
+<span class="material-symbols-outlined notranslate">group</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Users</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#e9e6f9]/60 hover:text-[#0ea5e9] transition-all active:scale-90 transition-transform" href="#" onclick="alert('Biểu đồ Analytics Master đang nâng cấp'); return false;">
+<span class="material-symbols-outlined notranslate">monitoring</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Analytics</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#e9e6f9]/60 hover:text-[#0ea5e9] transition-all active:scale-90 transition-transform" href="#" onclick="alert('Cài đặt Module đang nâng cấp'); return false;">
+<span class="material-symbols-outlined notranslate">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-widest mt-1">Settings</span>
+</a>
+</nav>
+<script type="module" src="../js/admin.js"></script>
+<script src="../js/translator.js"></script>
+</body></html>
