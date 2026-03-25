@@ -88,23 +88,26 @@ const Auth = {
   },
 
   // ==================== THÊM HÀM UPDATE ROLE ====================
-  updateRole: async (id_account, newRole) => {
+  updateRole: async (id_user, newRole) => {   // ← đổi tham số thành id_user
     const validRoles = ['user', 'admin', 'owner'];
     
     if (!validRoles.includes(newRole)) {
       throw new Error('Role không hợp lệ. Chỉ chấp nhận: user, admin, owner');
     }
 
+    // Join users với accounts để lấy id_account từ id_user
     const result = await pool.query(
       `UPDATE accounts 
-       SET role = $1 
-       WHERE id_account = $2 
-       RETURNING id_account, email, role, created_at`,
-      [newRole, id_account]
+      SET role = $1 
+      FROM users 
+      WHERE accounts.id_account = users.id_account 
+        AND users.id_user = $2 
+      RETURNING accounts.id_account, accounts.email, accounts.role, accounts.created_at`,
+      [newRole, id_user]
     );
 
     if (result.rowCount === 0) {
-      throw new Error('Không tìm thấy account với id_account này');
+      throw new Error('Không tìm thấy user với id_user này');
     }
 
     return result.rows[0];

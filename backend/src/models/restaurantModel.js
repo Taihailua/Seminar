@@ -3,14 +3,27 @@ const pool = require('../config/db');
 
 const Restaurant = {
   // Tạo mới nhà hàng (thêm image_url)
-  create: async ({ name, description, address, latitude, longitude, image_url }) => {
+  create: async ({ name, description, address, latitude, longitude, image_url, id_user, qr_code }) => {
     const result = await pool.query(
-      `INSERT INTO restaurants (name, description, address, latitude, longitude, image_url)
-       VALUES ($1, $2, $3, $4, $5, $6)
-       RETURNING id_restaurant, name, description, address, latitude, longitude, qr_code, image_url, created_at`,
-      [name, description || null, address || null, latitude || null, longitude || null, image_url || null]
+      `INSERT INTO restaurants (name, description, address, latitude, longitude, image_url, qr_code)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING id_restaurant, name, description, address, latitude, longitude, qr_code, image_url, created_at`,
+      [name, description || null, address || null, latitude || null, longitude || null, image_url || null, qr_code]
     );
-    return result.rows[0];
+
+    const newRestaurant = result.rows[0];
+
+    // owner
+    if (id_user) {
+      await pool.query(
+        `INSERT INTO restaurant_owners (id_user, id_restaurant)
+        VALUES ($1, $2)
+        ON CONFLICT (id_user, id_restaurant) DO NOTHING`,
+        [id_user, newRestaurant.id_restaurant]
+      );
+    }
+
+    return newRestaurant;
   },
 
   // Tìm theo qr_code
@@ -25,9 +38,21 @@ const Restaurant = {
   // Tìm theo id_restaurant (thêm image_url)
   findById: async (id_restaurant) => {
     const result = await pool.query(
-      'SELECT id_restaurant, name, description, address, latitude, longitude, qr_code, image_url, created_at FROM restaurants WHERE id_restaurant = $1',
+      'SELECT id_restaurant, name, description, address, latitude, longitude, qr_code, image_url, created_at, status FROM restaurants WHERE id_restaurant = $1',
       [id_restaurant]
     );
+    return result.rows[0] || null;
+  },
+
+  updateQr: async (id_restaurant, qr_code) => {
+    const result = await pool.query(
+      `UPDATE restaurants
+      SET qr_code = $1
+      WHERE id_restaurant = $2
+      RETURNING id_restaurant, name, description, address, latitude, longitude, qr_code, image_url, created_at`,
+      [qr_code, id_restaurant]
+    );
+
     return result.rows[0] || null;
   },
 
@@ -113,7 +138,20 @@ const Restaurant = {
       [id_restaurant]
     );
     return result.rowCount > 0;
-  }
+  },
+
+  softDelete: async (id_restaurant) => {
+    const result = await pool.query(
+      `UPDATE restaurants 
+       SET status = 'deleted' 
+       WHERE id_restaurant = $1 
+       RETURNING id_restaurant, name, status`,
+      [id_restaurant]
+    );
+
+    return result.rows[0] || null;
+  },
 };
+
 
 module.exports = Restaurant;
