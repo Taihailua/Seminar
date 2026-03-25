@@ -2,8 +2,9 @@
 routers/restaurants.py — Restaurant CRUD, QR generation, and scan logging
 """
 import uuid
-from typing import List
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import List, Optional
+from fastapi import APIRouter, Depends, HTTPException, status, Query
+from deep_translator import GoogleTranslator
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
@@ -74,6 +75,7 @@ async def list_restaurants(db: AsyncSession = Depends(get_db)):
 @router.get("/{restaurant_id}", response_model=RestaurantOut)
 async def get_restaurant(
     restaurant_id: uuid.UUID,
+    lang: Optional[str] = Query(None),
     db: AsyncSession = Depends(get_db),
 ):
     result = await db.execute(
@@ -85,7 +87,24 @@ async def get_restaurant(
     if not restaurant:
         raise HTTPException(status_code=404, detail="Restaurant not found")
 
-    return await _enrich(restaurant, db)
+    out = await _enrich(restaurant, db)
+
+    # Translation logic for audio_text
+    if lang and lang.lower() not in ["vi", "vi-vn"] and out.audio_text:
+        try:
+            # Map common browser lang codes to deep_translator codes
+            # e.g., 'en-US' -> 'en', 'zh-CN' -> 'zh-CN'
+            target_lang = lang.split('-')[0].lower()
+            if '-' in lang and lang.lower() in ["zh-cn", "zh-tw"]:
+                target_lang = lang.lower()
+            
+            translated = GoogleTranslator(source='auto', target=target_lang).translate(out.audio_text)
+            out.audio_text = translated
+        except Exception as e:
+            print(f"Translation failed: {e}")
+            # Fallback to original text is already in 'out'
+
+    return out
 
 
 @router.post("/{restaurant_id}/scan", status_code=status.HTTP_201_CREATED)

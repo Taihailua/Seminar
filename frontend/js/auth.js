@@ -167,30 +167,20 @@ document.addEventListener('DOMContentLoaded', () => {
   setupPasswordToggles();
 
   // Find and wire login form
-  const loginForm = document.querySelector('#login-form, form[data-form="login"], .login-form');
+  const loginForm = document.getElementById('login-form');
   if (loginForm) {
     loginForm.addEventListener('submit', handleLogin);
-  } else {
-    // Fallback: wire the login button directly
-    const loginBtn = document.querySelector('.login-btn, [id*="login"] button, button:has(+ .login-underline)');
-    if (loginBtn) {
-      loginBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const fakeEvent = { target: loginBtn.closest('form') || document.body, preventDefault: () => {} };
-        handleLogin(fakeEvent);
-      });
-    }
   }
 
   // Find and wire register form
-  const registerForm = document.querySelector('#register-form, form[data-form="register"], .register-form');
+  const registerForm = document.getElementById('register-form');
   if (registerForm) {
     registerForm.addEventListener('submit', handleRegister);
   }
 
   // Wire any "ĐĂNG NHẬP" or "TẠO TÀI KHOẢN" buttons that aren't in a form
   document.querySelectorAll('button, .btn').forEach((btn) => {
-    if (btn.closest('form')) return; // Skip buttons inside a form, they use the form submit handler
+    if (btn.closest('form')) return; 
     const text = btn.textContent.trim().toUpperCase();
     if (text.includes('ĐĂNG NHẬP') || text === 'LOGIN') {
       btn.addEventListener('click', (e) => {
@@ -209,16 +199,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (text.includes('TẠO TÀI KHOẢN') || text.includes('REGISTER')) {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        const inputs = document.querySelectorAll('input');
         handleRegister({ preventDefault: () => {}, target: btn.closest('form') || document.querySelector('[data-panel="register"]') || document.body });
       });
     }
-    if (text.includes('ĐĂNG XUẤT') || text === 'LOGOUT') {
-      btn.addEventListener('click', () => {
-        localStorage.clear();
-        window.location.href = 'login.html';
-      });
-    }
+  });
+
+  // Wire logout buttons specifically via ID or reliable class
+  document.querySelectorAll('#btn-logout, .btn-logout, #logout-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.clear();
+      window.location.href = 'login.html';
+    });
   });
 });
 

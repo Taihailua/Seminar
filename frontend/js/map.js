@@ -187,9 +187,9 @@ function populateNavDrawer() {
 
 /** Wire navigation drawer open/close */
 function setupDrawer() {
-  const menuBtns = document.querySelectorAll('[class*="menu"], [class*="hamburger"], .nav-toggle');
-  const drawer = document.querySelector('[class*="drawer"], [class*="sidenav"], .side-menu');
-  const overlay = document.querySelector('[class*="overlay"], .drawer-overlay');
+  const menuBtns = document.querySelectorAll('#menu-toggle, .btn-menu');
+  const drawer = document.getElementById('side-menu');
+  const overlay = document.getElementById('drawer-overlay');
 
   menuBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -206,7 +206,7 @@ function setupDrawer() {
   }
 
   // Wire logout
-  document.querySelectorAll('[class*="logout"], [class*="dang-xuat"]').forEach((btn) => {
+  document.querySelectorAll('#btn-logout, .btn-logout, #logout-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       clearAuth();
       window.location.href = 'login.html';
@@ -216,10 +216,9 @@ function setupDrawer() {
 
 /** Wire QR scan button — opens scanner page */
 function setupQRButton() {
-  const qrBtns = document.querySelectorAll('[class*="qr"], [class*="scan"], .fab');
+  const qrBtns = document.querySelectorAll('#qr-scan-btn, .btn-qr');
   qrBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      // Open QR scanner modal inline
       openScannerModal();
     });
   });
