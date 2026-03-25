@@ -10,7 +10,8 @@ const UPLOAD_BASE = 'uploads';
 const createUploadDirs = () => {
   const dirs = [
     path.join(UPLOAD_BASE, 'avatars'),
-    path.join(UPLOAD_BASE, 'restaurants')
+    path.join(UPLOAD_BASE, 'restaurants'),
+    path.join(UPLOAD_BASE, 'items')
   ];
 
   dirs.forEach(dir => {
@@ -44,6 +45,16 @@ const restaurantStorage = multer.diskStorage({
   }
 });
 
+const menuItemStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(UPLOAD_BASE, 'items'));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'item-' + uniqueSuffix + path.extname(file.originalname)); // prefix rõ ràng là "item-"
+  }
+});
+
 const fileFilter = (req, file, cb) => {
   const filetypes = /jpeg|jpg|png/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -74,8 +85,15 @@ const uploadRestaurant = multer({
   fileFilter
 });
 
+const uploadMenuItem = multer({
+  storage: menuItemStorage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter
+});
+
 module.exports = {
   upload,           // mặc định
   uploadAvatar,
-  uploadRestaurant
+  uploadRestaurant,
+  uploadMenuItem
 };

@@ -24,13 +24,10 @@ const restaurantRoutes = require('./routes/restaurantRoutes');
 app.use('/api/restaurant', restaurantRoutes);
 
 const menuItemRoutes = require('./routes/menuItemRoutes');
-app.use('/api/menu-item', menuItemRoutes);
+app.use('/api/menu-items', menuItemRoutes);
 
 const restaurantOwnerRoutes = require('./routes/restaurantOwnerRoutes');
 app.use('/api/restaurant-owner', restaurantOwnerRoutes);
-
-const restaurantMenuItemRoutes = require('./routes/restaurantMenuItemRoutes');
-app.use('/api/restaurant-menu-item', restaurantMenuItemRoutes);
 
 const restaurantAudioMapRoutes = require('./routes/restaurantAudioMapRoutes');
 app.use('/api/restaurant-audio-map', restaurantAudioMapRoutes);
