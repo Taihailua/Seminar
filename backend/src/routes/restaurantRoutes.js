@@ -1,6 +1,6 @@
 const express = require('express');
 const { body } = require('express-validator');
-const upload = require('../config/multer'); // Đã import multer config
+const { uploadRestaurant } = require('../config/multer'); // Đã import multer config
 const {
   createRestaurant,
   updateRestaurant,
@@ -61,14 +61,7 @@ const router = express.Router();
  *       500:
  *         description: Lỗi server
  */
-router.post(
-  '/',
-  upload.single('image'), // ← Field name là 'image' → frontend/Postman chọn "Choose File" ở đây
-  [
-    body('name').trim().notEmpty().withMessage('Tên nhà hàng là bắt buộc'),
-  ],
-  createRestaurant
-);
+router.post('/create', uploadRestaurant.single('image'), createRestaurant);
 
 /**
  * @swagger
@@ -154,6 +147,6 @@ router.get('/:id_restaurant', getRestaurantById);
  *       500:
  *         description: Lỗi server
  */
-router.put('/:id_restaurant', upload.single('image'), updateRestaurant);
+router.put('/:id', uploadRestaurant.single('image'), updateRestaurant);
 
 module.exports = router;

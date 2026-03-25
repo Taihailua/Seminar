@@ -1,83 +1,63 @@
 // routes/authRoutes.js
 const express = require('express');
-const { register, login } = require('../controllers/authController');
+const { uploadAvatar } = require('../config/multer');   
+const { register, login, updateRole } = require('../controllers/authController');
 
 const router = express.Router();
 
 /**
  * @swagger
- * tags:
- *   name: Auth
- *   description: API đăng ký và đăng nhập
- */
-
-/**
- * @swagger
  * /api/auth/register:
  *   post:
- *     summary: Đăng ký tài khoản mới
- *     tags: [Auth]
+ *     summary: Đăng ký tài khoản (có upload avatar)
+ *     tags:
+ *       - Auth
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
  *               - email
  *               - password
+ *               - name
+ *               - language
  *             properties:
  *               email:
  *                 type: string
  *                 format: email
- *                 example: phong@example.com
- *                 description: Email (unique)
  *               password:
  *                 type: string
- *                 format: password
- *                 example: matkhau123456
- *                 minLength: 6
- *                 description: Mật khẩu (ít nhất 6 ký tự)
- *     responses:
- *       201:
- *         description: Đăng ký thành công
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                 user:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: string
- *                       format: uuid
- *                     username:
- *                       type: string
- *                     email:
- *                       type: string
- *                     created_at:
- *                       type: string
- *                       format: date-time
- *                 token:
- *                   type: string
- *       400:
- *         description: Dữ liệu đầu vào không hợp lệ
- *       409:
- *         description: Username hoặc email đã tồn tại
- *       500:
- *         description: Lỗi server
+ *               name:
+ *                 type: string
+ *               avatar:
+ *                 type: string
+ *                 format: binary
+ *               language:
+ *                 type: string
  */
-router.post('/register', register);
+router.post('/register', uploadAvatar.single('avatar'), register);
+
+router.post('/login', login);
 
 /**
  * @swagger
- * /api/auth/login:
- *   post:
- *     summary: Đăng nhập tài khoản
- *     tags: [Auth]
+ * /api/auth/role/{id_account}:
+ *   put:
+ *     summary: Cập nhật role cho tài khoản (chỉ admin/owner mới dùng được)
+ *     tags:
+ *       - Auth
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id_account
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: ID của account cần cập nhật role
  *     requestBody:
  *       required: true
  *       content:
@@ -85,20 +65,15 @@ router.post('/register', register);
  *           schema:
  *             type: object
  *             required:
- *               - identifier
- *               - password
+ *               - role
  *             properties:
- *               identifier:
+ *               role:
  *                 type: string
- *                 example: phongdepzai   # hoặc phong@example.com
- *                 description: Username hoặc Email
- *               password:
- *                 type: string
- *                 format: password
- *                 example: matkhau123456
+ *                 enum: [user, admin, owner]
+ *                 description: Role mới cần cập nhật
  *     responses:
  *       200:
- *         description: Đăng nhập thành công
+ *         description: Cập nhật role thành công
  *         content:
  *           application/json:
  *             schema:
@@ -106,28 +81,15 @@ router.post('/register', register);
  *               properties:
  *                 message:
  *                   type: string
- *                 user:
+ *                 account:
  *                   type: object
- *                   properties:
- *                     id:
- *                       type: string
- *                       format: uuid
- *                     username:
- *                       type: string
- *                     email:
- *                       type: string
- *                     created_at:
- *                       type: string
- *                       format: date-time
- *                 token:
- *                   type: string
  *       400:
- *         description: Dữ liệu đầu vào không hợp lệ
- *       401:
- *         description: Tài khoản hoặc mật khẩu không đúng
+ *         description: Role không hợp lệ hoặc thiếu thông tin
+ *       404:
+ *         description: Không tìm thấy account
  *       500:
  *         description: Lỗi server
  */
-router.post('/login', login);
+router.put('/role/:id_account', updateRole);
 
 module.exports = router;
