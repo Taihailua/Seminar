@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS "restaurants" (
 
 ALTER TABLE "restaurants"
 ADD CONSTRAINT chk_restaurant_status
-CHECK ("status" IN ('approved', 'pending', 'rejected'));
+CHECK ("status" IN ('approved', 'pending', 'rejected', 'deleted'));
 
 
 -- ========================
