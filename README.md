@@ -22,7 +22,7 @@ Backend API cho ứng dụng **Food Tour** — hệ thống quản lý nhà hàn
 ![Đăng nhập](/assets/anh_dang_nhap.jpg)
 *Ảnh giao diện đăng nhập*
 
-![Trang chủ](/assets/anh_trang_chu.jpg)
+![Trang chủ](/assets/anh_home.jpg)
 *Ảnh giao diện trang chủ*
 
 ---
