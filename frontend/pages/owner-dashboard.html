@@ -91,6 +91,7 @@
     body {
       min-height: max(884px, 100dvh);
     }
+    
   </style>
   </head>
 <body class="pb-32">
@@ -140,10 +141,10 @@
 <span class="text-on-surface-variant text-xs font-medium">Lượt xem</span>
 <span class="text-2xl font-bold neon-glow">1,247</span>
 </div>
-<div class="bg-surface-container p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden">
-<span class="material-symbols-outlined text-primary/40 absolute -right-2 -bottom-2 text-6xl notranslate">qr_code_2</span>
-<span class="text-on-surface-variant text-xs font-medium">QR Quét</span>
-<span class="text-2xl font-bold neon-glow">89</span>
+<div class="bg-surface-container p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group cursor-pointer active:scale-95 transition-all" id="owner-scan-btn">
+<span class="material-symbols-outlined text-primary absolute -right-2 -bottom-2 text-6xl opacity-20 group-hover:opacity-40 transition-opacity notranslate">qr_code_scanner</span>
+<span class="text-on-surface-variant text-xs font-medium">Quét QR</span>
+<span class="text-2xl font-bold neon-glow">Bấm để quét</span>
 </div>
 <div class="bg-surface-container p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden">
 <span class="material-symbols-outlined text-primary/40 absolute -right-2 -bottom-2 text-6xl notranslate">grade</span>
@@ -160,13 +161,16 @@
 <!-- QR Code Section -->
 <section class="mb-10 bg-surface-container-high p-8 rounded-2xl flex flex-col items-center text-center shadow-[0px_8px_32px_rgba(14,165,233,0.05)] border border-outline-variant/10">
 <h2 class="text-lg font-bold mb-6">Mã QR Của Quán</h2>
-<div class="p-4 bg-white rounded-2xl mb-6 shadow-[0px_0px_30px_rgba(255,255,255,0.1)]">
-<div class="w-[200px] h-[200px] bg-background rounded-lg flex items-center justify-center border-4 border-primary/20 relative">
+<div class="p-4 bg-white rounded-2xl mb-6 shadow-[0px_0px_30px_rgba(255,255,255,0.1)]" id="qr-container">
+<div class="w-[200px] h-[200px] bg-background rounded-lg flex items-center justify-center border-4 border-primary/20 relative overflow-hidden">
+<img id="qr-image" class="w-full h-full object-contain hidden" alt="QR Code"/>
+<div id="qr-placeholder" class="flex flex-col items-center justify-center">
 <span class="material-symbols-outlined text-8xl text-primary opacity-80 notranslate">qr_code_2</span>
 <div class="absolute inset-0 border-2 border-primary/40 rounded-lg animate-pulse"></div>
 </div>
 </div>
-<button class="orange-gradient text-on-primary-fixed w-full h-[56px] rounded-xl font-bold flex items-center justify-center gap-2 shadow-[0px_8px_24px_rgba(14,165,233,0.3)] active:scale-95 transition-all" onclick="alert('Vui lòng chụp màn hình hoặc dùng tính năng Lưu Ảnh để lấy QR. Tính năng Xuất file PDF đang phát triển!');">
+</div>
+<button id="download-qr" class="orange-gradient text-on-primary-fixed w-full h-[56px] rounded-xl font-bold flex items-center justify-center gap-2 shadow-[0px_8px_24px_rgba(14,165,233,0.3)] active:scale-95 transition-all">
 <span class="material-symbols-outlined notranslate">download</span>
                 Tải xuống QR
             </button>

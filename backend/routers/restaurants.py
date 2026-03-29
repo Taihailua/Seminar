@@ -14,14 +14,17 @@ from models import User, Restaurant, Dish, Review, ScanLog, RestaurantStatus, Us
 from schemas import (
     RestaurantCreate, RestaurantUpdate, RestaurantOut, RestaurantListItem
 )
-from auth.dependencies import get_current_user, get_optional_user, require_owner
+from auth.dependencies import get_optional_user, require_owner
 from utils.qr_generator import generate_qr_base64
 
 router = APIRouter(prefix="/api/restaurants", tags=["restaurants"])
 
 
+# ── Helper ───────────────────────────────────────────────────────────────────
+
 async def _enrich(restaurant: Restaurant, db: AsyncSession) -> RestaurantOut:
     """Add computed fields: avg_rating, review_count, scan_count."""
+
     avg_result = await db.execute(
         select(func.avg(Review.rating)).where(Review.restaurant_id == restaurant.id)
     )
@@ -37,18 +40,20 @@ async def _enrich(restaurant: Restaurant, db: AsyncSession) -> RestaurantOut:
     )
     scan_count = scan_result.scalar() or 0
 
-    out = RestaurantOut.model_validate(restaurant)
+    # FIX MissingGreenlet
+    out = RestaurantOut.model_validate(restaurant, from_attributes=True)
+
     out.avg_rating = round(float(avg_rating), 2) if avg_rating else None
     out.review_count = review_count
     out.scan_count = scan_count
+
     return out
 
 
-# ── Public Routes ──────────────────────────────────────────────────────────────
+# ── Public Routes ─────────────────────────────────────────────────────────────
 
 @router.get("", response_model=List[RestaurantListItem])
 async def list_restaurants(db: AsyncSession = Depends(get_db)):
-    """Return all approved restaurants (for map and nav bar)."""
     result = await db.execute(
         select(Restaurant).where(Restaurant.status == RestaurantStatus.approved)
     )
@@ -60,6 +65,7 @@ async def list_restaurants(db: AsyncSession = Depends(get_db)):
             select(func.avg(Review.rating)).where(Review.restaurant_id == r.id)
         )
         avg = avg_result.scalar()
+
         items.append(RestaurantListItem(
             id=r.id,
             name=r.name,
@@ -69,6 +75,7 @@ async def list_restaurants(db: AsyncSession = Depends(get_db)):
             avg_rating=round(float(avg), 2) if avg else None,
             status=r.status.value,
         ))
+
     return items
 
 
@@ -80,29 +87,27 @@ async def get_restaurant(
 ):
     result = await db.execute(
         select(Restaurant)
-        .options(selectinload(Restaurant.dishes))
+        .options(selectinload(Restaurant.dishes))  # FIX preload
         .where(Restaurant.id == restaurant_id)
     )
     restaurant = result.scalar_one_or_none()
+
     if not restaurant:
         raise HTTPException(status_code=404, detail="Restaurant not found")
 
     out = await _enrich(restaurant, db)
 
-    # Translation logic for audio_text
+    # Translation
     if lang and lang.lower() not in ["vi", "vi-vn"] and out.audio_text:
         try:
-            # Map common browser lang codes to deep_translator codes
-            # e.g., 'en-US' -> 'en', 'zh-CN' -> 'zh-CN'
             target_lang = lang.split('-')[0].lower()
             if '-' in lang and lang.lower() in ["zh-cn", "zh-tw"]:
                 target_lang = lang.lower()
-            
+
             translated = GoogleTranslator(source='auto', target=target_lang).translate(out.audio_text)
             out.audio_text = translated
         except Exception as e:
             print(f"Translation failed: {e}")
-            # Fallback to original text is already in 'out'
 
     return out
 
@@ -113,9 +118,9 @@ async def log_scan(
     db: AsyncSession = Depends(get_db),
     current_user: User | None = Depends(get_optional_user),
 ):
-    """Log a QR scan. Works for both authenticated and anonymous users."""
     result = await db.execute(select(Restaurant).where(Restaurant.id == restaurant_id))
     restaurant = result.scalar_one_or_none()
+
     if not restaurant:
         raise HTTPException(status_code=404, detail="Restaurant not found")
 
@@ -123,11 +128,12 @@ async def log_scan(
         restaurant_id=restaurant_id,
         user_id=current_user.id if current_user else None,
     )
+
     db.add(log)
     return {"message": "Scan logged"}
 
 
-# ── Owner Routes ───────────────────────────────────────────────────────────────
+# ── Owner Routes ─────────────────────────────────────────────────────────────
 
 @router.post("", response_model=RestaurantOut, status_code=status.HTTP_201_CREATED)
 async def create_restaurant(
@@ -145,14 +151,23 @@ async def create_restaurant(
         address=data.address,
         status=RestaurantStatus.pending,
     )
+
     db.add(restaurant)
     await db.flush()
     await db.refresh(restaurant)
 
-    # Generate QR code immediately
-    qr_data = generate_qr_base64(str(restaurant.id))
+    # Generate QR
+    qr_data = generate_qr_base64(restaurant.id)
     restaurant.qr_code_url = qr_data
     await db.flush()
+
+    # FIX MissingGreenlet (preload)
+    result = await db.execute(
+        select(Restaurant)
+        .options(selectinload(Restaurant.dishes))
+        .where(Restaurant.id == restaurant.id)
+    )
+    restaurant = result.scalar_one()
 
     return await _enrich(restaurant, db)
 
@@ -166,14 +181,14 @@ async def update_restaurant(
 ):
     result = await db.execute(
         select(Restaurant)
-        .options(selectinload(Restaurant.dishes))
+        .options(selectinload(Restaurant.dishes))  # FIX preload
         .where(Restaurant.id == restaurant_id)
     )
     restaurant = result.scalar_one_or_none()
+
     if not restaurant:
         raise HTTPException(status_code=404, detail="Restaurant not found")
 
-    # Only owner or admin can update
     if restaurant.owner_id != current_user.id and current_user.role != UserRole.admin:
         raise HTTPException(status_code=403, detail="Not your restaurant")
 
@@ -181,6 +196,7 @@ async def update_restaurant(
         setattr(restaurant, field, val)
 
     await db.flush()
+
     return await _enrich(restaurant, db)
 
 
@@ -192,6 +208,7 @@ async def delete_restaurant(
 ):
     result = await db.execute(select(Restaurant).where(Restaurant.id == restaurant_id))
     restaurant = result.scalar_one_or_none()
+
     if not restaurant:
         raise HTTPException(status_code=404, detail="Restaurant not found")
 
@@ -206,11 +223,11 @@ async def get_my_restaurants(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_owner),
 ):
-    """Return all restaurants owned by the current owner."""
     result = await db.execute(
         select(Restaurant)
-        .options(selectinload(Restaurant.dishes))
+        .options(selectinload(Restaurant.dishes))  # FIX preload
         .where(Restaurant.owner_id == current_user.id)
     )
     restaurants = result.scalars().all()
+
     return [await _enrich(r, db) for r in restaurants]
