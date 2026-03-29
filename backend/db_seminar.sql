@@ -130,7 +130,6 @@ CREATE TABLE IF NOT EXISTS "restaurant_owners" (
 -- SCAN HISTORY
 -- ========================
 CREATE TABLE IF NOT EXISTS "scan_history" (
-	"id" UUID DEFAULT gen_random_uuid(),
 	"id_user" UUID NOT NULL,
 	"id_restaurant" UUID NOT NULL,
 	"scan_time" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
