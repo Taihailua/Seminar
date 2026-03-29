@@ -91,6 +91,27 @@
             70% { box-shadow: 0 0 0 15px rgba(14, 165, 233, 0); }
             100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
         }
+        .user-location-pulse {
+            width: 14px;
+            height: 14px;
+            background: #0ea5e9;
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.8);
+            position: relative;
+        }
+        .user-location-pulse::after {
+            content: '';
+            position: absolute;
+            top: -3px; left: -3px; right: -3px; bottom: -3px;
+            border-radius: 50%;
+            border: 2px solid #0ea5e9;
+            animation: user-pulse 2s ease-out infinite;
+        }
+        @keyframes user-pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
     </style>
 <style>
     body {
@@ -115,12 +136,7 @@
             <a href="map.html" class="flex items-center gap-3 font-bold text-primary text-sm p-3 bg-primary/10 rounded-xl">
                 <span class="material-symbols-outlined notranslate">map</span> Bản đồ
             </a>
-            <a href="#" onclick="alert('Tính năng đang phát triển'); return false;" class="flex items-center gap-3 font-bold text-white/50 hover:text-white transition-colors text-sm p-3">
-                <span class="material-symbols-outlined notranslate">explore</span> Khám phá
-            </a>
-            <a href="#" onclick="alert('Tính năng đang phát triển'); return false;" class="flex items-center gap-3 font-bold text-white/50 hover:text-white transition-colors text-sm p-3">
-                <span class="material-symbols-outlined notranslate">favorite</span> Đã lưu
-            </a>
+
         </nav>
         <div class="mt-auto">
             <button id="btn-logout" class="btn-logout w-full h-12 rounded-xl bg-error/10 text-error font-bold flex items-center justify-center gap-2 active:bg-error/20 transition-colors">
@@ -149,6 +165,19 @@
 </a>
 </div>
 </header>
+
+<!-- Top Map Controls -->
+<div class="fixed top-20 left-1/2 -translate-x-1/2 z-40 flex bg-surface-container/60 backdrop-blur-xl rounded-2xl p-1.5 border border-white/5 shadow-2xl">
+    <button id="btn-center-user" class="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all hover:bg-white/5">
+        <span class="material-symbols-outlined text-sm notranslate">my_location</span>
+        Vị trí của tôi
+    </button>
+    <div class="w-[1px] bg-white/10 mx-1"></div>
+    <button id="btn-center-restaurants" class="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all hover:bg-white/5">
+        <span class="material-symbols-outlined text-sm notranslate">restaurant</span>
+        Danh sách quán
+    </button>
+</div>
 <!-- Bottom Drawer (Partially Visible) -->
 <section class="fixed bottom-0 left-0 w-full z-40 bg-[#181828]/70 backdrop-blur-xl rounded-t-[2rem] pt-6 pb-24 shadow-[0_-8px_24px_rgba(14,165,233,0.15)] border-t border-[#242437]/30">
 <!-- Drawer Handle -->
@@ -164,25 +193,21 @@
     <!-- Populated dynamically via JS -->
 </div>
 </section>
-<!-- FAB -->
-<button id="qr-scan-btn-fab" class="btn-scan-qr fixed right-6 bottom-28 z-50 bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-5 h-14 rounded-full flex items-center gap-3 shadow-[0_8px_24px_rgba(14,165,233,0.4)] active:scale-95 transition-transform hover:shadow-[0_12px_28px_rgba(14,165,233,0.6)]">
-<span class="material-symbols-outlined notranslate" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
-<span class="font-bold text-sm">Quét QR</span>
-</button>
+<!-- FABs -->
+<div class="fixed right-6 bottom-28 z-50 flex flex-col gap-4 items-end">
+    <!-- QR Scan Button -->
+    <button id="qr-scan-btn-fab" class="btn-scan-qr bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-5 h-14 rounded-full flex items-center gap-3 shadow-[0_8px_24px_rgba(14,165,233,0.4)] active:scale-95 transition-transform hover:shadow-[0_12px_28px_rgba(14,165,233,0.6)]">
+        <span class="material-symbols-outlined notranslate" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+        <span class="font-bold text-sm">Quét QR</span>
+    </button>
+</div>
 <!-- Bottom Navigation Bar -->
 <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-6 pb-4 bg-[#181828]/70 backdrop-blur-xl rounded-t-[2rem] z-50 border-t border-[#242437]/30 shadow-[0_-8px_24px_rgba(14,165,233,0.15)]">
 <a class="flex flex-col items-center justify-center text-[#0ea5e9] drop-shadow-[0_0_8px_rgba(14, 165, 233,0.6)]" href="map.html">
-<span class="material-symbols-outlined notranslate" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="material-symbols-outlined notranslate" style="font-variation-settings: 'FILL' 1;">map</span>
 <span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Bản Đồ</span>
 </a>
-<a class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#0ea5e9] transition-colors" href="#" onclick="alert('Tính năng Khám Phá đang được cập nhật!'); return false;">
-<span class="material-symbols-outlined notranslate">restaurant_menu</span>
-<span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Khám Phá</span>
-</a>
-<a class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#0ea5e9] transition-colors" href="#" onclick="alert('Tính năng Lưu Trữ đang được cập nhật!'); return false;">
-<span class="material-symbols-outlined notranslate">bookmark</span>
-<span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Lưu Trữ</span>
-</a>
+
 <a href="profile.html" class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#0ea5e9] transition-colors cursor-pointer">
 <span class="material-symbols-outlined notranslate">person</span>
 <span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Cá Nhân</span>
