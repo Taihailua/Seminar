@@ -4,7 +4,7 @@ const pool = require('../config/db');
 const Auth = {
   findByEmail: async (email) => {
     const result = await pool.query(
-      `SELECT a.*, u.name, u.avatar_url, u.token_balance, u.status, u.language 
+      `SELECT a.*, u.name, u.avatar_url, u.token_balance, u.status, u.language, u.id_user
        FROM accounts a 
        LEFT JOIN users u ON a.id_account = u.id_account 
        WHERE a.email = $1`,
@@ -15,7 +15,7 @@ const Auth = {
 
   findByUsername: async (username) => {
     const result = await pool.query(
-      `SELECT a.*, u.name, u.avatar_url, u.token_balance, u.status, u.language 
+      `SELECT a.*, u.name, u.avatar_url, u.token_balance, u.status, u.language, u.id_user
        FROM accounts a 
        JOIN users u ON a.id_account = u.id_account 
        WHERE u.name = $1`,
@@ -83,7 +83,7 @@ const Auth = {
     if (password !== user.password_hash) {
       return null; // Sai mật khẩu
     }
-
+    console.log(user);
     return user;
   },
 

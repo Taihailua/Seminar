@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS "scripts" (
 	"id_script" UUID DEFAULT gen_random_uuid(),
 	"content" TEXT NOT NULL,
 	"created_at" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	"status" VARCHAR(20) DEFAULT 'active'
+	"status" VARCHAR(20) DEFAULT 'active',
 	PRIMARY KEY("id_script")
 );
 
@@ -130,7 +130,6 @@ CREATE TABLE IF NOT EXISTS "restaurant_owners" (
 -- SCAN HISTORY
 -- ========================
 CREATE TABLE IF NOT EXISTS "scan_history" (
-	"id" UUID DEFAULT gen_random_uuid(),
 	"id_user" UUID NOT NULL,
 	"id_restaurant" UUID NOT NULL,
 	"scan_time" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
