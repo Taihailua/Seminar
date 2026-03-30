@@ -98,6 +98,11 @@ node src/app.js
 Server khởi động tại: **`http://localhost:3000`**
 
 ---
+# Chạy ngrok 
+npx ngrok http 3000
+
+*ngrok sẽ cho bạn 1 đường dẫn và thay đường dẫn đó vào trong file env trong thư mục frontend*
+---
 
 ## 📚 Tài liệu API (Swagger UI)
 
