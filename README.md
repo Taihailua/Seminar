@@ -1,3 +1,141 @@
+# DoAnChuyenNganh – Frontend
+
+Ứng dụng di động được xây dựng bằng **React Native** + **Expo**, hỗ trợ đa nền tảng (Android, iOS, Web).
+
+---
+
+## Yêu cầu hệ thống
+
+| Công cụ | Phiên bản tối thiểu |
+|---|---|
+| [Node.js](https://nodejs.org/) | 18.x trở lên |
+| [npm](https://www.npmjs.com/) | 9.x trở lên |
+| [Expo CLI](https://docs.expo.dev/more/expo-cli/) | Cài qua `npm install -g expo-cli` |
+| [Expo Go](https://expo.dev/go) *(tuỳ chọn)* | Cài trên điện thoại để chạy thực tế |
+
+---
+
+## Cài đặt & Chạy dự án
+
+### 1. Clone dự án và di chuyển vào thư mục frontend
+
+```bash
+git clone <repository-url>
+cd frontend/DoAnChuyenNganh
+```
+
+### 2. Cài đặt các dependencies
+
+```bash
+npm install
+```
+
+### 3. Cấu hình biến môi trường
+
+Tạo file `.env` ở thư mục gốc của dự án (`frontend/DoAnChuyenNganh/.env`) với nội dung:
+
+```env
+EXPO_PUBLIC_API_URL=https://<your-api-url>
+```
+
+> **Lưu ý:** Biến môi trường phải có tiền tố `EXPO_PUBLIC_` để Expo nhận diện được khi build.
+
+### 4. Khởi chạy ứng dụng
+
+```bash
+npm start
+# hoặc
+npx expo start
+```
+
+Sau khi chạy lệnh trên, terminal sẽ hiển thị một QR code. Bạn có thể mở ứng dụng theo các cách sau:
+
+---
+
+## Chạy trên từng nền tảng
+
+### 📱 Android
+
+```bash
+npm run android
+```
+
+Yêu cầu: Đã cài **Android Studio** và có **Emulator** đang chạy, hoặc kết nối thiết bị thật qua USB với chế độ **USB Debugging** được bật.
+
+### 🍎 iOS *(chỉ trên macOS)*
+
+```bash
+npm run ios
+```
+
+Yêu cầu: Đã cài **Xcode** và iOS Simulator.
+
+### 🌐 Web
+
+```bash
+npm run web
+```
+
+Mở trình duyệt tại `http://localhost:8081`.
+
+### 📲 Expo Go (thiết bị thật, không cần máy tính cấu hình cao)
+
+1. Cài ứng dụng **Expo Go** trên điện thoại ([Android](https://play.google.com/store/apps/details?id=host.exp.exponent) / [iOS](https://apps.apple.com/app/expo-go/id982107779)).
+2. Chạy `npm start`.
+3. Quét QR code hiện trong terminal bằng ứng dụng **Expo Go**.
+
+> **Lưu ý:** Điện thoại và máy tính phải cùng mạng Wi-Fi.
+
+---
+
+## Các lệnh hữu ích khác
+
+| Lệnh | Mô tả |
+|---|---|
+| `npm start` | Khởi động Expo Dev Server |
+| `npm run android` | Chạy trên Android Emulator / thiết bị thật |
+| `npm run ios` | Chạy trên iOS Simulator (macOS) |
+| `npm run web` | Chạy trên trình duyệt |
+| `npm run lint` | Kiểm tra lỗi ESLint |
+| `npm run reset-project` | Reset dự án về trạng thái ban đầu |
+
+---
+
+## Cấu trúc thư mục
+
+```
+DoAnChuyenNganh/
+├── api/            # Các hàm gọi API (axios)
+├── app/            # Màn hình & routing (Expo Router – file-based routing)
+│   └── (tabs)/     # Tab navigation
+├── assets/         # Hình ảnh, icon, font
+├── components/     # Các component dùng chung
+├── constants/      # Hằng số, cấu hình theme, i18n
+├── context/        # React Context (LanguageContext, ...)
+├── hooks/          # Custom hooks
+├── models/         # Kiểu dữ liệu request/response
+├── utils/          # Hàm tiện ích
+├── .env            # Biến môi trường (không commit lên Git)
+├── app.json        # Cấu hình Expo
+├── tailwind.config.js  # Cấu hình NativeWind (Tailwind CSS)
+└── package.json
+```
+
+---
+
+## Công nghệ sử dụng
+
+- **React Native 0.81** + **Expo 54**
+- **Expo Router** – File-based routing
+- **NativeWind** – Tailwind CSS cho React Native
+- **Axios** – Gọi REST API
+- **React Navigation** – Điều hướng màn hình
+- **Expo Camera / Barcode Scanner** – Quét mã QR
+- **Expo Location** – Định vị GPS
+- **i18next / react-i18next** – Đa ngôn ngữ
+- **AsyncStorage** – Lưu trữ dữ liệu cục bộ
+
+
 # 🍜 Food Tour API — Backend
 
 Backend API cho ứng dụng **Food Tour** — hệ thống quản lý nhà hàng, thực đơn, quét mã QR check-in và phát audio giới thiệu.
