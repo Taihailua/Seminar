@@ -30,7 +30,7 @@ function startTTS(text) {
   ttsUtterance = new SpeechSynthesisUtterance(text);
   ttsUtterance.lang = 'vi-VN';
   ttsUtterance.rate = 1.0;
-  
+
   ttsUtterance.onstart = () => {
     isSpeaking = true;
     updateAudioButton(true);
@@ -163,7 +163,6 @@ function displayQR(restaurant) {
   qrImgEls.forEach((img) => {
     img.src = restaurant.qr_code_url;
     img.alt = 'QR Code - ' + restaurant.name;
-    img.style.borderRadius = '8px';
     img.classList.remove('hidden'); // Ensure it's visible
   });
 
@@ -176,16 +175,16 @@ function displayQR(restaurant) {
     const img = document.createElement('img');
     img.src = restaurant.qr_code_url;
     img.alt = 'QR Code';
-    img.style.cssText = 'width:200px;height:200px;border-radius:12px;margin:16px auto;display:block;';
-    const placeholder = qrContainer.querySelector('[class*="placeholder"], [class*="qr-placeholder"]');
-    if (placeholder) placeholder.replaceWith(img);
+    img.className = 'w-full h-full object-contain rounded-xl';
+    const placeholder2 = qrContainer.querySelector('[class*="placeholder"], [class*="qr-placeholder"]');
+    if (placeholder2) placeholder2.replaceWith(img);
     else qrContainer.appendChild(img);
   }
 
   // Download button
   const downloadBtn = document.querySelector('#download-qr, .download-qr, [class*="tải-qr"]');
   if (downloadBtn) {
-    // Remove any existing listeners by using a fresh clone if needed, 
+    // Remove any existing listeners by using a fresh clone if needed,
     // but here we just ensure we don't double-bind if init is called twice.
     downloadBtn.onclick = () => {
       const link = document.createElement('a');
@@ -211,67 +210,55 @@ function setupQRScanner() {
 function openScannerModal() {
   const modal = document.createElement('div');
   modal.id = 'qr-modal';
-  modal.style.cssText = `
-    position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding: 16px;
-  `;
-
-  const tabBtnBase = `
-    flex:1;padding:10px 0;border:none;cursor:pointer;font-size:13px;font-weight:700;
-    font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;border-radius:8px;
-  `;
-  const tabActiveStyle = `background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;`;
-  const tabInactiveStyle = `background:#242437;color:#aba9bb;`;
+  // Responsive modal container — covers full screen, centered content
+  modal.className = 'fixed inset-0 bg-black/85 z-[9999] flex flex-col items-center justify-center p-4';
 
   modal.innerHTML = `
-    <div style="background:#181828;border-radius:20px;padding:24px;width:100%;max-width:420px;border:1px solid #242437;box-shadow:0 20px 60px rgba(0,0,0,0.6);">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-        <h3 style="color:#0ea5e9;font-family:'Plus Jakarta Sans',sans-serif;margin:0;font-size:16px;display:flex;align-items:center;gap:8px;">
-          <span class="material-symbols-outlined notranslate" style="font-size:20px;">qr_code_scanner</span> Quét Mã QR
+    <div class="bg-[#181828] rounded-2xl p-5 sm:p-6 w-full max-w-sm sm:max-w-md border border-[#242437] shadow-2xl overflow-y-auto max-h-[90dvh]">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="text-[#0ea5e9] font-bold text-base flex items-center gap-2 font-['Plus_Jakarta_Sans']">
+          <span class="material-symbols-outlined notranslate text-[20px]">qr_code_scanner</span> Quét Mã QR
         </h3>
-        <button id="close-scanner" style="background:rgba(255,255,255,0.06);border:none;color:#aba9bb;font-size:18px;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;">✕</button>
+        <button id="close-scanner" class="w-8 h-8 bg-white/5 border-none text-[#aba9bb] text-lg cursor-pointer rounded-lg flex items-center justify-center hover:text-white transition-colors">✕</button>
       </div>
 
       <!-- Tabs -->
-      <div style="display:flex;gap:8px;margin-bottom:20px;">
-        <button id="tab-camera" style="${tabBtnBase}${tabActiveStyle}display:flex;align-items:center;justify-content:center;gap:6px;">
-          <span class="material-symbols-outlined notranslate" style="font-size:16px;">photo_camera</span> Camera
+      <div class="flex gap-2 mb-5">
+        <button id="tab-camera" class="flex-1 py-2.5 border-none cursor-pointer text-xs sm:text-sm font-bold font-['Plus_Jakarta_Sans'] transition-all rounded-lg flex items-center justify-center gap-1.5 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] text-white">
+          <span class="material-symbols-outlined notranslate text-sm">photo_camera</span> Camera
         </button>
-        <button id="tab-upload" style="${tabBtnBase}${tabInactiveStyle}display:flex;align-items:center;justify-content:center;gap:6px;">
-          <span class="material-symbols-outlined notranslate" style="font-size:16px;">upload_file</span> Tải ảnh lên
+        <button id="tab-upload" class="flex-1 py-2.5 border-none cursor-pointer text-xs sm:text-sm font-bold font-['Plus_Jakarta_Sans'] transition-all rounded-lg flex items-center justify-center gap-1.5 bg-[#242437] text-[#aba9bb]">
+          <span class="material-symbols-outlined notranslate text-sm">upload_file</span> Tải ảnh lên
         </button>
       </div>
 
       <!-- Camera Panel -->
       <div id="panel-camera">
-        <div id="qr-reader" style="border-radius:12px;overflow:hidden;background:#000;min-height:250px;"></div>
-        <p style="color:#aba9bb;font-size:12px;text-align:center;margin-top:12px;">
-          Hướng camera vào mã QR để quét tự động
-        </p>
+        <div id="qr-reader" class="rounded-xl overflow-hidden bg-black min-h-[220px] sm:min-h-[250px]"></div>
+        <p class="text-[#aba9bb] text-xs text-center mt-3">Hướng camera vào mã QR để quét tự động</p>
       </div>
 
       <!-- Upload Panel -->
-      <div id="panel-upload" style="display:none;">
-        <label id="upload-label" for="qr-file-input" style="
-          display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
-          border:2px dashed #474656;border-radius:12px;padding:32px 16px;cursor:pointer;
-          transition:border-color 0.2s;min-height:200px;
-        ">
-          <span class="material-symbols-outlined notranslate" style="font-size:48px;color:#0ea5e9;opacity:0.8;">add_photo_alternate</span>
-          <span style="color:#aba9bb;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;text-align:center;">
-            Bấm để chọn ảnh QR<br/><span style="font-size:11px;opacity:0.6;">Hỗ trợ JPG, PNG, WEBP</span>
+      <div id="panel-upload" class="hidden">
+        <label id="upload-label" for="qr-file-input" class="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-[#474656] rounded-xl p-6 sm:p-8 cursor-pointer transition-colors min-h-[180px] sm:min-h-[200px] hover:border-[#0ea5e9]">
+          <span class="material-symbols-outlined notranslate text-5xl text-[#0ea5e9] opacity-80">add_photo_alternate</span>
+          <span class="text-[#aba9bb] text-xs sm:text-sm font-['Plus_Jakarta_Sans'] text-center">
+            Bấm để chọn ảnh QR<br/><span class="text-[11px] opacity-60">Hỗ trợ JPG, PNG, WEBP</span>
           </span>
         </label>
-        <input id="qr-file-input" type="file" accept="image/*" style="display:none;" />
-        <div id="upload-preview" style="display:none;margin-top:12px;text-align:center;">
-          <img id="upload-img-preview" style="max-width:100%;max-height:200px;border-radius:10px;margin-bottom:8px;" />
+        <input id="qr-file-input" type="file" accept="image/*" class="hidden" />
+        <div id="upload-preview" class="hidden mt-3 text-center">
+          <img id="upload-img-preview" class="max-w-full max-h-48 rounded-xl mb-2 mx-auto" />
         </div>
-        <div id="upload-result" style="display:none;margin-top:12px;padding:12px 16px;border-radius:10px;background:#242437;"></div>
+        <div id="upload-result" class="hidden mt-3 p-3 rounded-xl bg-[#242437]"></div>
       </div>
     </div>
   `;
   document.body.appendChild(modal);
+
+  // Tab style helpers
+  const activeTabCls = 'bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] text-white';
+  const inactiveTabCls = 'bg-[#242437] text-[#aba9bb]';
 
   // Tab switching
   const tabCamera = document.getElementById('tab-camera');
@@ -280,17 +267,17 @@ function openScannerModal() {
   const panelUpload = document.getElementById('panel-upload');
 
   tabCamera.addEventListener('click', () => {
-    tabCamera.style.cssText = tabBtnBase + tabActiveStyle + 'display:flex;align-items:center;justify-content:center;gap:6px;';
-    tabUpload.style.cssText = tabBtnBase + tabInactiveStyle + 'display:flex;align-items:center;justify-content:center;gap:6px;';
-    panelCamera.style.display = 'block';
-    panelUpload.style.display = 'none';
+    tabCamera.className = `flex-1 py-2.5 border-none cursor-pointer text-xs sm:text-sm font-bold font-['Plus_Jakarta_Sans'] transition-all rounded-lg flex items-center justify-center gap-1.5 ${activeTabCls}`;
+    tabUpload.className = `flex-1 py-2.5 border-none cursor-pointer text-xs sm:text-sm font-bold font-['Plus_Jakarta_Sans'] transition-all rounded-lg flex items-center justify-center gap-1.5 ${inactiveTabCls}`;
+    panelCamera.classList.remove('hidden');
+    panelUpload.classList.add('hidden');
   });
 
   tabUpload.addEventListener('click', () => {
-    tabUpload.style.cssText = tabBtnBase + tabActiveStyle + 'display:flex;align-items:center;justify-content:center;gap:6px;';
-    tabCamera.style.cssText = tabBtnBase + tabInactiveStyle + 'display:flex;align-items:center;justify-content:center;gap:6px;';
-    panelUpload.style.display = 'block';
-    panelCamera.style.display = 'none';
+    tabUpload.className = `flex-1 py-2.5 border-none cursor-pointer text-xs sm:text-sm font-bold font-['Plus_Jakarta_Sans'] transition-all rounded-lg flex items-center justify-center gap-1.5 ${activeTabCls}`;
+    tabCamera.className = `flex-1 py-2.5 border-none cursor-pointer text-xs sm:text-sm font-bold font-['Plus_Jakarta_Sans'] transition-all rounded-lg flex items-center justify-center gap-1.5 ${inactiveTabCls}`;
+    panelUpload.classList.remove('hidden');
+    panelCamera.classList.add('hidden');
     // Stop camera if running
     const reader = window._html5QrcodeScanner;
     if (reader) reader.stop().catch(() => {});
@@ -311,13 +298,13 @@ function openScannerModal() {
     // Show preview
     const previewDiv = document.getElementById('upload-preview');
     const previewImg = document.getElementById('upload-img-preview');
-    previewDiv.style.display = 'block';
+    previewDiv.classList.remove('hidden');
     previewImg.src = URL.createObjectURL(file);
 
     const resultDiv = document.getElementById('upload-result');
-    resultDiv.style.display = 'block';
+    resultDiv.classList.remove('hidden');
     resultDiv.style.color = '#aba9bb';
-    resultDiv.innerHTML = '<span style="display:flex;align-items:center;gap:8px;">⏳ Đang phân tích mã QR...</span>';
+    resultDiv.innerHTML = '<span class="flex items-center gap-2 text-sm">⏳ Đang phân tích mã QR...</span>';
 
     try {
       if (!window.Html5Qrcode) {
@@ -349,11 +336,11 @@ function openScannerModal() {
 
   // Drag & drop on upload label
   const uploadLabel = document.getElementById('upload-label');
-  uploadLabel.addEventListener('dragover', (e) => { e.preventDefault(); uploadLabel.style.borderColor = '#0ea5e9'; });
-  uploadLabel.addEventListener('dragleave', () => { uploadLabel.style.borderColor = '#474656'; });
+  uploadLabel.addEventListener('dragover', (e) => { e.preventDefault(); uploadLabel.classList.add('border-[#0ea5e9]'); });
+  uploadLabel.addEventListener('dragleave', () => { uploadLabel.classList.remove('border-[#0ea5e9]'); });
   uploadLabel.addEventListener('drop', (e) => {
     e.preventDefault();
-    uploadLabel.style.borderColor = '#474656';
+    uploadLabel.classList.remove('border-[#0ea5e9]');
     const file = e.dataTransfer.files[0];
     if (file) {
       const input = document.getElementById('qr-file-input');
@@ -389,7 +376,7 @@ function startScanner() {
   window._html5QrcodeScanner = html5QrCode;
   html5QrCode.start(
     { facingMode: 'environment' },
-    { fps: 10, qrbox: { width: 250, height: 250 } },
+    { fps: 10, qrbox: { width: 220, height: 220 } },
     (decodedText) => {
       html5QrCode.stop().then(() => {
         document.getElementById('qr-modal')?.remove();
@@ -409,9 +396,7 @@ function startScanner() {
     console.error('Scanner error:', err);
     const readerDiv = document.getElementById('qr-reader');
     if (readerDiv) {
-      readerDiv.innerHTML = `<div style="padding:24px;text-align:center;color:#ff7351;font-size:13px;">
-        ⚠️ Không thể truy cập camera.<br/><span style="font-size:11px;color:#aba9bb;">Bạn có thể dùng tab <b>Tải ảnh lên</b> để quét từ file.</span>
-      </div>`;
+      readerDiv.innerHTML = `<div class="p-6 text-center text-[#ff7351] text-sm">⚠️ Không thể truy cập camera.<br/><span class="text-xs text-[#aba9bb]">Bạn có thể dùng tab <b>Tải ảnh lên</b> để quét từ file.</span></div>`;
     }
   });
 }
@@ -426,43 +411,32 @@ function renderOwnerDishes(dishes, restaurantId) {
   container.innerHTML = '';
 
   if (!dishes.length) {
-    container.innerHTML = '<p style="color:#aba9bb;padding:16px;text-align:center;">Chưa có món nào. Thêm món đầu tiên!</p>';
+    container.innerHTML = '<p class="text-[#aba9bb] text-center p-4 text-sm">Chưa có món nào. Thêm món đầu tiên!</p>';
   }
 
   dishes.forEach((dish) => {
     const row = document.createElement('div');
-    row.style.cssText = `
-      display:flex;align-items:center;gap:12px;padding:14px;
-      background:#242437;border-radius:12px;margin-bottom:8px;
-    `;
+    row.className = 'flex items-center gap-3 p-3 sm:p-3.5 bg-[#242437] rounded-xl transition-opacity';
+
     row.innerHTML = `
-      <div style="
-        width:52px;height:52px;border-radius:8px;flex-shrink:0;
-        background:${dish.image_url ? `url('${dish.image_url}') center/cover` : 'linear-gradient(135deg,#1a1a2e,#181828)'};
-        display:flex;align-items:center;justify-content:center;font-size:24px;
-      ">${dish.image_url ? '' : '🍽️'}</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-weight:700;color:#e9e6f9;font-size:14px;">${dish.name}</div>
-        <div style="color:#0ea5e9;font-size:13px;margin-top:2px;">
+      <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-lg flex-shrink-0 flex items-center justify-center text-2xl overflow-hidden"
+        style="background:${dish.image_url ? `url('${dish.image_url}') center/cover` : 'linear-gradient(135deg,#1a1a2e,#181828)'};">
+        ${dish.image_url ? '' : '🍽️'}
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="font-bold text-[#e9e6f9] text-sm truncate">${dish.name}</div>
+        <div class="text-[#0ea5e9] text-xs mt-0.5">
           ${dish.price ? Number(dish.price).toLocaleString('vi-VN') + 'đ' : 'Liên hệ'}
         </div>
       </div>
-      <label class="switch" style="cursor:pointer;" title="${dish.is_available ? 'Còn món' : 'Hết món'}">
-        <input type="checkbox" ${dish.is_available ? 'checked' : ''} data-dish-id="${dish.id}" class="dish-toggle">
-        <span style="
-          display:inline-block;width:42px;height:24px;border-radius:12px;
-          background:${dish.is_available ? 'linear-gradient(135deg,#0ea5e9,#0284c7)' : '#474656'};
-          position:relative;transition:background 0.3s;
-        "></span>
+      <label class="switch cursor-pointer flex-shrink-0" title="${dish.is_available ? 'Còn món' : 'Hết món'}">
+        <input type="checkbox" ${dish.is_available ? 'checked' : ''} data-dish-id="${dish.id}" class="dish-toggle sr-only">
+        <span class="block w-10 h-5 sm:w-11 sm:h-6 rounded-full relative transition-colors duration-300"
+          style="background:${dish.is_available ? 'linear-gradient(135deg,#0ea5e9,#0284c7)' : '#474656'};">
+        </span>
       </label>
-      <button data-edit-dish="${dish.id}" style="
-        background:none;border:none;color:#aba9bb;cursor:pointer;font-size:18px;
-        padding:4px;transition:color 0.2s;
-      " title="Sửa">✏️</button>
-      <button data-delete-dish="${dish.id}" style="
-        background:none;border:none;color:#ff7351;cursor:pointer;font-size:18px;
-        padding:4px;transition:color 0.2s;
-      " title="Xóa">🗑️</button>
+      <button data-edit-dish="${dish.id}" class="text-[#aba9bb] hover:text-white text-lg sm:text-xl p-1 transition-colors flex-shrink-0" title="Sửa">✏️</button>
+      <button data-delete-dish="${dish.id}" class="text-[#ff7351] hover:text-red-400 text-lg sm:text-xl p-1 transition-colors flex-shrink-0" title="Xóa">🗑️</button>
     `;
     container.appendChild(row);
 
@@ -516,46 +490,55 @@ function showDishDialog(mode, dish = null, restaurantId) {
 
   const dialog = document.createElement('div');
   dialog.id = 'dish-dialog';
-  dialog.style.cssText = `
-    position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9998;
-    display:flex;align-items:center;justify-content:center;
-  `;
+  // Responsive modal overlay
+  dialog.className = 'fixed inset-0 bg-black/70 z-[9998] flex items-end sm:items-center justify-center p-0 sm:p-4';
   dialog.innerHTML = `
-    <div style="background:#181828;border-radius:16px;padding:24px;width:90%;max-width:400px;box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);">
-      <h3 style="color:#0ea5e9;font-family:'Plus Jakarta Sans',sans-serif;margin:0 0 20px;display:flex;align-items:center;gap:8px;">
+    <div class="bg-[#181828] rounded-t-2xl sm:rounded-2xl p-5 sm:p-6 w-full sm:max-w-sm md:max-w-md shadow-2xl border border-[#242437]/50">
+      <h3 class="text-[#0ea5e9] font-bold text-base mb-5 flex items-center gap-2 font-['Plus_Jakarta_Sans']">
         ${isEdit ? '✏️ Sửa Món Ăn' : '➕ Thêm Món Mới'}
       </h3>
-      <div style="margin-bottom:12px;">
-        <label style="display:block;color:#aba9bb;font-size:12px;margin-bottom:4px;margin-left:4px;">Tên món ăn *</label>
-        <input id="dish-name" placeholder="Ví dụ: Phở bò" style="${inputStyle}" value="${isEdit ? dish.name : ''}">
+      <div class="space-y-3">
+        <div>
+          <label class="block text-[#aba9bb] text-xs mb-1 ml-1">Tên món ăn *</label>
+          <input id="dish-name" placeholder="Ví dụ: Phở bò" value="${isEdit ? dish.name : ''}"
+            class="w-full px-4 py-3 rounded-xl border-none bg-[#242437] text-[#e9e6f9] font-['Plus_Jakarta_Sans'] text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/40" />
+        </div>
+        <div>
+          <label class="block text-[#aba9bb] text-xs mb-1 ml-1">Giá (VNĐ)</label>
+          <input id="dish-price" type="number" placeholder="Ví dụ: 50000" value="${isEdit ? dish.price || '' : ''}"
+            class="w-full px-4 py-3 rounded-xl border-none bg-[#242437] text-[#e9e6f9] font-['Plus_Jakarta_Sans'] text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/40" />
+        </div>
+        <div>
+          <label class="block text-[#aba9bb] text-xs mb-1 ml-1">Link ảnh (tùy chọn)</label>
+          <input id="dish-image" placeholder="https://..." value="${isEdit ? dish.image_url || '' : ''}"
+            class="w-full px-4 py-3 rounded-xl border-none bg-[#242437] text-[#e9e6f9] font-['Plus_Jakarta_Sans'] text-sm focus:outline-none focus:ring-2 focus:ring-[#0ea5e9]/40" />
+        </div>
       </div>
-      <div style="margin-bottom:12px;">
-        <label style="display:block;color:#aba9bb;font-size:12px;margin-bottom:4px;margin-left:4px;">Giá (VNĐ)</label>
-        <input id="dish-price" type="number" placeholder="Ví dụ: 50000" style="${inputStyle}" value="${isEdit ? dish.price || '' : ''}">
-      </div>
-      <div style="margin-bottom:20px;">
-        <label style="display:block;color:#aba9bb;font-size:12px;margin-bottom:4px;margin-left:4px;">Link ảnh (tùy chọn)</label>
-        <input id="dish-image" placeholder="https://..." style="${inputStyle}" value="${isEdit ? dish.image_url || '' : ''}">
-      </div>
-      <div style="display:flex;gap:12px;">
-        <button id="save-dish-btn" style="${btnStyle}">✅ ${isEdit ? 'Lưu Thay Đổi' : 'Lưu Món'}</button>
-        <button id="cancel-dish-btn" style="${cancelBtnStyle}">Hủy</button>
+      <div class="flex gap-3 mt-5">
+        <button id="save-dish-btn"
+          class="flex-1 py-3 rounded-xl border-none cursor-pointer bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] text-[#521f00] font-bold text-sm font-['Plus_Jakarta_Sans'] transition-opacity active:scale-[0.98]">
+          ✅ ${isEdit ? 'Lưu Thay Đổi' : 'Lưu Món'}
+        </button>
+        <button id="cancel-dish-btn"
+          class="flex-1 py-3 rounded-xl border-none cursor-pointer bg-[#242437] text-[#aba9bb] font-semibold text-sm font-['Plus_Jakarta_Sans'] hover:bg-[#2a2a45] transition-colors">
+          Hủy
+        </button>
       </div>
     </div>
   `;
   document.body.appendChild(dialog);
 
   document.getElementById('cancel-dish-btn').addEventListener('click', () => dialog.remove());
-  
+
   const saveBtn = document.getElementById('save-dish-btn');
   saveBtn.addEventListener('click', async () => {
     if (saveBtn.disabled) return;
-    
+
     const name = document.getElementById('dish-name').value.trim();
     if (!name) { alert('Vui lòng nhập tên món.'); return; }
     const price = parseFloat(document.getElementById('dish-price').value) || null;
     const image_url = document.getElementById('dish-image').value.trim() || null;
-    
+
     try {
       saveBtn.disabled = true;
       saveBtn.textContent = '⏳ Đang lưu...';
@@ -566,7 +549,7 @@ function showDishDialog(mode, dish = null, restaurantId) {
       } else {
         await api.post(`/api/restaurants/${restaurantId}/dishes`, { name, price, image_url });
       }
-      
+
       dialog.remove();
       // Refresh dish list
       const r = await api.get(`/api/restaurants/${restaurantId}`);
@@ -586,22 +569,6 @@ function wireAddDish(restaurantId) {
   addBtn.addEventListener('click', () => showDishDialog('add', null, restaurantId));
 }
 
-const inputStyle = `
-  display:block;width:100%;padding:12px 16px;border-radius:8px;border:none;
-  background:#242437;color:#e9e6f9;font-family:'Plus Jakarta Sans',sans-serif;
-  font-size:14px;margin-bottom:10px;box-sizing:border-box;
-`;
-const btnStyle = `
-  flex:1;padding:12px;border-radius:8px;border:none;cursor:pointer;
-  background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#521f00;
-  font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;
-`;
-const cancelBtnStyle = `
-  flex:1;padding:12px;border-radius:8px;border:none;cursor:pointer;
-  background:#242437;color:#aba9bb;
-  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:14px;
-`;
-
 // ── Owner Reviews Loop ────────────────────────────────────────────────────────
 function renderOwnerReviews(reviews) {
   const container = document.querySelector(
@@ -612,16 +579,16 @@ function renderOwnerReviews(reviews) {
   container.innerHTML = '';
   reviews.slice(0, 10).forEach((review) => {
     const card = document.createElement('div');
-    card.style.cssText = 'background:#1a1a2e;border-radius:8px;padding:12px;margin-bottom:8px;';
+    card.className = 'bg-[#1a1a2e] rounded-xl p-3 sm:p-4';
     const stars = '⭐'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
     const date = new Date(review.created_at).toLocaleDateString('vi-VN');
     card.innerHTML = `
-      <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-        <span style="font-weight:700;color:#e9e6f9;font-size:13px;">${review.username || 'Khách'}</span>
-        <span style="font-size:11px;color:#aba9bb;">${date}</span>
+      <div class="flex justify-between items-start mb-2 gap-2">
+        <span class="font-bold text-[#e9e6f9] text-sm">${review.username || 'Khách'}</span>
+        <span class="text-[11px] text-[#aba9bb] flex-shrink-0">${date}</span>
       </div>
-      <div style="font-size:13px;margin-bottom:6px;">${stars}</div>
-      <p style="color:#e9e6f9;font-size:13px;margin:0;">${review.comment || '—'}</p>
+      <div class="text-sm mb-1.5">${stars}</div>
+      <p class="text-[#e9e6f9] text-sm m-0 leading-relaxed">${review.comment || '—'}</p>
     `;
     container.appendChild(card);
   });

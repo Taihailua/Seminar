@@ -1,108 +1,120 @@
 <!DOCTYPE html>
 <html class="dark" lang="vi">
-<head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-            "surface-container": "#181828",
-            "surface-container-highest": "#242437",
-            "primary": "#0ea5e9",
-            "primary-container": "#0284c7",
-            "on-primary-fixed": "#000000",
-            "surface": "#0d0d1a",
-            "on-surface": "#e9e6f9",
-            "on-surface-variant": "#aba9bb",
-            "error": "#ff7351",
-            "error-container": "#b92902"
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <title>Phố Vĩnh Khánh — Hồ Sơ Cá Nhân</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container": "#181828",
+              "surface-container-highest": "#242437",
+              primary: "#0ea5e9",
+              "primary-container": "#0284c7",
+              "on-primary-fixed": "#000000",
+              surface: "#0d0d1a",
+              "on-surface": "#e9e6f9",
+              "on-surface-variant": "#aba9bb",
+              error: "#ff7351",
+              "error-container": "#b92902",
+            },
+            fontFamily: {
+              body: ["Plus Jakarta Sans"],
+              headline: ["Plus Jakarta Sans"],
+            },
           },
-          "fontFamily": {
-            "body": ["Plus Jakarta Sans"],
-            "headline": ["Plus Jakarta Sans"]
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0d0d1a; color: #e9e6f9; min-height: 100dvh; display: flex; flex-direction: column; }
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    .glass-card { background: rgba(36, 36, 55, 0.7); backdrop-filter: blur(20px); }
-    .orange-gradient { background: linear-gradient(135deg, #0ea5e9 0%, #0ea5e9 100%); }
-    .neon-text { text-shadow: 0 0 10px rgba(14, 165, 233, 0.4); }
-  </style>
-</head>
-<body class="pb-32">
-  <!-- Top AppBar -->
-  <header class="w-full top-0 sticky z-50 bg-[#0d0d1a]/80 backdrop-blur-md shadow-[0px_4px_20px_rgba(14,165,233,0.1)] flex items-center px-6 h-16 gap-4">
-    <button id="back-btn" class="text-primary active:scale-95 transition-transform flex items-center justify-center -ml-2 p-2">
-      <span class="material-symbols-outlined notranslate">arrow_back</span>
-    </button>
-    <h1 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#0ea5e9] to-[#0ea5e9] font-headline tracking-tight">Hồ Sơ Cá Nhân</h1>
-  </header>
-
-  <main class="px-6 py-8 max-w-lg mx-auto flex-1 flex flex-col items-center">
-    <!-- Avatar Section -->
-    <div class="relative mb-6">
-      <div id="profile-avatar" class="w-28 h-28 rounded-full border-4 border-primary/30 bg-surface-container-highest flex items-center justify-center font-bold text-primary text-4xl shadow-[0_0_24px_rgba(14, 165, 233,0.2)]">?</div>
-      <div class="absolute bottom-0 right-0 w-8 h-8 bg-surface border-2 border-primary/30 rounded-full flex items-center justify-center">
-        <span class="material-symbols-outlined text-[#4ade80] text-lg notranslate" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-      </div>
-    </div>
-
-    <h2 id="profile-username" class="text-2xl font-extrabold tracking-tight text-on-surface mb-1 neon-text">Đang tải...</h2>
-    <p id="profile-role" class="text-sm font-bold text-primary uppercase tracking-widest mb-8">...</p>
-
-    <!-- Info Cards -->
-    <div class="w-full flex flex-col gap-4 mb-10">
-      <div class="bg-surface-container p-4 rounded-2xl flex items-center gap-4">
-        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-          <span class="material-symbols-outlined text-primary notranslate">mail</span>
-        </div>
-        <div class="flex-1 overflow-hidden">
-          <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">Email</p>
-          <p id="profile-email" class="text-sm font-medium text-on-surface truncate">đang tải...</p>
-        </div>
-      </div>
-
-      <div class="bg-surface-container p-4 rounded-2xl flex items-center gap-4">
-        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-          <span class="material-symbols-outlined text-primary notranslate">calendar_month</span>
-        </div>
-        <div>
-          <p class="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">Ngày tham gia</p>
-          <p id="profile-joined" class="text-sm font-medium text-on-surface truncate">đang tải...</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- General Actions -->
-    <div class="w-full flex flex-col gap-3">
-      <button class="w-full bg-surface-container-highest p-4 rounded-xl flex items-center justify-between hover:bg-surface-container transition-colors" onclick="alert('Chức năng đổi mật khẩu đang được phát triển!')">
-        <div class="flex items-center gap-3">
-          <span class="material-symbols-outlined text-on-surface-variant notranslate">lock</span>
-          <span class="font-semibold text-sm">Đổi mật khẩu</span>
-        </div>
-        <span class="material-symbols-outlined text-on-surface-variant text-sm notranslate">chevron_right</span>
+        },
+      };
+    </script>
+    <style>
+      body { font-family: "Plus Jakarta Sans", sans-serif; }
+      .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24; }
+      .glass-card { background: rgba(36, 36, 55, 0.7); backdrop-filter: blur(20px); }
+      .orange-gradient { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); }
+      .neon-text { text-shadow: 0 0 10px rgba(14, 165, 233, 0.4); }
+    </style>
+  </head>
+  <body class="bg-surface text-on-surface min-h-[100dvh] flex flex-col pb-8">
+    <!-- Top AppBar -->
+    <header class="w-full sticky top-0 z-50 bg-[#0d0d1a]/80 backdrop-blur-md shadow-[0px_4px_20px_rgba(14,165,233,0.1)] flex items-center px-4 sm:px-6 h-16 gap-4">
+      <button id="back-btn" class="text-primary active:scale-95 transition-transform flex items-center justify-center -ml-2 p-2">
+        <span class="material-symbols-outlined notranslate">arrow_back</span>
       </button>
+      <h1 class="text-lg sm:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#0ea5e9] to-[#0284c7] font-headline tracking-tight">
+        Hồ Sơ Cá Nhân
+      </h1>
+    </header>
 
-      <button id="logout-btn" class="w-full bg-error/10 border border-error/20 p-4 rounded-xl flex items-center justify-between text-error hover:bg-error/20 transition-colors active:scale-[0.98]">
-        <div class="flex items-center gap-3">
+    <main class="flex-1 flex flex-col items-center px-4 sm:px-6 py-8 w-full max-w-lg mx-auto">
+      <!-- Avatar Section -->
+      <div class="relative mb-6">
+        <div
+          id="profile-avatar"
+          class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-primary/30 bg-surface-container-highest flex items-center justify-center font-bold text-primary text-3xl sm:text-4xl shadow-[0_0_24px_rgba(14,165,233,0.2)]"
+        >?</div>
+        <div class="absolute bottom-0 right-0 w-7 h-7 sm:w-8 sm:h-8 bg-surface border-2 border-primary/30 rounded-full flex items-center justify-center">
+          <span class="material-symbols-outlined text-[#4ade80] text-base sm:text-lg notranslate" style="font-variation-settings:'FILL' 1;">check_circle</span>
+        </div>
+      </div>
+
+      <h2 id="profile-username" class="text-xl sm:text-2xl font-extrabold tracking-tight text-on-surface mb-1 neon-text">
+        Đang tải...
+      </h2>
+      <p id="profile-role" class="text-xs sm:text-sm font-bold text-primary uppercase tracking-widest mb-8">...</p>
+
+      <!-- Info Cards -->
+      <div class="w-full flex flex-col gap-3 sm:gap-4 mb-10">
+        <div class="bg-surface-container p-4 rounded-2xl flex items-center gap-3 sm:gap-4">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary notranslate">mail</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-[10px] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">Email</p>
+            <p id="profile-email" class="text-sm font-medium text-on-surface truncate">đang tải...</p>
+          </div>
+        </div>
+
+        <div class="bg-surface-container p-4 rounded-2xl flex items-center gap-3 sm:gap-4">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0 rounded-full bg-primary/10 flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary notranslate">calendar_month</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-[10px] sm:text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-0.5">Ngày tham gia</p>
+            <p id="profile-joined" class="text-sm font-medium text-on-surface">đang tải...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="w-full flex flex-col gap-3">
+        <button
+          class="w-full bg-surface-container-highest p-4 rounded-xl flex items-center justify-between hover:bg-surface-container transition-colors active:scale-[0.98]"
+          onclick="alert('Chức năng đổi mật khẩu đang được phát triển!')"
+        >
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-on-surface-variant notranslate">lock</span>
+            <span class="font-semibold text-sm">Đổi mật khẩu</span>
+          </div>
+          <span class="material-symbols-outlined text-on-surface-variant text-sm notranslate">chevron_right</span>
+        </button>
+
+        <button
+          id="logout-btn"
+          class="w-full bg-error/10 border border-error/20 p-4 rounded-xl flex items-center gap-3 text-error hover:bg-error/20 transition-colors active:scale-[0.98]"
+        >
           <span class="material-symbols-outlined notranslate">logout</span>
           <span class="font-bold text-sm">Đăng xuất khỏi hệ thống</span>
-        </div>
-      </button>
-    </div>
-  </main>
+        </button>
+      </div>
+    </main>
 
-  <script type="module" src="../js/profile.js"></script>
-<script src="../js/translator.js"></script>
-</body>
+    <script type="module" src="../js/profile.js"></script>
+    <script src="../js/translator.js"></script>
+  </body>
 </html>
