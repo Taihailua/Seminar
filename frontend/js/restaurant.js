@@ -49,14 +49,14 @@ function startTTS(text) {
   window.speechSynthesis.resume();
 
   ttsUtterance = new SpeechSynthesisUtterance(text);
-  
+
   // Find a voice that matches the selectedLang or just use the system default
   const voices = window.speechSynthesis.getVoices();
   const voice = voices.find(v => v.lang === selectedLang) || voices.find(v => v.lang.startsWith(selectedLang.split('-')[0]));
   if (voice) {
     ttsUtterance.voice = voice;
   }
-  
+
   ttsUtterance.lang = selectedLang;
   ttsUtterance.rate = 1.0;
   ttsUtterance.pitch = 1.0;
@@ -108,7 +108,9 @@ function stopTTS() {
 function updatePlayButton(playing) {
   const btn = document.getElementById('play-btn');
   if (btn) {
-    btn.innerHTML = playing ? '⏸' : '▶';
+    btn.innerHTML = playing
+      ? '<span class="text-3xl sm:text-4xl">⏸</span>'
+      : '<span class="material-symbols-outlined text-3xl sm:text-4xl notranslate" style="font-variation-settings:\'FILL\' 1;">play_arrow</span>';
     btn.style.boxShadow = playing
       ? '0 0 24px rgba(14,165,233,0.7)'
       : '0 0 16px rgba(14,165,233,0.3)';
@@ -183,14 +185,10 @@ function updateGeofenceBadge(dist) {
 }
 
 function showGeofenceAlert(dist) {
+  // Responsive toast — dùng Tailwind classes thay inline style
   const toast = document.createElement('div');
-  toast.style.cssText = `
-    position:fixed;top:20px;left:50%;transform:translateX(-50%);
-    background:#b92902;color:#fff;padding:14px 24px;border-radius:12px;
-    z-index:9999;font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;
-    box-shadow:0 8px 24px rgba(0,0,0,0.4);
-    animation:slideDown 0.3s ease;
-  `;
+  toast.className = 'fixed top-4 left-1/2 -translate-x-1/2 w-[90%] max-w-sm bg-[#b92902] text-white px-4 py-3.5 rounded-xl z-[9999] font-semibold text-xs sm:text-sm shadow-[0_8px_24px_rgba(0,0,0,0.4)] text-center';
+  toast.style.fontFamily = "'Plus Jakarta Sans', sans-serif";
   toast.textContent = `⚠️ Đã ra khỏi khu vực quán (${Math.round(dist)}m). Thuyết minh đã dừng.`;
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 4000);
@@ -202,42 +200,35 @@ function renderDishes(dishes) {
   if (!container) return;
 
   if (!dishes || dishes.length === 0) {
-    container.innerHTML = '<p style="color:#aba9bb;text-align:center;padding:16px;">Chưa có món ăn</p>';
+    container.innerHTML = '<p class="text-[#aba9bb] text-center py-4 text-sm">Chưa có món ăn</p>';
     return;
   }
 
   container.innerHTML = '';
   const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;';
+  // Horizontal scroll with snap on mobile
+  wrapper.className = 'flex gap-3 overflow-x-auto pb-2 no-scrollbar snap-x snap-mandatory scroll-smooth';
 
   dishes.forEach((dish) => {
     const card = document.createElement('div');
-    card.style.cssText = `
-      flex-shrink:0;width:140px;background:#242437;border-radius:12px;overflow:hidden;
-      transition:transform 0.2s;cursor:default;
-    `;
+    // Responsive card width — slightly narrower on phone, wider on tablet
+    card.className = 'flex-shrink-0 w-32 sm:w-36 bg-[#242437] rounded-xl overflow-hidden snap-center transition-transform duration-200 hover:-translate-y-1';
     card.innerHTML = `
-      <div style="
-        height:100px;background:linear-gradient(135deg,#1a1a2e,#242437);
-        display:flex;align-items:center;justify-content:center;font-size:40px;
-        ${dish.image_url ? `background-image:url('${dish.image_url}');background-size:cover;background-position:center;` : ''}
-      ">${dish.image_url ? '' : '🍽️'}</div>
-      <div style="padding:10px;">
-        <div style="font-weight:700;color:#e9e6f9;font-size:13px;line-height:1.3;">${dish.name}</div>
-        <div style="color:#0ea5e9;font-weight:700;font-size:14px;margin-top:4px;">
+      <div class="h-20 sm:h-24 flex items-center justify-center text-4xl relative overflow-hidden"
+        style="${dish.image_url ? `background:url('${dish.image_url}') center/cover;` : 'background:linear-gradient(135deg,#1a1a2e,#242437);'}">
+        ${dish.image_url ? '' : '🍽️'}
+      </div>
+      <div class="p-2.5">
+        <div class="font-bold text-[#e9e6f9] text-xs sm:text-[13px] leading-tight mb-1 line-clamp-2">${dish.name}</div>
+        <div class="text-[#0ea5e9] font-bold text-xs sm:text-[14px] mb-1.5">
           ${dish.price ? Number(dish.price).toLocaleString('vi-VN') + 'đ' : 'Liên hệ'}
         </div>
-        <div style="margin-top:6px;">
-          <span style="
-            font-size:10px;padding:2px 8px;border-radius:20px;
-            background:${dish.is_available ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'};
-            color:${dish.is_available ? '#4ade80' : '#f87171'};
-          ">${dish.is_available ? 'Còn món' : 'Hết món'}</span>
-        </div>
+        <span class="text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full"
+          style="background:${dish.is_available ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'};color:${dish.is_available ? '#4ade80' : '#f87171'};">
+          ${dish.is_available ? 'Còn món' : 'Hết món'}
+        </span>
       </div>
     `;
-    card.addEventListener('mouseenter', () => { card.style.transform = 'translateY(-4px)'; });
-    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
     wrapper.appendChild(card);
   });
 
@@ -257,33 +248,29 @@ function renderReviews(reviews, avgRating) {
   container.innerHTML = '';
 
   if (!reviews || reviews.length === 0) {
-    container.innerHTML = '<p style="color:#aba9bb;text-align:center;padding:16px;">Chưa có đánh giá nào. Hãy là người đầu tiên!</p>';
+    container.innerHTML = '<p class="text-[#aba9bb] text-center py-4 text-sm">Chưa có đánh giá nào. Hãy là người đầu tiên!</p>';
     return;
   }
 
   reviews.forEach((review) => {
     const card = document.createElement('div');
-    card.style.cssText = `
-      background:#242437;border-radius:12px;padding:16px;margin-bottom:10px;
-    `;
+    card.className = 'bg-[#242437] rounded-xl p-3 sm:p-4';
     const stars = '⭐'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
     const date = new Date(review.created_at).toLocaleDateString('vi-VN');
     const initial = (review.username || 'K')[0].toUpperCase();
 
     card.innerHTML = `
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-        <div style="
-          width:40px;height:40px;background:linear-gradient(135deg,#0ea5e9,#0284c7);
-          border-radius:50%;display:flex;align-items:center;justify-content:center;
-          font-weight:700;color:#521f00;font-size:16px;flex-shrink:0;
-        ">${initial}</div>
-        <div>
-          <div style="font-weight:700;color:#e9e6f9;font-size:14px;">${review.username || 'Khách vãng lai'}</div>
-          <div style="font-size:12px;color:#aba9bb;">${date}</div>
+      <div class="flex items-center gap-3 mb-2.5">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-full flex items-center justify-center font-bold text-[#521f00] text-sm sm:text-[16px] flex-shrink-0">
+          ${initial}
         </div>
-        <div style="margin-left:auto;font-size:13px;">${stars}</div>
+        <div class="flex-1 min-w-0">
+          <div class="font-bold text-[#e9e6f9] text-xs sm:text-sm truncate">${review.username || 'Khách vãng lai'}</div>
+          <div class="text-[10px] sm:text-xs text-[#aba9bb]">${date}</div>
+        </div>
+        <div class="text-xs sm:text-[13px] flex-shrink-0">${stars}</div>
       </div>
-      ${review.comment ? `<p style="color:#e9e6f9;font-size:14px;line-height:1.6;margin:0;">${review.comment}</p>` : ''}
+      ${review.comment ? `<p class="text-[#e9e6f9] text-xs sm:text-sm leading-relaxed m-0">${review.comment}</p>` : ''}
     `;
     container.appendChild(card);
   });
@@ -325,9 +312,9 @@ function setupStarPicker() {
     if (!reviewForm) return;
     const picker = document.createElement('div');
     picker.id = 'star-picker';
-    picker.style.cssText = 'display:flex;gap:8px;margin:12px 0;';
+    picker.className = 'flex gap-2 my-3';
     picker.innerHTML = [1, 2, 3, 4, 5].map((n) => `
-      <span data-star="${n}" style="font-size:28px;cursor:pointer;transition:transform 0.15s;">☆</span>
+      <span data-star="${n}" class="text-2xl sm:text-[28px] cursor-pointer transition-transform hover:scale-110 select-none">☆</span>
     `).join('');
     reviewForm.prepend(picker);
 
@@ -335,6 +322,7 @@ function setupStarPicker() {
     const input = document.createElement('input');
     input.type = 'hidden';
     input.id = 'review-rating';
+    input.value = '5';
     picker.appendChild(input);
 
     picker.querySelectorAll('[data-star]').forEach((star) => {
@@ -345,14 +333,7 @@ function setupStarPicker() {
           s.textContent = parseInt(s.dataset.star) <= selectedStar ? '⭐' : '☆';
         });
       });
-      star.addEventListener('mouseenter', () => {
-        star.style.transform = 'scale(1.2)';
-      });
-      star.addEventListener('mouseleave', () => {
-        star.style.transform = '';
-      });
     });
-    input.value = 5;
   }
 }
 
@@ -374,7 +355,6 @@ function buildLanguageSelector() {
     });
 
     langContainer.innerHTML = '';
-    langContainer.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;';
 
     // Prioritize commonly used languages, sort the rest
     const codePriority = ['vi-VN', 'en-US', 'fr-FR', 'zh-CN', 'ja-JP', 'ko-KR'];
@@ -397,7 +377,7 @@ function buildLanguageSelector() {
         'nl-NL': '🇳🇱', 'pl-PL': '🇵🇱', 'tr-TR': '🇹🇷', 'ar-SA': '🇸🇦',
         'hi-IN': '🇮🇳', 'ms-MY': '🇲🇾', 'km-KH': '🇰🇭', 'lo-LA': '🇱🇦'
       };
-      
+
       const parts = code.split('-');
       const dispLabel = flagMap[code] ? `${flagMap[code]} ${parts[0].toUpperCase()}` : `🌐 ${parts[0].toUpperCase()}`;
 
@@ -405,12 +385,8 @@ function buildLanguageSelector() {
       pill.dataset.lang = code;
       pill.textContent = dispLabel;
       pill.title = uniqueLangs.get(code); // show native voice name on hover
-      pill.style.cssText = `
-        padding:8px 14px;border-radius:20px;border:none;cursor:pointer;
-        font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;
-        background:#242437;color:#aba9bb;transition:all 0.2s;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      `;
+      // Tailwind pill classes — responsive text size
+      pill.className = 'flex-shrink-0 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full border-none cursor-pointer font-bold text-[11px] sm:text-xs transition-all bg-[#242437] text-[#aba9bb] shadow-sm snap-start';
 
       if (code === selectedLang || (i === 0 && !uniqueLangs.has(selectedLang))) {
         selectedLang = code;
@@ -421,7 +397,7 @@ function buildLanguageSelector() {
 
       pill.addEventListener('click', async () => {
         if (pill.classList.contains('active')) return;
-        
+
         langContainer.querySelectorAll('button').forEach((p) => {
           p.style.background = '#242437';
           p.style.color = '#aba9bb';
@@ -431,7 +407,7 @@ function buildLanguageSelector() {
         pill.style.color = '#521f00';
         pill.classList.add('active');
         selectedLang = code;
-        
+
         // Trigger re-fetch for translation
         const urlParams = new URLSearchParams(window.location.search);
         const rid = urlParams.get('id');
@@ -522,9 +498,9 @@ function wireReviewForm(restaurantId) {
   const reviewFormEl = document.getElementById('review-form');
 
   if (toggleBtn && reviewFormEl) {
-    reviewFormEl.style.display = 'none';
+    reviewFormEl.classList.add('hidden');
     toggleBtn.addEventListener('click', () => {
-      reviewFormEl.style.display = reviewFormEl.style.display === 'none' ? 'block' : 'none';
+      reviewFormEl.classList.toggle('hidden');
     });
   }
 
@@ -545,14 +521,14 @@ async function loadRestaurantData(id, lang = null) {
     const data = await api.get(`/api/restaurants/${id}${query}`);
     restaurant = data;
     console.log('[Restaurant] Details loaded:', restaurant);
-    
+
     // Update UI
     populatePage(restaurant);
     return restaurant;
   } catch (err) {
     console.error('[Restaurant] Fetch failed:', err);
     if (!restaurant) {
-      document.body.innerHTML = `<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy nhà hàng. <a href="map.html" style="color:#0ea5e9;">Quay lại bản đồ</a></div>`;
+      document.body.innerHTML = `<div class="flex items-center justify-center min-h-[100dvh] bg-[#0d0d1a]"><div class="text-center p-10 font-sans"><p class="text-[#ff7351] text-lg mb-4">Không tìm thấy nhà hàng.</p><a href="map.html" class="text-[#0ea5e9] font-bold underline">Quay lại bản đồ</a></div></div>`;
     } else {
       updateStatus('⚠️ Lỗi khi dịch nội dung. Đang dùng bản gốc.');
     }
@@ -566,7 +542,7 @@ async function init() {
 
   if (!restaurantId) {
     console.error('[Restaurant] No ID found in URL');
-    document.body.innerHTML = '<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy ID nhà hàng. <a href="map.html" style="color:#0ea5e9;">Quay lại bản đồ</a></div>';
+    document.body.innerHTML = '<div class="flex items-center justify-center min-h-[100dvh] bg-[#0d0d1a]"><div class="text-center p-10 font-sans"><p class="text-[#ff7351] text-lg mb-4">Không tìm thấy ID nhà hàng.</p><a href="map.html" class="text-[#0ea5e9] font-bold underline">Quay lại bản đồ</a></div></div>';
     return;
   }
 
