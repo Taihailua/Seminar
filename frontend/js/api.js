@@ -5,7 +5,7 @@
 
 // Automatically switch API base based on hostname. For production, update the production URL.
 // Use an empty string for relative paths so the app works on any domain/port it's served from.
-export const API_BASE = 'https://seminar-iv5y-git-main-taihailuas-projects.vercel.app';
+export const API_BASE = 'https://seminar-r9y7.onrender.com';
 
 /**
  * Core fetch wrapper. Attaches Bearer token automatically.
