@@ -19,7 +19,7 @@
                         "surface-container-highest": "#242437",
                         "surface-container": "#181828",
                         "on-primary-fixed": "#000000",
-                        "primary-fixed": "#ff7a27",
+                        "primary-fixed": "#0284c7",
                         "error-container": "#b92902",
                         "secondary-fixed": "#ffc69d",
                         "on-primary": "#521f00",
@@ -28,9 +28,9 @@
                         "secondary-container": "#934b00",
                         "surface-container-low": "#121220",
                         "tertiary-fixed-dim": "#ecaa12",
-                        "primary-container": "#ff7a27",
-                        "surface-tint": "#ff9155",
-                        "primary": "#ff9155",
+                        "primary-container": "#0284c7",
+                        "surface-tint": "#0ea5e9",
+                        "primary": "#0ea5e9",
                         "on-secondary-fixed-variant": "#7e4000",
                         "on-primary-container": "#3f1600",
                         "surface-container-lowest": "#000000",
@@ -40,7 +40,7 @@
                         "on-secondary-container": "#fff6f2",
                         "on-tertiary-fixed-variant": "#5f4200",
                         "outline": "#757485",
-                        "primary-dim": "#ff751a",
+                        "primary-dim": "#0284c7",
                         "on-error": "#450900",
                         "secondary-dim": "#ed862b",
                         "on-tertiary-fixed": "#3a2600",
@@ -49,7 +49,7 @@
                         "on-tertiary": "#5f4200",
                         "error": "#ff7351",
                         "outline-variant": "#474656",
-                        "secondary": "#fd9338",
+                        "secondary": "#38bdf8",
                         "surface": "#0d0d1a",
                         "on-surface": "#e9e6f9",
                         "inverse-on-surface": "#545363",
@@ -84,8 +84,8 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0d0d1a; color: #e9e6f9; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         .glass-card { background: rgba(36, 36, 55, 0.7); backdrop-filter: blur(20px); }
-        .neon-glow { text-shadow: 0 0 10px rgba(255, 145, 85, 0.5); }
-        .orange-gradient { background: linear-gradient(135deg, #ff9155 0%, #f26c0d 100%); }
+        .neon-glow { text-shadow: 0 0 10px rgba(14, 165, 233, 0.5); }
+        .orange-gradient { background: linear-gradient(135deg, #0ea5e9 0%, #0ea5e9 100%); }
     </style>
 <style>
     body {
@@ -95,13 +95,13 @@
   </head>
 <body class="pb-32">
 <!-- Top AppBar (Shared Component Logic) -->
-<nav class="w-full top-0 sticky z-50 bg-[#0d0d1a] shadow-[0px_4px_20px_rgba(242,108,13,0.1)] flex justify-between items-center px-6 h-16">
+<nav class="w-full top-0 sticky z-50 bg-[#0d0d1a] shadow-[0px_4px_20px_rgba(14,165,233,0.1)] flex justify-between items-center px-6 h-16">
 <div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-[#ff9155]">restaurant</span>
-<span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#ff9155] to-[#f26c0d] font-['Plus_Jakarta_Sans'] tracking-tight">The Neon Gastronome</span>
+<span class="material-symbols-outlined text-[#0ea5e9]">restaurant</span>
+<span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#0ea5e9] to-[#0ea5e9] font-['Plus_Jakarta_Sans'] tracking-tight">The Neon Gastronome</span>
 </div>
 <div class="flex items-center gap-2 active:scale-95 duration-200 cursor-pointer" onclick="window.location.href='profile.html';">
-<span class="material-symbols-outlined text-[#ff9155]">account_circle</span>
+<span class="material-symbols-outlined text-[#0ea5e9]">account_circle</span>
 </div>
 </nav>
 <main class="px-6 py-8 max-w-lg mx-auto">
@@ -158,7 +158,7 @@
 </div>
 </section>
 <!-- QR Code Section -->
-<section class="mb-10 bg-surface-container-high p-8 rounded-2xl flex flex-col items-center text-center shadow-[0px_8px_32px_rgba(242,108,13,0.05)] border border-outline-variant/10">
+<section class="mb-10 bg-surface-container-high p-8 rounded-2xl flex flex-col items-center text-center shadow-[0px_8px_32px_rgba(14,165,233,0.05)] border border-outline-variant/10">
 <h2 class="text-lg font-bold mb-6">Mã QR Của Quán</h2>
 <div class="p-4 bg-white rounded-2xl mb-6 shadow-[0px_0px_30px_rgba(255,255,255,0.1)]">
 <div class="w-[200px] h-[200px] bg-background rounded-lg flex items-center justify-center border-4 border-primary/20 relative">
@@ -166,7 +166,7 @@
 <div class="absolute inset-0 border-2 border-primary/40 rounded-lg animate-pulse"></div>
 </div>
 </div>
-<button class="orange-gradient text-on-primary-fixed w-full h-[56px] rounded-xl font-bold flex items-center justify-center gap-2 shadow-[0px_8px_24px_rgba(242,108,13,0.3)] active:scale-95 transition-all" onclick="alert('Vui lòng chụp màn hình hoặc dùng tính năng Lưu Ảnh để lấy QR. Tính năng Xuất file PDF đang phát triển!');">
+<button class="orange-gradient text-on-primary-fixed w-full h-[56px] rounded-xl font-bold flex items-center justify-center gap-2 shadow-[0px_8px_24px_rgba(14,165,233,0.3)] active:scale-95 transition-all" onclick="alert('Vui lòng chụp màn hình hoặc dùng tính năng Lưu Ảnh để lấy QR. Tính năng Xuất file PDF đang phát triển!');">
 <span class="material-symbols-outlined">download</span>
                 Tải xuống QR
             </button>
@@ -209,7 +209,7 @@
 <input id="restaurant-lng" class="bg-surface-container-high border-none rounded-xl text-on-surface focus:ring-1 focus:ring-primary/40 p-4 text-sm font-medium transition-all" type="text" placeholder="Ví dụ: 106.702737"/>
 </div>
 </div>
-<button id="save-restaurant" class="save-btn orange-gradient text-on-primary-fixed w-full h-[56px] rounded-xl font-bold mt-2 shadow-[0px_8px_24px_rgba(242,108,13,0.2)] active:scale-95 transition-all">
+<button id="save-restaurant" class="save-btn orange-gradient text-on-primary-fixed w-full h-[56px] rounded-xl font-bold mt-2 shadow-[0px_8px_24px_rgba(14,165,233,0.2)] active:scale-95 transition-all">
                     Lưu thay đổi
                 </button>
 </div>
@@ -237,16 +237,16 @@
 </section>
 </main>
 <!-- Bottom Navigation Bar (Shared Component Logic) -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-4 bg-[#181828]/70 backdrop-blur-xl rounded-t-2xl shadow-[0px_-8px_24px_rgba(242,108,13,0.15)] border-t border-[#242437]/15">
-<a class="flex flex-col items-center justify-center text-[#ff9155] bg-[#242437] rounded-xl px-4 py-1 active:scale-90 transition-transform" href="#">
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-4 bg-[#181828]/70 backdrop-blur-xl rounded-t-2xl shadow-[0px_-8px_24px_rgba(14,165,233,0.15)] border-t border-[#242437]/15">
+<a class="flex flex-col items-center justify-center text-[#0ea5e9] bg-[#242437] rounded-xl px-4 py-1 active:scale-90 transition-transform" href="#">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Dashboard</span>
 </a>
-<a class="flex flex-col items-center justify-center text-[#e9e6f9]/60 hover:text-[#ff9155] active:scale-90 transition-transform" href="#" onclick="alert('Trình quản lý Menu chuyên sâu đang được nâng cấp!'); return false;">
+<a class="flex flex-col items-center justify-center text-[#e9e6f9]/60 hover:text-[#0ea5e9] active:scale-90 transition-transform" href="#" onclick="alert('Trình quản lý Menu chuyên sâu đang được nâng cấp!'); return false;">
 <span class="material-symbols-outlined">menu_book</span>
 <span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Menu</span>
 </a>
-<a class="flex flex-col items-center justify-center text-[#e9e6f9]/60 hover:text-[#ff9155] active:scale-90 transition-transform" href="#" onclick="alert('Trang thiết lập Cửa Hàng đang được nâng cấp!'); return false;">
+<a class="flex flex-col items-center justify-center text-[#e9e6f9]/60 hover:text-[#0ea5e9] active:scale-90 transition-transform" href="#" onclick="alert('Trang thiết lập Cửa Hàng đang được nâng cấp!'); return false;">
 <span class="material-symbols-outlined">settings</span>
 <span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Settings</span>
 </a>

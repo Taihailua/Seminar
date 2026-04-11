@@ -154,7 +154,7 @@ function renderOwnerDishes(dishes, restaurantId) {
       ">${dish.image_url ? '' : '🍽️'}</div>
       <div style="flex:1;min-width:0;">
         <div style="font-weight:700;color:#e9e6f9;font-size:14px;">${dish.name}</div>
-        <div style="color:#ff9155;font-size:13px;margin-top:2px;">
+        <div style="color:#0ea5e9;font-size:13px;margin-top:2px;">
           ${dish.price ? Number(dish.price).toLocaleString('vi-VN') + 'đ' : 'Liên hệ'}
         </div>
       </div>
@@ -162,7 +162,7 @@ function renderOwnerDishes(dishes, restaurantId) {
         <input type="checkbox" ${dish.is_available ? 'checked' : ''} data-dish-id="${dish.id}" class="dish-toggle">
         <span style="
           display:inline-block;width:42px;height:24px;border-radius:12px;
-          background:${dish.is_available ? 'linear-gradient(135deg,#ff9155,#ff7a27)' : '#474656'};
+          background:${dish.is_available ? 'linear-gradient(135deg,#0ea5e9,#0284c7)' : '#474656'};
           position:relative;transition:background 0.3s;
         "></span>
       </label>
@@ -185,7 +185,7 @@ function renderOwnerDishes(dishes, restaurantId) {
       const span = toggle.nextElementSibling;
       try {
         await api.put(`/api/dishes/${dishId}`, { is_available: toggle.checked });
-        if (span) span.style.background = toggle.checked ? 'linear-gradient(135deg,#ff9155,#ff7a27)' : '#474656';
+        if (span) span.style.background = toggle.checked ? 'linear-gradient(135deg,#0ea5e9,#0284c7)' : '#474656';
       } catch (err) {
         alert('Lỗi: ' + err.message);
         toggle.checked = !toggle.checked;
@@ -226,7 +226,7 @@ function wireAddDish(restaurantId) {
     `;
     dialog.innerHTML = `
       <div style="background:#181828;border-radius:16px;padding:24px;width:90%;max-width:400px;">
-        <h3 style="color:#ff9155;font-family:'Plus Jakarta Sans',sans-serif;margin:0 0 16px;">➕ Thêm Món Mới</h3>
+        <h3 style="color:#0ea5e9;font-family:'Plus Jakarta Sans',sans-serif;margin:0 0 16px;">➕ Thêm Món Mới</h3>
         <input id="new-dish-name" placeholder="Tên món ăn *" style="${inputStyle}">
         <input id="new-dish-price" type="number" placeholder="Giá (VNĐ)" style="${inputStyle}">
         <input id="new-dish-image" placeholder="Link ảnh (tùy chọn)" style="${inputStyle}">
@@ -264,7 +264,7 @@ const inputStyle = `
 `;
 const btnStyle = `
   flex:1;padding:12px;border-radius:8px;border:none;cursor:pointer;
-  background:linear-gradient(135deg,#ff9155,#ff7a27);color:#521f00;
+  background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#521f00;
   font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;
 `;
 const cancelBtnStyle = `

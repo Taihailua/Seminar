@@ -35,19 +35,19 @@
                     "secondary-container": "#934b00",
                     "on-error": "#450900",
                     "tertiary-dim": "#ecaa12",
-                    "primary-fixed": "#ff7a27",
-                    "secondary": "#fd9338",
+                    "primary-fixed": "#0284c7",
+                    "secondary": "#38bdf8",
                     "tertiary-container": "#fcb825",
                     "surface-container": "#181828",
-                    "primary-container": "#ff7a27",
-                    "surface-tint": "#ff9155",
+                    "primary-container": "#0284c7",
+                    "surface-tint": "#0ea5e9",
                     "surface-bright": "#2a2a3f",
                     "on-error-container": "#ffd2c8",
                     "on-surface": "#e9e6f9",
                     "on-secondary-container": "#fff6f2",
                     "on-secondary-fixed-variant": "#7e4000",
                     "on-primary-container": "#3f1600",
-                    "primary-dim": "#ff751a",
+                    "primary-dim": "#0284c7",
                     "surface-dim": "#0d0d1a",
                     "surface-container-high": "#1e1e2f",
                     "on-tertiary-fixed-variant": "#5f4200",
@@ -56,7 +56,7 @@
                     "error-dim": "#d53d18",
                     "background": "#0d0d1a",
                     "inverse-primary": "#9f4300",
-                    "primary": "#ff9155",
+                    "primary": "#0ea5e9",
                     "on-tertiary": "#5f4200",
                     "on-secondary-fixed": "#542900",
                     "on-primary": "#521f00",
@@ -98,11 +98,11 @@
 <body class="bg-surface text-on-surface pb-24">
 <!-- Top Navigation Anchor (Manual for Details Page Flow) -->
 <header class="fixed top-0 w-full z-50 bg-[#0d0d1a]/80 backdrop-blur-xl flex justify-between items-center px-4 h-16 shadow-sm">
-<button id="back-btn" class="text-[#ff9155] active:scale-95 duration-200">
+<button id="back-btn" class="text-[#0ea5e9] active:scale-95 duration-200">
 <span class="material-symbols-outlined">arrow_back</span>
 </button>
-<h1 class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-lg text-[#ff9155]">Night Market Guide</h1>
-<button class="text-[#ff9155] active:scale-95 duration-200" onclick="alert('Tùy chọn phụ đang cập nhật.');">
+<h1 class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-lg text-[#0ea5e9]">Night Market Guide</h1>
+<button class="text-[#0ea5e9] active:scale-95 duration-200" onclick="alert('Tùy chọn phụ đang cập nhật.');">
 <span class="material-symbols-outlined">more_vert</span>
 </button>
 </header>
@@ -140,8 +140,8 @@
 <!-- Language Pills (wired by restaurant.js) -->
 <div id="lang-selector" class="flex gap-2 mb-8 overflow-x-auto pb-2 no-scrollbar"></div>
 <!-- Geofence Simulator (Dev tools) -->
-<div style="background:rgba(242,108,13,0.1); border:1px solid rgba(242,108,13,0.3); border-radius:8px; padding:12px; margin-bottom:24px;">
-    <p style="font-size:10px; font-weight:bold; color:#ff9155; margin-bottom:8px; text-transform:uppercase;">🛠️ Giả lập Geofencing</p>
+<div style="background:rgba(14,165,233,0.1); border:1px solid rgba(14,165,233,0.3); border-radius:8px; padding:12px; margin-bottom:24px;">
+    <p style="font-size:10px; font-weight:bold; color:#0ea5e9; margin-bottom:8px; text-transform:uppercase;">🛠️ Giả lập Geofencing</p>
     <div style="display:flex; gap:8px;">
         <button onclick="window.simulateGeofence(10)" style="flex:1; background:#242437; padding:6px; border-radius:6px; font-size:11px; font-weight:bold; color:#e9e6f9;">Trong 20m</button>
         <button onclick="window.simulateGeofence(25)" style="flex:1; background:#242437; padding:6px; border-radius:6px; font-size:11px; font-weight:bold; color:#f87171;">Ngoài 20m</button>
@@ -155,7 +155,7 @@
 </div>
 <div class="flex items-center justify-between w-full px-4">
 <button class="text-on-surface-variant" onclick="alert('Tính năng tua nhanh đang nâng cấp');"><span class="material-symbols-outlined text-3xl">replay_10</span></button>
-<button id="play-btn" class="audio-play-btn w-[72px] h-[72px] rounded-full bg-gradient-to-tr from-[#ff9155] to-[#f26c0d] shadow-[0px_8px_24px_rgba(242,108,13,0.4)] flex items-center justify-center text-white active:scale-95 transition-transform">
+<button id="play-btn" class="audio-play-btn w-[72px] h-[72px] rounded-full bg-gradient-to-tr from-[#0ea5e9] to-[#0ea5e9] shadow-[0px_8px_24px_rgba(14,165,233,0.4)] flex items-center justify-center text-white active:scale-95 transition-transform">
 <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
 </button>
 <button class="text-on-surface-variant" onclick="alert('Tính năng tua nhanh đang nâng cấp');"><span class="material-symbols-outlined text-3xl">forward_10</span></button>
@@ -195,7 +195,7 @@ Viết đánh giá
 </button>
 <div id="review-form" class="review-form" style="display:none;margin-top:12px;">
 <textarea id="review-comment" placeholder="Chia sẻ trải nghiệm của bạn..." style="width:100%;padding:12px;border-radius:8px;border:none;background:#242437;color:#e9e6f9;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;min-height:80px;box-sizing:border-box;"></textarea>
-<button id="review-submit" style="margin-top:8px;width:100%;height:48px;border-radius:8px;border:none;cursor:pointer;background:linear-gradient(135deg,#ff9155,#ff7a27);color:#521f00;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;">Gửi đánh giá</button>
+<button id="review-submit" style="margin-top:8px;width:100%;height:48px;border-radius:8px;border:none;cursor:pointer;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#521f00;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;">Gửi đánh giá</button>
 </div>
 </section>
 </main>
@@ -206,7 +206,7 @@ Viết đánh giá
 <span class="material-symbols-outlined">map</span>
 <span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-wider mt-1">Back to Map</span>
 </a>
-<a class="flex flex-col items-center justify-center bg-gradient-to-tr from-[#ff9155] to-[#f26c0d] text-white rounded-xl py-2 px-6 shadow-[0px_8px_24px_rgba(242,108,13,0.3)] active:scale-[0.98]" href="#" onclick="navigator.clipboard.writeText(window.location.href); alert('Đã sao chép link nhà hàng vào clipboard!'); return false;">
+<a class="flex flex-col items-center justify-center bg-gradient-to-tr from-[#0ea5e9] to-[#0ea5e9] text-white rounded-xl py-2 px-6 shadow-[0px_8px_24px_rgba(14,165,233,0.3)] active:scale-[0.98]" href="#" onclick="navigator.clipboard.writeText(window.location.href); alert('Đã sao chép link nhà hàng vào clipboard!'); return false;">
 <span class="material-symbols-outlined">share</span>
 <span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-wider mt-1">Share</span>
 </a>
