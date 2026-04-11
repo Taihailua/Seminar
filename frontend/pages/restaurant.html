@@ -99,11 +99,11 @@
 <!-- Top Navigation Anchor (Manual for Details Page Flow) -->
 <header class="fixed top-0 w-full z-50 bg-[#0d0d1a]/80 backdrop-blur-xl flex justify-between items-center px-4 h-16 shadow-sm">
 <button id="back-btn" class="text-[#0ea5e9] active:scale-95 duration-200">
-<span class="material-symbols-outlined">arrow_back</span>
+<span class="material-symbols-outlined notranslate">arrow_back</span>
 </button>
 <h1 class="font-['Plus_Jakarta_Sans'] font-bold tracking-tight text-lg text-[#0ea5e9]">Night Market Guide</h1>
 <button class="text-[#0ea5e9] active:scale-95 duration-200" onclick="alert('Tùy chọn phụ đang cập nhật.');">
-<span class="material-symbols-outlined">more_vert</span>
+<span class="material-symbols-outlined notranslate">more_vert</span>
 </button>
 </header>
 <!-- 1. Hero Section -->
@@ -113,11 +113,11 @@
 <div class="absolute bottom-6 left-0 px-6 z-20 w-full">
 <h2 id="restaurant-name" class="text-3xl font-bold text-white tracking-tight leading-tight">Đang tải...</h2>
 <div id="restaurant-meta" class="flex items-center gap-2 mt-2 text-on-surface-variant text-sm font-medium">
-<span class="flex items-center text-primary"><span class="material-symbols-outlined text-[14px] mr-1" style="font-variation-settings: 'FILL' 1;">star</span> <span id="avg-rating">—</span></span>
+<span class="flex items-center text-primary"><span class="material-symbols-outlined text-[14px] mr-1 notranslate" style="font-variation-settings: 'FILL' 1;">star</span> <span id="avg-rating">—</span></span>
 <span>·</span>
 <span id="review-count">0 đánh giá</span>
 <span>·</span>
-<span class="flex items-center restaurant-address"><span class="material-symbols-outlined text-[14px] mr-1">location_on</span> Đang tải...</span>
+<span class="flex items-center restaurant-address"><span class="material-symbols-outlined text-[14px] mr-1 notranslate">location_on</span> Đang tải...</span>
 </div>
 </div>
 </section>
@@ -127,7 +127,7 @@
 <div class="flex justify-between items-start mb-6">
 <div>
 <h3 class="font-bold text-lg flex items-center gap-2 text-white">
-<span class="material-symbols-outlined text-primary">headphones</span>
+<span class="material-symbols-outlined text-primary notranslate">headphones</span>
                         Thuyết Minh Tự Động
                     </h3>
 <p class="text-on-surface-variant text-sm">Nghe hướng dẫn về quán ăn này</p>
@@ -154,11 +154,11 @@
 <div class="w-1/3 h-full bg-gradient-to-r from-primary to-secondary"></div>
 </div>
 <div class="flex items-center justify-between w-full px-4">
-<button class="text-on-surface-variant" onclick="alert('Tính năng tua nhanh đang nâng cấp');"><span class="material-symbols-outlined text-3xl">replay_10</span></button>
+<button class="text-on-surface-variant" onclick="alert('Tính năng tua nhanh đang nâng cấp');"><span class="material-symbols-outlined text-3xl notranslate">replay_10</span></button>
 <button id="play-btn" class="audio-play-btn w-[72px] h-[72px] rounded-full bg-gradient-to-tr from-[#0ea5e9] to-[#0ea5e9] shadow-[0px_8px_24px_rgba(14,165,233,0.4)] flex items-center justify-center text-white active:scale-95 transition-transform">
-<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span class="material-symbols-outlined text-4xl notranslate" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
 </button>
-<button class="text-on-surface-variant" onclick="alert('Tính năng tua nhanh đang nâng cấp');"><span class="material-symbols-outlined text-3xl">forward_10</span></button>
+<button class="text-on-surface-variant" onclick="alert('Tính năng tua nhanh đang nâng cấp');"><span class="material-symbols-outlined text-3xl notranslate">forward_10</span></button>
 </div>
 <span id="tts-status" class="tts-status text-on-surface-variant text-xs font-medium italic">Nhấn để nghe thuyết minh...</span>
 </div>
@@ -167,12 +167,12 @@
 <section>
 <h3 class="font-bold text-xl mb-3 text-white">Giới Thiệu</h3>
 <p class="restaurant-description text-on-surface-variant leading-relaxed">Đang tải...</p>
-<button class="text-primary font-bold text-sm mt-2 flex items-center" onclick="alert('Chi tiết toàn bộ trang mô tả đang hỗ trợ biên soạn...');">Xem thêm <span class="material-symbols-outlined text-[18px] ml-1">arrow_forward</span></button>
+<button class="text-primary font-bold text-sm mt-2 flex items-center" onclick="alert('Chi tiết toàn bộ trang mô tả đang hỗ trợ biên soạn...');">Xem thêm <span class="material-symbols-outlined text-[18px] ml-1 notranslate">arrow_forward</span></button>
 </section>
 <!-- 4. Menu Section -->
 <section>
 <h3 class="font-bold text-xl mb-4 text-white flex items-center gap-2">
-<span class="material-symbols-outlined text-primary">restaurant_menu</span>
+<span class="material-symbols-outlined text-primary notranslate">restaurant_menu</span>
                 Thực Đơn
             </h3>
 <!-- DYNAMIC DISH LOOP rendered by restaurant.js -->
@@ -190,7 +190,7 @@
 </div>
 </div>
 <button class="w-full h-14 rounded-xl border border-primary/30 text-primary font-bold text-sm flex items-center justify-center gap-2 active:bg-primary/5 transition-colors" onclick="document.getElementById('review-form').style.display = document.getElementById('review-form').style.display === 'none' ? 'block' : 'none';">
-<span class="material-symbols-outlined">rate_review</span>
+<span class="material-symbols-outlined notranslate">rate_review</span>
 Viết đánh giá
 </button>
 <div id="review-form" class="review-form" style="display:none;margin-top:12px;">
@@ -203,13 +203,14 @@ Viết đánh giá
 <nav class="fixed bottom-0 w-full z-50 rounded-t-2xl bg-[#242437]/70 backdrop-blur-[20px] flex justify-around items-center h-20 px-6 pb-2 shadow-2xl">
 <!-- Back to Map (Inactive but themed) -->
 <a class="flex flex-col items-center justify-center text-[#e9e6f9] py-2 px-6 hover:bg-[#ffffff10] transition-all active:scale-[0.98]" href="map.html">
-<span class="material-symbols-outlined">map</span>
+<span class="material-symbols-outlined notranslate">map</span>
 <span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-wider mt-1">Back to Map</span>
 </a>
 <a class="flex flex-col items-center justify-center bg-gradient-to-tr from-[#0ea5e9] to-[#0ea5e9] text-white rounded-xl py-2 px-6 shadow-[0px_8px_24px_rgba(14,165,233,0.3)] active:scale-[0.98]" href="#" onclick="navigator.clipboard.writeText(window.location.href); alert('Đã sao chép link nhà hàng vào clipboard!'); return false;">
-<span class="material-symbols-outlined">share</span>
+<span class="material-symbols-outlined notranslate">share</span>
 <span class="font-['Plus_Jakarta_Sans'] font-medium text-[10px] uppercase tracking-wider mt-1">Share</span>
 </a>
 </nav>
 <script type="module" src="../js/restaurant.js"></script>
+<script src="../js/translator.js"></script>
 </body></html>
