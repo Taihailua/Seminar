@@ -150,7 +150,7 @@ function renderRestaurantList(restaurants) {
         card.style.boxShadow = '';
       });
       card.addEventListener('click', () => {
-        window.location.href = `/pages/restaurant.html?id=${r.id}`;
+        window.location.href = `restaurant.html?id=${r.id}`;
       });
       container.appendChild(card);
     });
@@ -280,7 +280,7 @@ function startScanner() {
           const url = new URL(decodedText);
           const id = url.searchParams.get('id');
           if (id) {
-            window.location.href = `/pages/restaurant.html?id=${id}`;
+            window.location.href = `restaurant.html?id=${id}`;
           } else {
             window.location.href = decodedText;
           }
