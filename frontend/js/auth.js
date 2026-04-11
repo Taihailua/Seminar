@@ -5,16 +5,16 @@
 import { api, saveAuth, getAuth } from './api.js';
 
 const ROLE_REDIRECT = {
-  user: '/pages/map.html',
-  owner: '/pages/owner-dashboard.html',
-  admin: '/pages/admin-dashboard.html',
+  user: 'map.html',
+  owner: 'owner-dashboard.html',
+  admin: 'admin-dashboard.html',
 };
 
 /** If already logged in, redirect based on role */
 function redirectIfLoggedIn() {
   const { token, role } = getAuth();
   if (token && role) {
-    window.location.href = ROLE_REDIRECT[role] || '/pages/map.html';
+    window.location.href = ROLE_REDIRECT[role] || 'map.html';
   }
 }
 
@@ -83,7 +83,7 @@ async function handleLogin(e) {
       password: passwordEl.value,
     });
     saveAuth(data);
-    window.location.href = ROLE_REDIRECT[data.role] || '/pages/map.html';
+    window.location.href = ROLE_REDIRECT[data.role] || 'map.html';
   } catch (err) {
     showError(form, err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
     if (btn) setLoading(btn, false);
@@ -127,7 +127,7 @@ async function handleRegister(e) {
       role,
     });
     saveAuth(data);
-    window.location.href = ROLE_REDIRECT[data.role] || '/pages/map.html';
+    window.location.href = ROLE_REDIRECT[data.role] || 'map.html';
   } catch (err) {
     showError(form, err.message || 'Đăng ký thất bại. Vui lòng thử lại.');
     if (btn) setLoading(btn, false);
@@ -190,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Wire any "ĐĂNG NHẬP" or "TẠO TÀI KHOẢN" buttons that aren't in a form
   document.querySelectorAll('button, .btn').forEach((btn) => {
+    if (btn.closest('form')) return; // Skip buttons inside a form, they use the form submit handler
     const text = btn.textContent.trim().toUpperCase();
     if (text.includes('ĐĂNG NHẬP') || text === 'LOGIN') {
       btn.addEventListener('click', (e) => {
@@ -215,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (text.includes('ĐĂNG XUẤT') || text === 'LOGOUT') {
       btn.addEventListener('click', () => {
         localStorage.clear();
-        window.location.href = '/pages/login.html';
+        window.location.href = 'login.html';
       });
     }
   });

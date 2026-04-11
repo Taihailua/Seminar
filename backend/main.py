@@ -13,6 +13,9 @@ from routers import auth, restaurants, dishes, reviews, admin
 
 load_dotenv()
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
+
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5500")
 
 
@@ -55,13 +58,15 @@ app.include_router(reviews.router)
 app.include_router(admin.router)
 
 
-@app.get("/")
+@app.get("/api")
 async def root():
     return {
         "app": "Vinh Khanh Audio Guide API",
         "version": "1.0.0",
         "docs": "/docs",
     }
+
+app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
 
 
 @app.get("/health")

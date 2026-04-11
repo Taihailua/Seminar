@@ -266,7 +266,7 @@ async function submitReview(restaurantId) {
   const { token } = getAuth();
   if (!token) {
     alert('Vui lòng đăng nhập để đánh giá.');
-    window.location.href = '/pages/login.html';
+    window.location.href = 'login.html';
     return;
   }
 
@@ -453,7 +453,7 @@ function populatePage(r) {
 function wireBackButton() {
   document.querySelectorAll('[class*="back"], .btn-back, [class*="quay-lại"]').forEach((btn) => {
     btn.addEventListener('click', () => {
-      window.location.href = '/pages/map.html';
+      window.location.href = 'map.html';
     });
   });
 }
@@ -525,7 +525,7 @@ async function init() {
   const restaurantId = urlParams.get('id');
 
   if (!restaurantId) {
-    document.body.innerHTML = '<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy ID nhà hàng. <a href="/pages/map.html" style="color:#ff9155;">Quay lại bản đồ</a></div>';
+    document.body.innerHTML = '<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy ID nhà hàng. <a href="map.html" style="color:#ff9155;">Quay lại bản đồ</a></div>';
     return;
   }
 
@@ -542,7 +542,7 @@ async function init() {
   try {
     restaurant = await api.get(`/api/restaurants/${restaurantId}`);
   } catch (err) {
-    document.body.innerHTML = `<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy nhà hàng. <a href="/pages/map.html" style="color:#ff9155;">Quay lại bản đồ</a></div>`;
+    document.body.innerHTML = `<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy nhà hàng. <a href="map.html" style="color:#ff9155;">Quay lại bản đồ</a></div>`;
     return;
   }
 
