@@ -2,14 +2,27 @@
  * restaurant.js — Restaurant detail page: dynamic data, TTS, geofencing, QR scan logging, reviews
  * This is the core feature page. It replaces ALL static Stitch data with live API responses.
  */
-import { api, getAuth } from './api.js';
+import { api, getAuth, API_BASE } from './api.js';
 
 // ── State ────────────────────────────────────────────────────────────────────
 let restaurant = null;
 let ttsUtterance = null;
 let isSpeaking = false;
 let geofenceWatchId = null;
+
+// Initial language detection
 let selectedLang = 'vi-VN';
+const browserLang = navigator.language;
+if (browserLang) {
+  // Map common browser codes to our supported ones if possible
+  if (browserLang.startsWith('en')) selectedLang = 'en-US';
+  else if (browserLang.startsWith('fr')) selectedLang = 'fr-FR';
+  else if (browserLang.startsWith('zh')) selectedLang = 'zh-CN';
+  else if (browserLang.startsWith('ja')) selectedLang = 'ja-JP';
+  else if (browserLang.startsWith('ko')) selectedLang = 'ko-KR';
+  // Keep vi-VN if starts with vi
+}
+
 const GEOFENCE_RADIUS_M = 20;
 let simulatedDist = null; // null means use real GPS
 
@@ -32,13 +45,32 @@ function startTTS(text) {
 
   stopTTS();
 
+  // On some browsers, we need to resume first
+  window.speechSynthesis.resume();
+
   ttsUtterance = new SpeechSynthesisUtterance(text);
+  
+  // Find a voice that matches the selectedLang or just use the system default
+  const voices = window.speechSynthesis.getVoices();
+  const voice = voices.find(v => v.lang === selectedLang) || voices.find(v => v.lang.startsWith(selectedLang.split('-')[0]));
+  if (voice) {
+    ttsUtterance.voice = voice;
+  }
+  
   ttsUtterance.lang = selectedLang;
-  ttsUtterance.rate = 0.95;
+  ttsUtterance.rate = 1.0;
   ttsUtterance.pitch = 1.0;
   ttsUtterance.volume = 1.0;
 
+  let startTimeout = setTimeout(() => {
+    if (!isSpeaking) {
+      console.warn('[TTS] Failed to start speaking within 2s. Trying second voice fallback...');
+      // Fallback is just to let user know or retry without voice setting
+    }
+  }, 2000);
+
   ttsUtterance.onstart = () => {
+    clearTimeout(startTimeout);
     isSpeaking = true;
     updatePlayButton(true);
     updateStatus('🎧 Đang phát thuyết minh...');
@@ -51,14 +83,17 @@ function startTTS(text) {
     stopGeofence();
   };
   ttsUtterance.onerror = (e) => {
+    clearTimeout(startTimeout);
+    console.error('[TTS] Error:', e);
     isSpeaking = false;
     updatePlayButton(false);
-    updateStatus('Lỗi phát âm: ' + e.error);
+    updateStatus('Lỗi phát âm: ' + (e.error || 'Unknown'));
     stopGeofence();
   };
 
   window.speechSynthesis.speak(ttsUtterance);
 }
+
 
 function stopTTS() {
   if (window.speechSynthesis) {
@@ -71,20 +106,18 @@ function stopTTS() {
 }
 
 function updatePlayButton(playing) {
-  const playBtns = document.querySelectorAll('#play-btn, .play-btn, [class*="play-button"], .audio-play');
-  playBtns.forEach((btn) => {
-    btn.innerHTML = playing
-      ? '⏸'
-      : '▶';
+  const btn = document.getElementById('play-btn');
+  if (btn) {
+    btn.innerHTML = playing ? '⏸' : '▶';
     btn.style.boxShadow = playing
       ? '0 0 24px rgba(14,165,233,0.7)'
       : '0 0 16px rgba(14,165,233,0.3)';
-  });
+  }
 }
 
 function updateStatus(msg) {
-  const statusEls = document.querySelectorAll('#tts-status, .tts-status, [class*="audio-status"]');
-  statusEls.forEach((el) => (el.textContent = msg));
+  const el = document.getElementById('tts-status');
+  if (el) el.textContent = msg;
 }
 
 // ── Geofencing ────────────────────────────────────────────────────────────────
@@ -139,7 +172,7 @@ function stopGeofence() {
 }
 
 function updateGeofenceBadge(dist) {
-  const badge = document.querySelector('#geofence-badge, .geofence-badge, [class*="in-range"]');
+  const badge = document.getElementById('geofence-badge');
   if (!badge) return;
   const inRange = dist <= GEOFENCE_RADIUS_M;
   badge.textContent = inRange
@@ -165,9 +198,7 @@ function showGeofenceAlert(dist) {
 
 // ── Dish Loop Renderer ─────────────────────────────────────────────────────────
 function renderDishes(dishes) {
-  const container = document.querySelector(
-    '#dishes-container, .dishes-list, .menu-container, [class*="thực-đơn"], [class*="dish"]'
-  );
+  const container = document.getElementById('dishes-container');
   if (!container) return;
 
   if (!dishes || dishes.length === 0) {
@@ -216,14 +247,11 @@ function renderDishes(dishes) {
 // ── Reviews Loop Renderer ──────────────────────────────────────────────────────
 function renderReviews(reviews, avgRating) {
   // Update avg rating display
-  const avgEls = document.querySelectorAll('.avg-rating, #avg-rating, [class*="rating-number"]');
-  avgEls.forEach((el) => {
+  document.querySelectorAll('#avg-rating').forEach(el => {
     el.textContent = avgRating ? avgRating.toFixed(1) : '—';
   });
 
-  const container = document.querySelector(
-    '#reviews-container, .reviews-list, [class*="đánh-giá"], [class*="review"]'
-  );
+  const container = document.getElementById('reviews-container');
   if (!container) return;
 
   container.innerHTML = '';
@@ -363,8 +391,11 @@ function buildLanguageSelector() {
       // Basic country flag fallback
       const flagMap = {
         'vi-VN': '🇻🇳', 'en-US': '🇺🇸', 'en-GB': '🇬🇧', 'fr-FR': '🇫🇷',
-        'zh-CN': '🇨🇳', 'ja-JP': '🇯🇵', 'ko-KR': '🇰🇷', 'de-DE': '🇩🇪',
-        'es-ES': '🇪🇸', 'it-IT': '🇮🇹', 'th-TH': '🇹🇭', 'id-ID': '🇮🇩'
+        'zh-CN': '🇨🇳', 'zh-TW': '🇹🇼', 'ja-JP': '🇯🇵', 'ko-KR': '🇰🇷',
+        'de-DE': '🇩🇪', 'es-ES': '🇪🇸', 'it-IT': '🇮🇹', 'th-TH': '🇹🇭',
+        'id-ID': '🇮🇩', 'ru-RU': '🇷🇺', 'pt-BR': '🇧🇷', 'pt-PT': '🇵🇹',
+        'nl-NL': '🇳🇱', 'pl-PL': '🇵🇱', 'tr-TR': '🇹🇷', 'ar-SA': '🇸🇦',
+        'hi-IN': '🇮🇳', 'ms-MY': '🇲🇾', 'km-KH': '🇰🇭', 'lo-LA': '🇱🇦'
       };
       
       const parts = code.split('-');
@@ -388,7 +419,9 @@ function buildLanguageSelector() {
         pill.classList.add('active');
       }
 
-      pill.addEventListener('click', () => {
+      pill.addEventListener('click', async () => {
+        if (pill.classList.contains('active')) return;
+        
         langContainer.querySelectorAll('button').forEach((p) => {
           p.style.background = '#242437';
           p.style.color = '#aba9bb';
@@ -398,6 +431,14 @@ function buildLanguageSelector() {
         pill.style.color = '#521f00';
         pill.classList.add('active');
         selectedLang = code;
+        
+        // Trigger re-fetch for translation
+        const urlParams = new URLSearchParams(window.location.search);
+        const rid = urlParams.get('id');
+        if (rid) {
+          updateStatus('🔄 Đang dịch nội dung...');
+          await loadRestaurantData(rid, code);
+        }
       });
 
       langContainer.appendChild(pill);
@@ -417,26 +458,22 @@ function populatePage(r) {
   document.title = `${r.name} — Phố Vĩnh Khánh`;
 
   // Name
-  document.querySelectorAll('.restaurant-name, .hero-title, h1, [class*="name"]').forEach((el) => {
-    if (el.textContent.includes('Minh Tâm') || el.classList.contains('restaurant-name') || el.tagName === 'H1') {
-      el.textContent = r.name;
-    }
-  });
+  const nameEl = document.getElementById('restaurant-name');
+  if (nameEl) nameEl.textContent = r.name;
 
   // Address
-  document.querySelectorAll('.restaurant-address, .address, [class*="address"]').forEach((el) => {
-    el.textContent = r.address || 'Phố Vĩnh Khánh, Q.4';
-  });
+  const addrEl = document.querySelector('.restaurant-address');
+  if (addrEl) addrEl.textContent = r.address || 'Phố Vĩnh Khánh, Q.4';
 
   // Description
-  document.querySelectorAll('.restaurant-description, .description, [class*="description"]').forEach((el) => {
-    el.textContent = r.description || 'Chưa có mô tả cho nhà hàng này.';
-  });
+  const descEl = document.querySelector('.restaurant-description');
+  if (descEl) descEl.textContent = r.description || 'Chưa có mô tả cho nhà hàng này.';
 
   // Audio text status
-  document.querySelectorAll('#tts-status, .tts-status, [class*="audio-status"]').forEach((el) => {
-    el.textContent = r.audio_text ? 'Nhấn để nghe thuyết minh...' : '⚠️ Quán này chưa có nội dung thuyết minh';
-  });
+  const statusEl = document.getElementById('tts-status');
+  if (statusEl) {
+    statusEl.textContent = r.audio_text ? 'Nhấn để nghe thuyết minh...' : '⚠️ Quán này chưa có nội dung thuyết minh';
+  }
 
   // Geofence badge
   const badge = document.querySelector('#geofence-badge, .geofence-badge');
@@ -451,57 +488,38 @@ function populatePage(r) {
 
 // ── Wire Back Button ──────────────────────────────────────────────────────────
 function wireBackButton() {
-  document.querySelectorAll('[class*="back"], .btn-back, [class*="quay-lại"]').forEach((btn) => {
+  const btn = document.getElementById('back-btn');
+  if (btn) {
     btn.addEventListener('click', () => {
       window.location.href = 'map.html';
     });
-  });
+  }
 }
 
 // ── Wire Play Button ──────────────────────────────────────────────────────────
 function wirePlayButton() {
-  const playBtns = document.querySelectorAll('#play-btn, .play-btn, [class*="play-button"], .audio-play-btn');
-  playBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
+  const btn = document.getElementById('play-btn');
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       if (isSpeaking) {
         stopTTS();
       } else {
         startTTS(restaurant?.audio_text || '');
       }
     });
-  });
-
-  // If no play button found, create one near the audio section
-  if (!playBtns.length) {
-    const audioSection = document.querySelector('[class*="audio"], .audio-section');
-    if (audioSection) {
-      const playBtn = document.createElement('button');
-      playBtn.id = 'play-btn';
-      playBtn.textContent = '▶';
-      playBtn.style.cssText = `
-        width:72px;height:72px;border-radius:50%;border:none;cursor:pointer;
-        background:linear-gradient(135deg,#0ea5e9,#0284c7);
-        font-size:28px;color:#521f00;
-        box-shadow:0 0 16px rgba(14,165,233,0.3);
-        transition:all 0.2s;display:block;margin:16px auto;
-      `;
-      playBtn.addEventListener('click', () => {
-        if (isSpeaking) stopTTS(); else startTTS(restaurant?.audio_text || '');
-      });
-      audioSection.appendChild(playBtn);
-    }
   }
 }
 
 // ── Wire Review Submit ────────────────────────────────────────────────────────
 function wireReviewForm(restaurantId) {
   const { token } = getAuth();
-
-  let submitBtn = document.querySelector('#review-submit, .review-submit, [class*="gửi-đánh-giá"], [class*="viết-đánh-giá"]');
+  let submitBtn = document.getElementById('review-submit');
 
   // Wire the "Viết đánh giá" button to toggle review form
-  const toggleBtn = document.querySelector('[class*="viết"], .write-review-btn');
-  const reviewFormEl = document.querySelector('.review-form, #review-form');
+  const toggleBtn = document.getElementById('write-review-btn');
+  const reviewFormEl = document.getElementById('review-form');
 
   if (toggleBtn && reviewFormEl) {
     reviewFormEl.style.display = 'none';
@@ -520,31 +538,55 @@ function wireReviewForm(restaurantId) {
 }
 
 // ── Main Init ─────────────────────────────────────────────────────────────────
+async function loadRestaurantData(id, lang = null) {
+  try {
+    console.log(`[Restaurant] Fetching details (lang=${lang})...`);
+    const query = lang ? `?lang=${lang}` : '';
+    const data = await api.get(`/api/restaurants/${id}${query}`);
+    restaurant = data;
+    console.log('[Restaurant] Details loaded:', restaurant);
+    
+    // Update UI
+    populatePage(restaurant);
+    return restaurant;
+  } catch (err) {
+    console.error('[Restaurant] Fetch failed:', err);
+    if (!restaurant) {
+      document.body.innerHTML = `<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy nhà hàng. <a href="map.html" style="color:#0ea5e9;">Quay lại bản đồ</a></div>`;
+    } else {
+      updateStatus('⚠️ Lỗi khi dịch nội dung. Đang dùng bản gốc.');
+    }
+  }
+}
+
 async function init() {
   const urlParams = new URLSearchParams(window.location.search);
   const restaurantId = urlParams.get('id');
+  console.log('[Restaurant] Init with ID:', restaurantId);
 
   if (!restaurantId) {
+    console.error('[Restaurant] No ID found in URL');
     document.body.innerHTML = '<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy ID nhà hàng. <a href="map.html" style="color:#0ea5e9;">Quay lại bản đồ</a></div>';
     return;
   }
 
   // Log scan (non-blocking)
   const { token } = getAuth();
-  fetch(`http://localhost:8000/api/restaurants/${restaurantId}/scan`, {
+  console.log('[Restaurant] Logging scan...');
+  fetch(`${API_BASE}/api/restaurants/${restaurantId}/scan`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-  }).catch(() => {});
+  }).catch((e) => console.warn('[Restaurant] Scan log failed:', e));
 
-  try {
-    restaurant = await api.get(`/api/restaurants/${restaurantId}`);
-  } catch (err) {
-    document.body.innerHTML = `<div style="color:#ff7351;text-align:center;padding:40px;font-family:sans-serif;">Không tìm thấy nhà hàng. <a href="map.html" style="color:#0ea5e9;">Quay lại bản đồ</a></div>`;
-    return;
+  // Initial fetch with detected language
+  if (selectedLang !== 'vi-VN') {
+    updateStatus('🔄 Đang dịch nội dung sang ngôn ngữ của bạn...');
   }
+  await loadRestaurantData(restaurantId, selectedLang === 'vi-VN' ? null : selectedLang);
+
 
   populatePage(restaurant);
   renderDishes(restaurant.dishes || []);
