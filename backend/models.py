@@ -34,7 +34,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), unique=True, nullable=False, index=True)
-    password_hash = Column(String(255), nullable=False)
+    password = Column(String(255), nullable=False)
     email = Column(String(100), unique=True, nullable=False, index=True)
     role = Column(SAEnum(UserRole, name="user_role"), default=UserRole.user)
     is_active = Column(Boolean, default=True)

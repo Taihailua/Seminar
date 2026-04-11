@@ -163,16 +163,19 @@
 <!-- Social Login Separator -->
 <div class="flex items-center space-x-4 pt-4">
 <div class="flex-1 h-[1px] bg-white/5"></div>
-<span class="text-[10px] font-bold text-on-surface/30 tracking-widest">HOẶC TIẾP TỤC VỚI</span>
+<span class="text-[10px] font-bold text-on-surface/30 tracking-widest">ĐĂNG NHẬP NHANH (TEST)</span>
 <div class="flex-1 h-[1px] bg-white/5"></div>
 </div>
-<!-- Social Buttons -->
-<div class="flex space-x-4">
-<button class="flex-1 h-12 rounded-xl bg-surface-container-highest/40 flex items-center justify-center border border-white/5 hover:bg-surface-container-highest/60 transition-colors" onclick="alert('Đăng nhập Google đang phát triển!');">
-<img alt="Google" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYTGMSAfiP3v10z_hiJP_p7L4UnSUFiye0i8AlMEiiVKUtaLCSKQHtd0MbJjWtZfCp6dgJTAHXFa-dI4EQTyR-scdHUIQoasybvBlJ_oBCO7LeexPNeq8iRmqvTuzpxuTx8saVbjvMtuAPyZ9ShNkHqJVdmToUK_3q9_prUU-Tlp1DNngRElg54gTiOEjoPl-oLuz_x3fTFc2tmBk006qUNahwtEnyBS9YVAqDphxmav9ZvpIzVXJe10X6vFylol5Hgl2aPFB3H-c"/>
+<!-- Quick Login Buttons for Testing -->
+<div class="flex gap-2 mt-4">
+<button class="flex-1 h-12 rounded-xl bg-surface-container-highest/40 flex items-center justify-center border border-white/5 hover:bg-surface-container-highest/60 transition-colors" onclick="fillAndLogin('user', 'user123')">
+<span class="text-xs font-bold text-primary">Khách</span>
 </button>
-<button class="flex-1 h-12 rounded-xl bg-surface-container-highest/40 flex items-center justify-center border border-white/5 hover:bg-surface-container-highest/60 transition-colors" onclick="alert('Đăng nhập Facebook đang phát triển!');">
-<img alt="Facebook" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjlYhabUVlyyWBP-invm7KdatmNDBeuaG-dVx2aTwD9x1_sfXojF0FxBPi8CEuHx9QyKKAl19ESXyCnog3ScEHjP0xCZkDVQNs80s-aj9K_P1yIBRiIvf7rd7Fg5rP6WI-rTyXxduH3QsOQpGHY_LdZ4TjsQYGZ3NFs5Etvrx5fCNJizoLmU0nglel5nLIyxYhPmQh-QPxqUSr4k0KRNIx_Flt95fi_7WoXIFx-2vLSkuj96eak4IiBDJztsO2WTS_4v-cQhX0lKs"/>
+<button class="flex-1 h-12 rounded-xl bg-surface-container-highest/40 flex items-center justify-center border border-white/5 hover:bg-surface-container-highest/60 transition-colors" onclick="fillAndLogin('owner', 'owner123')">
+<span class="text-xs font-bold text-primary">Chủ quán</span>
+</button>
+<button class="flex-1 h-12 rounded-xl bg-surface-container-highest/40 flex items-center justify-center border border-white/5 hover:bg-surface-container-highest/60 transition-colors" onclick="fillAndLogin('admin', 'admin123')">
+<span class="text-xs font-bold text-primary">Admin</span>
 </button>
 </div>
 </div>

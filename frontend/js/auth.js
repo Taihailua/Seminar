@@ -221,3 +221,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+window.fillAndLogin = function(username, password) {
+  const usernameEl = document.querySelector('#login-username');
+  const passwordEl = document.querySelector('#login-password');
+  const form = document.querySelector('#login-form');
+  
+  if (usernameEl) usernameEl.value = username;
+  if (passwordEl) passwordEl.value = password;
+  
+  if (form) {
+    form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+  }
+};
