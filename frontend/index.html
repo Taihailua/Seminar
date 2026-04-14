@@ -1,155 +1,168 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Phố Vĩnh Khánh — Audio Guide</title>
-<meta name="description" content="Hướng dẫn âm thanh tự động cho các nhà hàng trên Phố Vĩnh Khánh, Quận 4, TP.HCM"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-<style>
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{
-    min-height:100vh;
-    background:#0d0d1a;
-    font-family:'Plus Jakarta Sans',sans-serif;
-    display:flex;flex-direction:column;
-    align-items:center;justify-content:center;
-    overflow:hidden;
-    color:#e9e6f9;
-  }
-  .splash-bg{
-    position:fixed;inset:0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(14,165,233,0.18) 0%, transparent 70%),
-      radial-gradient(ellipse 50% 40% at 20% 80%, rgba(14, 165, 233,0.08) 0%, transparent 60%),
-      #0d0d1a;
-    z-index:0;
-  }
-  .splash-content{
-    position:relative;z-index:1;
-    display:flex;flex-direction:column;
-    align-items:center;text-align:center;
-    padding:32px 24px;
-    max-width:400px;width:100%;
-  }
-  .logo{
-    width:88px;height:88px;
-    background:linear-gradient(135deg,#0ea5e9,#0284c7);
-    border-radius:24px;
-    display:flex;align-items:center;justify-content:center;
-    font-size:40px;
-    margin-bottom:24px;
-    box-shadow:0 8px 32px rgba(14,165,233,0.35);
-    transform:rotate(3deg);
-    animation:logoBob 3s ease-in-out infinite;
-  }
-  @keyframes logoBob{
-    0%,100%{transform:rotate(3deg) translateY(0);}
-    50%{transform:rotate(3deg) translateY(-8px);}
-  }
-  h1{
-    font-size:32px;font-weight:800;
-    letter-spacing:-1px;
-    background:linear-gradient(135deg,#0ea5e9,#ffc968);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-    background-clip:text;
-    margin-bottom:6px;
-  }
-  .subtitle{
-    font-size:12px;letter-spacing:4px;font-weight:600;
-    color:#0ea5e9;text-transform:uppercase;margin-bottom:16px;
-  }
-  p{color:#aba9bb;font-size:15px;line-height:1.7;margin-bottom:32px;}
-  .btn-primary{
-    display:block;width:100%;height:56px;
-    background:linear-gradient(135deg,#0ea5e9,#0284c7);
-    border-radius:14px;border:none;cursor:pointer;
-    color:#521f00;font-family:'Plus Jakarta Sans',sans-serif;
-    font-size:15px;font-weight:800;letter-spacing:0.5px;
-    text-decoration:none;
-    display:flex;align-items:center;justify-content:center;gap:8px;
-    box-shadow:0 8px 24px rgba(14,165,233,0.35);
-    transition:transform 0.2s,box-shadow 0.2s;
-    margin-bottom:12px;
-  }
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(14,165,233,0.45);}
-  .btn-secondary{
-    display:flex;align-items:center;justify-content:center;gap:8px;
-    width:100%;height:48px;border-radius:12px;
-    background:rgba(14, 165, 233,0.08);border:1px solid rgba(14, 165, 233,0.2);
-    color:#0ea5e9;font-size:14px;font-weight:700;
-    text-decoration:none;
-    transition:all 0.2s;
-    margin-bottom:8px;
-  }
-  .btn-secondary:hover{background:rgba(14, 165, 233,0.15);}
-  .feature-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:12px;
-    margin-bottom:32px;width:100%;
-  }
-  .feature-card{
-    background:rgba(24,24,40,0.8);
-    border-radius:12px;padding:16px 14px;
-    border:1px solid rgba(14, 165, 233,0.1);
-  }
-  .feature-icon{font-size:24px;margin-bottom:8px;}
-  .feature-title{font-size:13px;font-weight:700;color:#e9e6f9;margin-bottom:4px;}
-  .feature-desc{font-size:11px;color:#aba9bb;line-height:1.5;}
-  .neon-dots{
-    display:flex;gap:6px;justify-content:center;margin-bottom:28px;
-  }
-  .dot{
-    width:6px;height:6px;border-radius:50%;
-    background:#0ea5e9;opacity:0.3;
-    animation:pulse 2s ease-in-out infinite;
-  }
-  .dot:nth-child(2){animation-delay:0.3s;}
-  .dot:nth-child(3){animation-delay:0.6s;}
-  @keyframes pulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
-</style>
-</head>
-<body>
-<div class="splash-bg"></div>
-<div class="splash-content">
-  <div class="logo">🍜</div>
-  <h1>Phố Vĩnh Khánh</h1>
-  <p class="subtitle">Audio Guide</p>
-  <div class="neon-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-  <p>Trải nghiệm hương vị đường phố Vĩnh Khánh với hướng dẫn âm thanh tự động theo vị trí của bạn.</p>
-  <div class="feature-grid">
-    <div class="feature-card">
-      <div class="feature-icon">🗺️</div>
-      <div class="feature-title">Bản đồ tương tác</div>
-      <div class="feature-desc">Tìm nhà hàng gần bạn ngay lập tức</div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phố Vĩnh Khánh — Audio Guide</title>
+    <meta
+      name="description"
+      content="Hướng dẫn âm thanh tự động cho các nhà hàng trên Phố Vĩnh Khánh, Quận 4, TP.HCM"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ["Plus Jakarta Sans", "sans-serif"] },
+            colors: {
+              surface: "#0d0d1a",
+              primary: "#0ea5e9",
+              "primary-dark": "#0284c7",
+            },
+            keyframes: {
+              logoBob: {
+                "0%,100%": { transform: "rotate(3deg) translateY(0)" },
+                "50%": { transform: "rotate(3deg) translateY(-8px)" },
+              },
+              pulse2: {
+                "0%,100%": { opacity: "0.3" },
+                "50%": { opacity: "1" },
+              },
+            },
+            animation: {
+              logoBob: "logoBob 3s ease-in-out infinite",
+              pulse2: "pulse2 2s ease-in-out infinite",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background: #0d0d1a;
+      }
+      .splash-bg {
+        background: radial-gradient(
+            ellipse 80% 60% at 50% 0%,
+            rgba(14, 165, 233, 0.18) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 50% 40% at 20% 80%,
+            rgba(14, 165, 233, 0.08) 0%,
+            transparent 60%
+          ),
+          #0d0d1a;
+      }
+      .logo-bob {
+        animation: logoBob 3s ease-in-out infinite;
+      }
+      @keyframes logoBob {
+        0%,
+        100% {
+          transform: rotate(3deg) translateY(0);
+        }
+        50% {
+          transform: rotate(3deg) translateY(-8px);
+        }
+      }
+      .dot-pulse {
+        animation: pulse2 2s ease-in-out infinite;
+      }
+      @keyframes pulse2 {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body class="splash-bg min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden text-[#e9e6f9]">
+    <div class="relative z-10 flex flex-col items-center text-center px-6 py-8 w-full max-w-sm sm:max-w-md mx-auto">
+      <!-- Logo -->
+      <div class="logo-bob w-20 h-20 sm:w-[88px] sm:h-[88px] bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-[24px] flex items-center justify-center text-4xl mb-6 shadow-[0_8px_32px_rgba(14,165,233,0.35)]">
+        🍜
+      </div>
+
+      <!-- Title -->
+      <h1 class="text-2xl sm:text-[32px] font-extrabold tracking-[-1px] bg-gradient-to-br from-[#0ea5e9] to-[#ffc968] bg-clip-text text-transparent mb-1.5">
+        Phố Vĩnh Khánh
+      </h1>
+      <p class="text-[11px] sm:text-xs font-semibold tracking-[4px] text-[#0ea5e9] uppercase mb-4">
+        Audio Guide
+      </p>
+
+      <!-- Neon Dots -->
+      <div class="flex gap-1.5 justify-center mb-7">
+        <div class="dot-pulse w-1.5 h-1.5 rounded-full bg-[#0ea5e9]"></div>
+        <div class="dot-pulse w-1.5 h-1.5 rounded-full bg-[#0ea5e9]" style="animation-delay:0.3s"></div>
+        <div class="dot-pulse w-1.5 h-1.5 rounded-full bg-[#0ea5e9]" style="animation-delay:0.6s"></div>
+      </div>
+
+      <p class="text-[#aba9bb] text-sm sm:text-[15px] leading-[1.7] mb-8 px-2">
+        Trải nghiệm hương vị đường phố Vĩnh Khánh với hướng dẫn âm thanh tự động theo vị trí của bạn.
+      </p>
+
+      <!-- Feature Grid -->
+      <div class="grid grid-cols-2 gap-3 mb-8 w-full">
+        <div class="bg-[rgba(24,24,40,0.8)] rounded-xl p-3.5 sm:p-4 border border-[rgba(14,165,233,0.1)]">
+          <div class="text-2xl mb-2">🗺️</div>
+          <div class="text-xs sm:text-[13px] font-bold text-[#e9e6f9] mb-1">Bản đồ tương tác</div>
+          <div class="text-[10px] sm:text-[11px] text-[#aba9bb] leading-[1.5]">Tìm nhà hàng gần bạn ngay lập tức</div>
+        </div>
+        <div class="bg-[rgba(24,24,40,0.8)] rounded-xl p-3.5 sm:p-4 border border-[rgba(14,165,233,0.1)]">
+          <div class="text-2xl mb-2">🎧</div>
+          <div class="text-xs sm:text-[13px] font-bold text-[#e9e6f9] mb-1">Thuyết minh AI</div>
+          <div class="text-[10px] sm:text-[11px] text-[#aba9bb] leading-[1.5]">Nghe giới thiệu đa ngôn ngữ</div>
+        </div>
+        <div class="bg-[rgba(24,24,40,0.8)] rounded-xl p-3.5 sm:p-4 border border-[rgba(14,165,233,0.1)]">
+          <div class="text-2xl mb-2">📷</div>
+          <div class="text-xs sm:text-[13px] font-bold text-[#e9e6f9] mb-1">Quét QR</div>
+          <div class="text-[10px] sm:text-[11px] text-[#aba9bb] leading-[1.5]">Quét mã tại bàn để bắt đầu</div>
+        </div>
+        <div class="bg-[rgba(24,24,40,0.8)] rounded-xl p-3.5 sm:p-4 border border-[rgba(14,165,233,0.1)]">
+          <div class="text-2xl mb-2">📍</div>
+          <div class="text-xs sm:text-[13px] font-bold text-[#e9e6f9] mb-1">Geofencing</div>
+          <div class="text-[10px] sm:text-[11px] text-[#aba9bb] leading-[1.5]">Tự động dừng khi rời khỏi quán</div>
+        </div>
+      </div>
+
+      <!-- CTA Buttons -->
+      <a
+        href="pages/login.html"
+        class="flex items-center justify-center gap-2 w-full h-14 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-[14px] text-[#521f00] text-sm sm:text-[15px] font-extrabold tracking-[0.5px] shadow-[0_8px_24px_rgba(14,165,233,0.35)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_32px_rgba(14,165,233,0.45)] active:scale-[0.98] mb-3"
+      >
+        🚀 Bắt đầu ngay
+      </a>
+      <a
+        href="pages/map.html"
+        class="flex items-center justify-center gap-2 w-full h-12 rounded-xl bg-[rgba(14,165,233,0.08)] border border-[rgba(14,165,233,0.2)] text-[#0ea5e9] text-sm font-bold transition-all hover:bg-[rgba(14,165,233,0.15)] active:scale-[0.98]"
+      >
+        🗺️ Xem bản đồ (Khách)
+      </a>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon">🎧</div>
-      <div class="feature-title">Thuyết minh AI</div>
-      <div class="feature-desc">Nghe giới thiệu đa ngôn ngữ</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📷</div>
-      <div class="feature-title">Quét QR</div>
-      <div class="feature-desc">Quét mã tại bàn để bắt đầu</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📍</div>
-      <div class="feature-title">Geofencing</div>
-      <div class="feature-desc">Tự động dừng khi rời khỏi quán</div>
-    </div>
-  </div>
-  <a href="pages/login.html" class="btn-primary">🚀 Bắt đầu ngay</a>
-  <a href="pages/map.html" class="btn-secondary">🗺️ Xem bản đồ (Khách)</a>
-</div>
-<script>
-  // If already logged in, redirect
-  const token = localStorage.getItem('token');
-  const role = localStorage.getItem('role');
-  if(token && role){
-    const redirects = {user:'pages/map.html',owner:'pages/owner-dashboard.html',admin:'pages/admin-dashboard.html'};
-    window.location.href = redirects[role] || 'pages/map.html';
-  }
-</script>
-<script src="js/translator.js"></script>
-</body>
+
+    <script>
+      // If already logged in, redirect
+      const token = localStorage.getItem("token");
+      const role = localStorage.getItem("role");
+      if (token && role) {
+        const redirects = {
+          user: "pages/map.html",
+          owner: "pages/owner-dashboard.html",
+          admin: "pages/admin-dashboard.html",
+        };
+        window.location.href = redirects[role] || "pages/map.html";
+      }
+    </script>
+    <script src="js/translator.js"></script>
+  </body>
 </html>
