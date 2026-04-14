@@ -59,17 +59,17 @@ function renderMarkers(restaurants) {
         const marker = L.marker([r.latitude, r.longitude], { icon: createOrangeMarker(false) });
 
         marker.bindPopup(`
-            <div style="background:#1a1a2e;color:#e9e6f9;padding:12px;border-radius:12px;min-width:200px;">
-                <div style="font-weight:700;color:#0ea5e9">${r.name}</div>
-                <div style="font-size:12px;color:#aba9bb">
+            <div style="background:#1a1a2e;color:#e9e6f9;padding:12px;border-radius:12px;min-width:180px;max-width:240px;">
+                <div style="font-weight:700;color:#0ea5e9;font-size:14px;margin-bottom:4px;">${r.name}</div>
+                <div style="font-size:12px;color:#aba9bb;margin-bottom:8px;">
                     ${r.avg_rating ? `⭐ ${r.avg_rating.toFixed(1)}` : '⭐ Mới'} · 📍 ${r.address || 'Phố Vĩnh Khánh'}
                 </div>
-                <a href="restaurant.html?id=${r.id}" 
-                   style="display:block;margin-top:8px;padding:8px;text-align:center;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#000;border-radius:8px;text-decoration:none;font-weight:600;">
+                <a href="restaurant.html?id=${r.id}"
+                   style="display:block;padding:8px;text-align:center;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#000;border-radius:8px;text-decoration:none;font-weight:600;font-size:13px;">
                     Xem chi tiết →
                 </a>
             </div>
-        `, { maxWidth: 250 });
+        `, { maxWidth: 260 });
 
         marker.on('click', () => {
             markersLayer.eachLayer(m => {
@@ -90,11 +90,12 @@ function renderRestaurantList(restaurants) {
 
         restaurants.forEach(r => {
             const card = document.createElement('div');
-            card.style.cssText = `flex-shrink:0;width:160px;background:#242437;border-radius:14px;padding:14px;cursor:pointer;`;
+            // Tailwind responsive card — snap-center to smooth swipe on mobile
+            card.className = 'flex-shrink-0 w-32 sm:w-40 snap-center bg-[#242437] rounded-[14px] p-3 sm:p-3.5 cursor-pointer hover:bg-[#2a2a45] active:scale-[0.97] transition-all';
             card.innerHTML = `
-                <div style="height:80px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:32px;border-radius:10px;margin-bottom:10px;">🍜</div>
-                <div style="color:#e9e6f9;font-weight:700;font-size:13px;">${r.name}</div>
-                <div style="color:#0ea5e9;font-size:11px;">${r.avg_rating ? `⭐ ${r.avg_rating.toFixed(1)}` : '⭐ Mới'}</div>
+                <div class="h-16 sm:h-20 bg-[#1a1a2e] flex items-center justify-center text-3xl rounded-[10px] mb-2 sm:mb-2.5">🍜</div>
+                <div class="text-[#e9e6f9] font-bold text-xs sm:text-[13px] leading-tight mb-1 line-clamp-2">${r.name}</div>
+                <div class="text-[#0ea5e9] text-[10px] sm:text-[11px] font-semibold">${r.avg_rating ? `⭐ ${r.avg_rating.toFixed(1)}` : '⭐ Mới'}</div>
             `;
             card.addEventListener('click', () => window.location.href = `restaurant.html?id=${r.id}`);
             container.appendChild(card);
@@ -138,22 +139,25 @@ function openScannerModal() {
 
     const modal = document.createElement('div');
     modal.id = 'qr-modal';
-    modal.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;display:flex;justify-content:center;align-items:center;`;
-    
+    modal.className = 'fixed inset-0 bg-black/90 z-[9999] flex justify-center items-center p-4';
+
     modal.innerHTML = `
-        <div style="background:#181828;padding:24px;border-radius:16px;width:90%;max-width:420px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-                <h3 style="color:#0ea5e9;margin:0;">📷 Quét Mã QR</h3>
-                <button id="close-qr" style="background:none;border:none;color:#aba9bb;font-size:26px;cursor:pointer;">✕</button>
+        <div class="bg-[#181828] p-5 sm:p-6 rounded-2xl w-full max-w-sm sm:max-w-md border border-[#242437] shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-[#0ea5e9] font-bold text-base flex items-center gap-2">
+                    <span class="material-symbols-outlined text-xl notranslate">qr_code_scanner</span>
+                    📷 Quét Mã QR
+                </h3>
+                <button id="close-qr" class="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 text-[#aba9bb] hover:text-white text-lg transition-colors">✕</button>
             </div>
-            <div id="qr-reader" style="min-height:280px;background:#000;border-radius:12px;overflow:hidden;"></div>
-            <div style="margin-top:16px;text-align:center;">
-                <label style="display:inline-block;padding:12px 24px;background:#0ea5e9;color:#000;border-radius:10px;cursor:pointer;font-weight:700;">
+            <div id="qr-reader" class="min-h-[240px] sm:min-h-[280px] bg-black rounded-xl overflow-hidden"></div>
+            <div class="mt-4 text-center">
+                <label class="inline-flex items-center gap-2 px-5 py-3 bg-[#0ea5e9] text-[#521f00] rounded-xl cursor-pointer font-bold text-sm hover:bg-[#0284c7] transition-colors active:scale-[0.98]">
                     📁 Tải ảnh QR từ thư viện
-                    <input type="file" id="qr-file" accept="image/*" style="display:none;">
+                    <input type="file" id="qr-file" accept="image/*" class="hidden" />
                 </label>
             </div>
-            <p style="color:#aba9bb;font-size:13px;text-align:center;margin-top:16px;">Hướng camera vào QR hoặc chọn ảnh</p>
+            <p class="text-[#aba9bb] text-xs text-center mt-3">Hướng camera vào QR hoặc chọn ảnh</p>
         </div>
     `;
 
@@ -179,7 +183,7 @@ function startCameraScanner() {
     qrInstance = new Html5Qrcode("qr-reader");
     qrInstance.start(
         { facingMode: "environment" },
-        { fps: 12, qrbox: { width: 260, height: 260 } },
+        { fps: 12, qrbox: { width: 240, height: 240 } },
         onScanSuccess,
         () => {}
     ).catch(err => {
