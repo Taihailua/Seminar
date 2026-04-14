@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#e9e6f9",
+                        "background": "#0d0d1a",
+                        "on-error-container": "#ffd2c8",
+                        "surface-container-highest": "#242437",
+                        "surface-container": "#181828",
+                        "on-primary-fixed": "#000000",
+                        "primary-fixed": "#0284c7",
+                        "error-container": "#b92902",
+                        "secondary-fixed": "#ffc69d",
+                        "on-primary": "#521f00",
+                        "on-tertiary-container": "#543a00",
+                        "surface-container-high": "#1e1e2f",
+                        "secondary-container": "#934b00",
+                        "surface-container-low": "#121220",
+                        "tertiary-fixed-dim": "#ecaa12",
+                        "primary-container": "#0284c7",
+                        "surface-tint": "#0ea5e9",
+                        "primary": "#0ea5e9",
+                        "on-secondary-fixed-variant": "#7e4000",
+                        "on-primary-container": "#3f1600",
+                        "surface-container-lowest": "#000000",
+                        "surface-bright": "#2a2a3f",
+                        "on-secondary": "#4c2400",
+                        "inverse-surface": "#fcf8ff",
+                        "on-secondary-container": "#fff6f2",
+                        "on-tertiary-fixed-variant": "#5f4200",
+                        "outline": "#757485",
+                        "primary-dim": "#0284c7",
+                        "on-error": "#450900",
+                        "secondary-dim": "#ed862b",
+                        "on-tertiary-fixed": "#3a2600",
+                        "on-surface-variant": "#aba9bb",
+                        "on-secondary-fixed": "#542900",
+                        "on-tertiary": "#5f4200",
+                        "error": "#ff7351",
+                        "outline-variant": "#474656",
+                        "secondary": "#38bdf8",
+                        "surface": "#0d0d1a",
+                        "on-surface": "#e9e6f9",
+                        "inverse-on-surface": "#545363",
+                        "tertiary": "#ffc968",
+                        "tertiary-fixed": "#fcb825",
+                        "inverse-primary": "#9f4300",
+                        "on-primary-fixed-variant": "#4e1d00",
+                        "error-dim": "#d53d18",
+                        "surface-variant": "#242437",
+                        "secondary-fixed-dim": "#ffb37a",
+                        "tertiary-dim": "#ecaa12",
+                        "primary-fixed-dim": "#f16b0b",
+                        "surface-dim": "#0d0d1a",
+                        "tertiary-container": "#fcb825"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0d0d1a; color: #e9e6f9; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(36, 36, 55, 0.7); backdrop-filter: blur(20px); }
+        .neon-glow { text-shadow: 0 0 10px rgba(14, 165, 233, 0.5); }
+        .orange-gradient { background: linear-gradient(135deg, #0ea5e9 0%, #0ea5e9 100%); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="pb-32">
+<!-- Top AppBar (Shared Component Logic) -->
+<nav class="w-full top-0 sticky z-50 bg-[#0d0d1a] shadow-[0px_4px_20px_rgba(14,165,233,0.1)] flex justify-between items-center px-6 h-16">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#0ea5e9] notranslate">restaurant</span>
+<span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-tr from-[#0ea5e9] to-[#0ea5e9] font-['Plus_Jakarta_Sans'] tracking-tight">The Neon Gastronome</span>
+</div>
+<div class="flex items-center gap-2 active:scale-95 duration-200 cursor-pointer" onclick="window.location.href='profile.html';">
+<span class="material-symbols-outlined text-[#0ea5e9] notranslate">account_circle</span>
+</div>
+</nav>
+<main class="px-6 py-8 max-w-lg mx-auto">
+<!-- Header Section -->
+<header class="mb-10 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<h1 class="text-2xl font-extrabold tracking-tight text-on-surface">🏪 Dashboard Chủ Quán</h1>
+<p class="text-on-surface-variant text-sm mt-1">Quản lý nhà hàng của bạn</p>
+</div>
+<div class="bg-primary/10 border border-primary/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+<span class="text-[10px] font-bold text-primary uppercase tracking-widest">Đã duyệt</span>
+</div>
+</div>
+<div class="flex items-center justify-between bg-surface-container p-4 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full border-2 border-primary/30 bg-surface-container-highest flex items-center justify-center font-bold text-primary owner-avatar notranslate">C</div>
+<div>
+<p class="owner-username text-sm font-bold">Đang tải...</p>
+<p class="text-[10px] text-primary font-medium tracking-wide">CHỦ SỞ HỮU</p>
+</div>
+</div>
+<button class="logout text-primary text-xs font-bold flex items-center gap-1 active:scale-95 transition-transform">
+<span>Đăng xuất</span>
+<span class="material-symbols-outlined text-sm notranslate">logout</span>
+</button>
+</div>
+</header>
+<!-- Analytics Grid -->
+<section class="mb-10">
+<h2 class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-4">Chỉ số kinh doanh</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden">
+<span class="material-symbols-outlined text-primary/40 absolute -right-2 -bottom-2 text-6xl notranslate">visibility</span>
+<span class="text-on-surface-variant text-xs font-medium">Lượt xem</span>
+<span class="text-2xl font-bold neon-glow">1,247</span>
+</div>
+<div class="bg-surface-container p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden group cursor-pointer active:scale-95 transition-all" id="owner-scan-btn">
+<span class="material-symbols-outlined text-primary absolute -right-2 -bottom-2 text-6xl opacity-20 group-hover:opacity-40 transition-opacity notranslate">qr_code_scanner</span>
+<span class="text-on-surface-variant text-xs font-medium">Quét QR</span>
+<span class="text-2xl font-bold neon-glow">Bấm để quét</span>
+</div>
+<div class="bg-surface-container p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden">
+<span class="material-symbols-outlined text-primary/40 absolute -right-2 -bottom-2 text-6xl notranslate">grade</span>
+<span class="text-on-surface-variant text-xs font-medium">Đánh giá TB</span>
+<span class="text-2xl font-bold neon-glow text-tertiary">4.8★</span>
+</div>
+<div class="bg-surface-container p-5 rounded-xl flex flex-col gap-2 relative overflow-hidden">
+<span class="material-symbols-outlined text-primary/40 absolute -right-2 -bottom-2 text-6xl notranslate">comment</span>
+<span class="text-on-surface-variant text-xs font-medium">Bình luận</span>
+<span class="text-2xl font-bold neon-glow">47</span>
+</div>
+</div>
+</section>
+<!-- QR Code Section -->
+<section class="mb-10 bg-surface-container-high p-8 rounded-2xl flex flex-col items-center text-center shadow-[0px_8px_32px_rgba(14,165,233,0.05)] border border-outline-variant/10">
+<h2 class="text-lg font-bold mb-6">Mã QR Của Quán</h2>
+<div class="p-4 bg-white rounded-2xl mb-6 shadow-[0px_0px_30px_rgba(255,255,255,0.1)]" id="qr-container">
+<div class="w-[200px] h-[200px] bg-background rounded-lg flex items-center justify-center border-4 border-primary/20 relative overflow-hidden">
+<img id="qr-image" class="w-full h-full object-contain hidden" alt="QR Code"/>
+<div id="qr-placeholder" class="flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-8xl text-primary opacity-80 notranslate">qr_code_2</span>
+<div class="absolute inset-0 border-2 border-primary/40 rounded-lg animate-pulse"></div>
+</div>
+</div>
+</div>
+<button id="download-qr" class="orange-gradient text-on-primary-fixed w-full h-[56px] rounded-xl font-bold flex items-center justify-center gap-2 shadow-[0px_8px_24px_rgba(14,165,233,0.3)] active:scale-95 transition-all">
+<span class="material-symbols-outlined notranslate">download</span>
+                Tải xuống QR
+            </button>
+</section>
+<!-- Info Form -->
+<section class="mb-10">
+<h2 class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-4">Thông tin nhà hàng</h2>
+<div class="bg-surface-container p-6 rounded-2xl flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-xs font-semibold text-primary/80 px-1">Tên nhà hàng</label>
+<input id="restaurant-name" class="bg-surface-container-high border-none rounded-xl text-on-surface focus:ring-1 focus:ring-primary/40 p-4 font-medium transition-all" type="text" placeholder="Tên nhà hàng"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-xs font-semibold text-primary/80 px-1">Địa chỉ</label>
+<input id="restaurant-address" class="bg-surface-container-high border-none rounded-xl text-on-surface focus:ring-1 focus:ring-primary/40 p-4 font-medium transition-all" type="text" placeholder="Ví dụ: 123 Vĩnh Khánh, Q.4"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-xs font-semibold text-primary/80 px-1">Mô tả quán</label>
+<textarea id="restaurant-description" class="bg-surface-container-high border-none rounded-xl text-on-surface focus:ring-1 focus:ring-primary/40 p-4 font-medium resize-none transition-all" rows="3" placeholder="Giới thiệu về quán của bạn..."></textarea>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-xs font-semibold text-primary/80 px-1 flex justify-between items-center">
+                        Lời chào TTS (Audio Guide)
+                        <span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary notranslate">mic</span>
+</label>
+<div class="relative">
+<textarea id="restaurant-audio" class="bg-surface-container-high border-none rounded-xl text-on-surface focus:ring-1 focus:ring-primary/40 p-4 font-medium w-full resize-none transition-all" rows="4" placeholder="Nhập kịch bản thuyết minh tự động khi khách hàng bấm nút nghe giới thiệu..."></textarea>
+<div class="absolute bottom-3 right-3 p-2 bg-primary/20 rounded-full cursor-pointer hover:bg-primary/30 transition-colors">
+<span class="material-symbols-outlined text-primary text-xl notranslate">play_circle</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-2">
+<label class="text-xs font-semibold text-primary/80 px-1">Kinh độ</label>
+<input id="restaurant-lat" class="bg-surface-container-high border-none rounded-xl text-on-surface focus:ring-1 focus:ring-primary/40 p-4 text-sm font-medium transition-all" type="text" placeholder="Ví dụ: 10.762622"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-xs font-semibold text-primary/80 px-1">Vĩ độ</label>
+<input id="restaurant-lng" class="bg-surface-container-high border-none rounded-xl text-on-surface focus:ring-1 focus:ring-primary/40 p-4 text-sm font-medium transition-all" type="text" placeholder="Ví dụ: 106.702737"/>
+</div>
+</div>
+<button id="save-restaurant" class="save-btn orange-gradient text-on-primary-fixed w-full h-[56px] rounded-xl font-bold mt-2 shadow-[0px_8px_24px_rgba(14,165,233,0.2)] active:scale-95 transition-all">
+                    Lưu thay đổi
+                </button>
+</div>
+</section>
+<!-- Dish Management -->
+<section class="mb-10">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Thực đơn của quán</h2>
+<button id="add-dish-btn" class="add-dish-btn bg-primary/15 text-primary text-[11px] font-bold px-4 py-1.5 rounded-full flex items-center gap-1 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm notranslate">add</span>
+                    Thêm món
+                </button>
+</div>
+<!-- DYNAMIC DISH LIST rendered by owner.js -->
+<div id="dishes-list" class="dishes-manage flex flex-col gap-4"></div>
+</section>
+<!-- Reviews Section -->
+<section class="mb-10">
+<h2 class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-6">Đánh giá mới nhất</h2>
+<!-- DYNAMIC REVIEW LIST rendered by owner.js -->
+<div id="owner-reviews" class="flex flex-col gap-4"></div>
+<button class="w-full py-4 text-on-surface-variant text-xs font-bold uppercase tracking-widest mt-4 active:scale-95 transition-all" onclick="alert('Bảng phân tích đánh giá chuyên sâu đang trong qua trình cập nhật!');">
+                Xem tất cả đánh giá
+            </button>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Shared Component Logic) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-4 bg-[#181828]/70 backdrop-blur-xl rounded-t-2xl shadow-[0px_-8px_24px_rgba(14,165,233,0.15)] border-t border-[#242437]/15">
+<a class="flex flex-col items-center justify-center text-[#0ea5e9] bg-[#242437] rounded-xl px-4 py-1 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined notranslate">dashboard</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#e9e6f9]/60 hover:text-[#0ea5e9] active:scale-90 transition-transform" href="#" onclick="alert('Trình quản lý Menu chuyên sâu đang được nâng cấp!'); return false;">
+<span class="material-symbols-outlined notranslate">menu_book</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Menu</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#e9e6f9]/60 hover:text-[#0ea5e9] active:scale-90 transition-transform" href="#" onclick="alert('Trang thiết lập Cửa Hàng đang được nâng cấp!'); return false;">
+<span class="material-symbols-outlined notranslate">settings</span>
+<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Settings</span>
+</a>
+</nav>
+<script type="module" src="../js/owner.js"></script>
+<script src="../js/translator.js"></script>
+</body></html>
