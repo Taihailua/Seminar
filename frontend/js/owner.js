@@ -447,9 +447,13 @@ function renderOwnerDishes(dishes, restaurantId) {
           ${dish.price ? Number(dish.price).toLocaleString('vi-VN') + 'đ' : 'Liên hệ'}
         </div>
       </div>
-      <label class="switch" style="display:flex;align-items:center;gap:6px;cursor:pointer;min-width:84px;" title="${dish.is_available ? 'Còn món' : 'Hết món'}">
-        <input type="checkbox" ${dish.is_available ? 'checked' : ''} data-dish-id="${dish.id}" class="dish-toggle" style="width:16px;height:16px;margin:0;accent-color:#0ea5e9;cursor:pointer;">
-        <span class="dish-availability-label" style="font-size:12px;font-weight:600;color:${dish.is_available ? '#67e8f9' : '#aba9bb'};line-height:1;">${dish.is_available ? 'Còn món' : 'Hết món'}</span>
+      <label class="switch" style="cursor:pointer;" title="${dish.is_available ? 'Còn món' : 'Hết món'}">
+        <input type="checkbox" ${dish.is_available ? 'checked' : ''} data-dish-id="${dish.id}" class="dish-toggle">
+        <span style="
+          display:inline-block;width:42px;height:24px;border-radius:12px;
+          background:${dish.is_available ? 'linear-gradient(135deg,#0ea5e9,#0284c7)' : '#474656'};
+          position:relative;transition:background 0.3s;
+        "></span>
       </label>
       <button data-edit-dish="${dish.id}" style="
         background:none;border:none;color:#aba9bb;cursor:pointer;font-size:18px;
@@ -472,17 +476,10 @@ function renderOwnerDishes(dishes, restaurantId) {
   container.querySelectorAll('.dish-toggle').forEach((toggle) => {
     toggle.addEventListener('change', async () => {
       const dishId = toggle.dataset.dishId;
-      const label = toggle.nextElementSibling;
-      const switchWrap = toggle.closest('.switch');
+      const span = toggle.nextElementSibling;
       try {
         await api.put(`/api/dishes/${dishId}`, { is_available: toggle.checked });
-        if (label) {
-          label.textContent = toggle.checked ? 'Còn món' : 'Hết món';
-          label.style.color = toggle.checked ? '#67e8f9' : '#aba9bb';
-        }
-        if (switchWrap) {
-          switchWrap.title = toggle.checked ? 'Còn món' : 'Hết món';
-        }
+        if (span) span.style.background = toggle.checked ? 'linear-gradient(135deg,#0ea5e9,#0284c7)' : '#474656';
       } catch (err) {
         alert('Lỗi: ' + err.message);
         toggle.checked = !toggle.checked;
