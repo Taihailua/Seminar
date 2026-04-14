@@ -1,109 +1,69 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="vi"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<html class="dark" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    "colors": {
+                    colors: {
                         "inverse-surface": "#fcf8ff",
                         "primary-fixed": "#0284c7",
                         "tertiary-fixed": "#fcb825",
                         "on-secondary-container": "#fff6f2",
                         "surface-tint": "#0ea5e9",
-                        "on-secondary-fixed": "#542900",
                         "surface-container-high": "#1e1e2f",
-                        "on-tertiary-fixed-variant": "#5f4200",
                         "surface-container-lowest": "#000000",
-                        "secondary-fixed-dim": "#ffb37a",
-                        "inverse-primary": "#9f4300",
-                        "on-tertiary-container": "#543a00",
-                        "on-secondary": "#4c2400",
-                        "on-background": "#e9e6f9",
-                        "inverse-on-surface": "#545363",
-                        "primary-container": "#0284c7",
-                        "tertiary-dim": "#ecaa12",
                         "surface-dim": "#0d0d1a",
                         "secondary": "#38bdf8",
-                        "primary-dim": "#0284c7",
-                        "secondary-fixed": "#ffc69d",
-                        "on-tertiary": "#5f4200",
-                        "on-surface": "#e9e6f9",
-                        "surface-variant": "#242437",
-                        "on-tertiary-fixed": "#3a2600",
-                        "error-dim": "#d53d18",
-                        "surface": "#0d0d1a",
-                        "on-primary-container": "#3f1600",
-                        "on-error-container": "#ffd2c8",
-                        "on-primary-fixed-variant": "#4e1d00",
-                        "tertiary-fixed-dim": "#ecaa12",
-                        "secondary-dim": "#ed862b",
-                        "outline": "#757485",
-                        "surface-container-highest": "#242437",
-                        "primary-fixed-dim": "#f16b0b",
-                        "on-primary": "#521f00",
-                        "on-surface-variant": "#aba9bb",
-                        "on-error": "#450900",
-                        "error": "#ff7351",
                         "primary": "#0ea5e9",
                         "tertiary": "#ffc968",
-                        "secondary-container": "#934b00",
-                        "surface-bright": "#2a2a3f",
-                        "error-container": "#b92902",
-                        "on-primary-fixed": "#000000",
-                        "outline-variant": "#474656",
-                        "on-secondary-fixed-variant": "#7e4000",
-                        "tertiary-container": "#fcb825",
-                        "surface-container-low": "#121220",
-                        "background": "#0d0d1a",
-                        "surface-container": "#181828"
+                        "surface": "#0d0d1a",
+                        "on-surface": "#e9e6f9",
+                        "surface-variant": "#242437",
+                        "outline": "#757485",
+                        "surface-container-highest": "#242437",
+                        "surface-container": "#181828",
+                        "error": "#ff7351"
                     },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
                     },
-                    "fontFamily": {
-                        "headline": ["Plus Jakarta Sans"],
-                        "body": ["Plus Jakarta Sans"],
-                        "label": ["Plus Jakarta Sans"]
+                    fontFamily: {
+                        headline: ["Plus Jakarta Sans"],
+                        body: ["Plus Jakarta Sans"],
+                        label: ["Plus Jakarta Sans"]
                     }
-                },
-            },
+                }
+            }
         }
     </script>
-<style>
+    <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        .marker-pulse {
-            animation: pulse-orange 2s infinite;
-        }
-        @keyframes pulse-orange {
-            0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(14, 165, 233, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         .user-location-pulse {
-            width: 14px;
-            height: 14px;
+            width: 14px; height: 14px;
             background: #0ea5e9;
             border: 3px solid white;
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(14, 165, 233, 0.8);
+            box-shadow: 0 0 10px rgba(14,165,233,0.8);
             position: relative;
         }
         .user-location-pulse::after {
             content: '';
             position: absolute;
-            top: -3px; left: -3px; right: -3px; bottom: -3px;
+            inset: -3px;
             border-radius: 50%;
             border: 2px solid #0ea5e9;
             animation: user-pulse 2s ease-out infinite;
@@ -113,114 +73,98 @@
             100% { transform: scale(3); opacity: 0; }
         }
     </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
+</head>
 <body class="bg-surface-dim text-on-surface font-body selection:bg-primary/30 overflow-hidden">
-<!-- Drawer Navigation Overlay -->
-<div id="drawer-overlay" class="drawer-overlay fixed inset-0 bg-black/60 z-[60] backdrop-blur-sm" style="display: none;"></div>
-<div id="side-menu" class="side-menu fixed top-0 left-0 h-full w-64 bg-[#181828] z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl border-r border-[#242437]/30">
-    <div class="p-6 flex flex-col h-full gap-6">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary avatar notranslate">?</div>
-            <div>
-                <p class="font-bold text-on-surface user-name notranslate">Đang tải...</p>
-                <p class="text-[10px] text-primary uppercase nav-role notranslate">Khách hàng</p>
+
+    <!-- Drawer Navigation -->
+    <div id="drawer-overlay" class="fixed inset-0 bg-black/60 z-[60] backdrop-blur-sm hidden"></div>
+    <div id="side-menu" class="fixed top-0 left-0 h-full w-64 bg-[#181828] z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl border-r border-[#242437]/30">
+        <div class="p-6 flex flex-col h-full gap-6">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center font-bold text-primary avatar">?</div>
+                <div>
+                    <p class="font-bold text-on-surface user-name">Đang tải...</p>
+                    <p class="text-[10px] text-primary uppercase nav-role">Khách hàng</p>
+                </div>
+            </div>
+            <div class="h-[1px] bg-white/10 w-full"></div>
+            <nav class="flex flex-col gap-4">
+                <a href="map.html" class="flex items-center gap-3 font-bold text-primary text-sm p-3 bg-primary/10 rounded-xl">
+                    <span class="material-symbols-outlined">map</span> Bản đồ
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <button id="btn-logout" class="w-full h-12 rounded-xl bg-error/10 text-error font-bold flex items-center justify-center gap-2 active:bg-error/20">
+                    <span class="material-symbols-outlined text-sm">logout</span> Đăng xuất
+                </button>
             </div>
         </div>
-        <div class="h-[1px] bg-white/10 w-full"></div>
-        <nav class="flex flex-col gap-4">
-            <a href="map.html" class="flex items-center gap-3 font-bold text-primary text-sm p-3 bg-primary/10 rounded-xl">
-                <span class="material-symbols-outlined notranslate">map</span> Bản đồ
-            </a>
-
-        </nav>
-        <div class="mt-auto">
-            <button id="btn-logout" class="btn-logout w-full h-12 rounded-xl bg-error/10 text-error font-bold flex items-center justify-center gap-2 active:bg-error/20 transition-colors">
-                <span class="material-symbols-outlined text-sm notranslate">logout</span> Đăng xuất
-            </button>
-        </div>
     </div>
-</div>
 
-<!-- Map Canvas (Full Screen) -->
-<div id="map-container" class="fixed inset-0 z-0 bg-surface-container-lowest" style="height: 100dvh; width: 100vw;"></div>
-<!-- Top App Bar -->
-<header class="fixed top-0 w-full z-50 bg-[#181828]/70 backdrop-blur-xl flex justify-between items-center px-4 h-16 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-<button id="menu-toggle" class="nav-toggle p-2 hover:bg-[#242437]/50 rounded-full transition-all text-primary">
-<span class="material-symbols-outlined notranslate">menu</span>
-</button>
-<h1 class="font-headline font-bold tracking-tight text-lg text-on-surface">
-            Phố Vĩnh Khánh 📍
-        </h1>
-<div class="flex items-center gap-3">
-<button id="qr-scan-btn" class="btn-scan-qr text-primary drop-shadow-[0_0_8px_rgba(14, 165, 233,0.4)] hover:scale-110 transition-transform">
-<span class="material-symbols-outlined notranslate">qr_code_scanner</span>
-</button>
-<a href="profile.html" class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden hover:border-primary/50 transition-colors">
-<span class="user-avatar text-[10px] font-bold text-secondary notranslate">VT</span>
-</a>
-</div>
-</header>
+    <!-- Map Container -->
+    <div id="map-container" class="fixed inset-0 z-0 bg-black" style="height: 100dvh; width: 100vw;"></div>
 
-<!-- Top Map Controls -->
-<div class="fixed top-20 left-1/2 -translate-x-1/2 z-40 flex bg-surface-container/60 backdrop-blur-xl rounded-2xl p-1.5 border border-white/5 shadow-2xl">
-    <button id="btn-center-user" class="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all hover:bg-white/5">
-        <span class="material-symbols-outlined text-sm notranslate">my_location</span>
-        Vị trí của tôi
-    </button>
-    <div class="w-[1px] bg-white/10 mx-1"></div>
-    <button id="btn-center-restaurants" class="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all hover:bg-white/5">
-        <span class="material-symbols-outlined text-sm notranslate">restaurant</span>
-        Danh sách quán
-    </button>
-</div>
-<!-- Bottom Drawer (Partially Visible) -->
-<section class="fixed bottom-0 left-0 w-full z-40 bg-[#181828]/70 backdrop-blur-xl rounded-t-[2rem] pt-6 pb-24 shadow-[0_-8px_24px_rgba(14,165,233,0.15)] border-t border-[#242437]/30">
-<!-- Drawer Handle -->
-<div class="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-outline-variant rounded-full opacity-30"></div>
-<div class="px-6 mb-4 flex justify-between items-center">
-<h2 class="font-headline font-extrabold text-lg flex items-center gap-2">
-<span class="text-xl">🍜</span> Quán Ăn Lân Cận
+    <!-- Top App Bar -->
+    <header class="fixed top-0 w-full z-50 bg-[#181828]/70 backdrop-blur-xl flex justify-between items-center px-4 h-16 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+        <button id="menu-toggle" class="p-2 hover:bg-[#242437]/50 rounded-full transition-all text-primary">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+        <h1 class="font-headline font-bold tracking-tight text-lg text-on-surface">Phố Vĩnh Khánh 📍</h1>
+        <div class="flex items-center gap-3">
+            <button id="qr-scan-btn" class="text-primary drop-shadow-[0_0_8px_rgba(14,165,233,0.4)] hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined">qr_code_scanner</span>
+            </button>
+            <a href="profile.html" class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden hover:border-primary/50">
+                <span class="user-avatar text-[10px] font-bold text-secondary">VT</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Top Map Controls -->
+    <div class="fixed top-20 left-1/2 -translate-x-1/2 z-40 flex bg-surface-container/60 backdrop-blur-xl rounded-2xl p-1.5 border border-white/5 shadow-2xl">
+        <button id="btn-center-user" class="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-white/5 transition-all">
+            <span class="material-symbols-outlined text-sm">my_location</span>
+            Vị trí của tôi
+        </button>
+        <div class="w-[1px] bg-white/10 mx-1"></div>
+        <button id="btn-center-restaurants" class="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 hover:bg-white/5 transition-all">
+            <span class="material-symbols-outlined text-sm">restaurant</span>
+            Danh sách quán
+        </button>
+    </div>
+
+    <!-- Bottom Drawer -->
+    <section class="fixed bottom-0 left-0 w-full z-40 bg-[#181828]/70 backdrop-blur-xl rounded-t-[2rem] pt-6 pb-24 shadow-[0_-8px_24px_rgba(14,165,233,0.15)] border-t border-[#242437]/30">
+        <div class="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-outline-variant rounded-full opacity-30"></div>
+        <div class="px-6 mb-4 flex justify-between items-center">
+            <h2 class="font-headline font-extrabold text-lg flex items-center gap-2">
+                <span class="text-xl">🍜</span> Quán Ăn Lân Cận
             </h2>
-<button class="text-primary text-xs font-bold uppercase tracking-widest">Tất cả</button>
-</div>
-<!-- Horizontal Scrollable Cards -->
-<div class="restaurant-cards flex gap-4 overflow-x-auto px-6 pb-4 no-scrollbar">
-    <!-- Populated dynamically via JS -->
-</div>
-</section>
-<!-- FABs -->
-<div class="fixed right-6 bottom-28 z-50 flex flex-col gap-4 items-end">
-    <!-- QR Scan Button -->
-    <button id="qr-scan-btn-fab" class="btn-scan-qr bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-5 h-14 rounded-full flex items-center gap-3 shadow-[0_8px_24px_rgba(14,165,233,0.4)] active:scale-95 transition-transform hover:shadow-[0_12px_28px_rgba(14,165,233,0.6)]">
-        <span class="material-symbols-outlined notranslate" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+            <button class="text-primary text-xs font-bold uppercase tracking-widest">Tất cả</button>
+        </div>
+        <div class="restaurant-cards flex gap-4 overflow-x-auto px-6 pb-4 no-scrollbar">
+            <!-- JS sẽ đổ dữ liệu vào đây -->
+        </div>
+    </section>
+
+    <!-- QR FAB -->
+    <button id="qr-scan-btn-fab" class="fixed right-6 bottom-28 z-50 bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-5 h-14 rounded-full flex items-center gap-3 shadow-[0_8px_24px_rgba(14,165,233,0.4)] active:scale-95 hover:shadow-[0_12px_28px_rgba(14,165,233,0.6)] transition-all">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
         <span class="font-bold text-sm">Quét QR</span>
     </button>
-</div>
-<!-- Bottom Navigation Bar -->
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-6 pb-4 bg-[#181828]/70 backdrop-blur-xl rounded-t-[2rem] z-50 border-t border-[#242437]/30 shadow-[0_-8px_24px_rgba(14,165,233,0.15)]">
-<a class="flex flex-col items-center justify-center text-[#0ea5e9] drop-shadow-[0_0_8px_rgba(14, 165, 233,0.6)]" href="map.html">
-<span class="material-symbols-outlined notranslate" style="font-variation-settings: 'FILL' 1;">map</span>
-<span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Bản Đồ</span>
-</a>
 
-<a href="profile.html" class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#0ea5e9] transition-colors cursor-pointer">
-<span class="material-symbols-outlined notranslate">person</span>
-<span class="text-[10px] font-bold uppercase tracking-widest font-headline mt-1">Cá Nhân</span>
-</a>
-</nav>
-<style>
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-    </style>
-<script type="module" src="../js/map.js"></script><script src="../js/translator.js"></script>
-</body></html>
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-6 pb-4 bg-[#181828]/70 backdrop-blur-xl rounded-t-[2rem] z-50 border-t border-[#242437]/30 shadow-[0_-8px_24px_rgba(14,165,233,0.15)]">
+        <a class="flex flex-col items-center justify-center text-[#0ea5e9]" href="map.html">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">map</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest mt-1">Bản Đồ</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center justify-center text-[#e9e6f9]/50 hover:text-[#0ea5e9] transition-colors">
+            <span class="material-symbols-outlined">person</span>
+            <span class="text-[10px] font-bold uppercase tracking-widest mt-1">Cá Nhân</span>
+        </a>
+    </nav>
+
+    <script type="module" src="../js/map.js"></script>
+</body>
+</html>
