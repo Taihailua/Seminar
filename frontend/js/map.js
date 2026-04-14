@@ -1,16 +1,16 @@
 /**
- * map.js — Interactive Leaflet map with dynamic restaurant markers
- * Replaces all static restaurant list data with live API data.
+ * map.js — Full Map + Restaurant + QR Scanner (Camera + Upload FIXED)
  */
+
 import { api, getAuth, clearAuth } from './api.js';
 
 let map;
 let markersLayer;
 let restaurantData = [];
+let qrInstance = null;   // Global instance để dễ quản lý
 
-/** Initialize Leaflet map centered on Vinh Khanh street */
+// ==================== MAP ====================
 function initMap() {
-  // Vinh Khanh Street, District 4, Ho Chi Minh City
   const VK_CENTER = [10.7553, 106.7009];
 
   map = L.map('map-container', {
@@ -19,84 +19,55 @@ function initMap() {
     zoomControl: false,
   });
 
-  // Dark tile layer (CartoDB dark matter)
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap © CartoDB',
     maxZoom: 20,
   }).addTo(map);
 
-  // Zoom controls bottom-right
   L.control.zoom({ position: 'bottomright' }).addTo(map);
 
   markersLayer = L.layerGroup().addTo(map);
 }
 
-/** Create a custom orange marker icon */
+// ==================== MARKER ====================
 function createOrangeMarker(isSelected = false) {
   const size = isSelected ? 44 : 36;
-  const glow = isSelected ? 'filter:drop-shadow(0 0 12px #0ea5e9);' : '';
+
   return L.divIcon({
     className: '',
-    html: `<div style="
-      width:${size}px;height:${size}px;
-      background:linear-gradient(135deg,#0ea5e9,#0284c7);
-      border-radius:50% 50% 50% 0;
-      transform:rotate(-45deg);
-      border:3px solid #fff;
-      box-shadow:0 4px 16px rgba(14,165,233,0.5);
-      ${glow}
-    ">
-      <div style="
-        transform:rotate(45deg);
-        display:flex;align-items:center;justify-content:center;
-        height:100%;font-size:${size * 0.45}px;
-      ">🍜</div>
-    </div>`,
+    html: `
+      <div style="width:${size}px;height:${size}px;background:linear-gradient(135deg,#0ea5e9,#0284c7);border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid #fff;box-shadow:0 4px 16px rgba(14,165,233,0.5);">
+        <div style="transform:rotate(45deg);display:flex;align-items:center;justify-content:center;height:100%;font-size:${size * 0.45}px;">🍜</div>
+      </div>
+    `,
     iconSize: [size, size],
     iconAnchor: [size / 2, size],
     popupAnchor: [0, -size],
   });
 }
 
-/** Render restaurant markers on map from API data */
 function renderMarkers(restaurants) {
   markersLayer.clearLayers();
 
   restaurants.forEach((r) => {
     if (!r.latitude || !r.longitude) return;
 
-    const marker = L.marker([r.latitude, r.longitude], {
-      icon: createOrangeMarker(false),
-    });
+    const marker = L.marker([r.latitude, r.longitude], { icon: createOrangeMarker(false) });
 
-    const ratingDisplay = r.avg_rating ? `⭐ ${r.avg_rating.toFixed(1)}` : '⭐ Chưa có';
     marker.bindPopup(`
-      <div style="
-        background:#1a1a2e;color:#e9e6f9;padding:12px;
-        border-radius:12px;min-width:200px;font-family:'Plus Jakarta Sans',sans-serif;
-      ">
-        <div style="font-weight:700;font-size:15px;color:#0ea5e9;margin-bottom:4px;">
-          ${r.name}
+      <div style="background:#1a1a2e;color:#e9e6f9;padding:12px;border-radius:12px;min-width:200px;">
+        <div style="font-weight:700;color:#0ea5e9">${r.name}</div>
+        <div style="font-size:12px;color:#aaa">
+          ${r.avg_rating ? `⭐ ${r.avg_rating.toFixed(1)}` : '⭐ Mới'}
         </div>
-        <div style="font-size:12px;color:#aba9bb;margin-bottom:8px;">
-          ${ratingDisplay} · 📍 ${r.address || 'Phố Vĩnh Khánh'}
-        </div>
-        <a href="restaurant.html?id=${r.id}"
-           style="
-             display:block;text-align:center;padding:8px 16px;
-             background:linear-gradient(135deg,#0ea5e9,#0284c7);
-             color:#521f00;border-radius:8px;text-decoration:none;
-             font-weight:700;font-size:13px;
-           ">
+        <a href="restaurant.html?id=${r.id}" style="display:block;margin-top:8px;padding:8px;text-align:center;background:#0ea5e9;color:#000;border-radius:8px;text-decoration:none;font-weight:600;">
           Xem chi tiết →
         </a>
       </div>
-    `, { maxWidth: 250, className: 'vk-popup' });
+    `, { maxWidth: 250 });
 
     marker.on('click', () => {
-      markersLayer.eachLayer((m) => {
-        if (m !== marker) m.setIcon(createOrangeMarker(false));
-      });
+      markersLayer.eachLayer((m) => m !== marker && m.setIcon(createOrangeMarker(false)));
       marker.setIcon(createOrangeMarker(true));
     });
 
@@ -104,234 +75,218 @@ function renderMarkers(restaurants) {
   });
 }
 
-/** Populate the restaurant list in the sidebar/drawer — DYNAMIC LOOP */
+// ==================== RESTAURANT LIST ====================
 function renderRestaurantList(restaurants) {
-  // Find the container in the Stitch HTML (various selectors to match generated HTML)
-  const listContainers = document.querySelectorAll(
-    '.restaurant-list, .nearby-list, [class*="quán-ăn"], .drawer-list, .restaurant-cards, .scroll-container'
-  );
-
-  listContainers.forEach((container) => {
+  document.querySelectorAll('.restaurant-cards').forEach(container => {
     container.innerHTML = '';
-    restaurants.forEach((r) => {
+    restaurants.forEach(r => {
       const card = document.createElement('div');
-      card.className = 'restaurant-card-item';
-      card.style.cssText = `
-        background:#242437;border-radius:12px;padding:14px;margin-bottom:10px;
-        cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;
-        display:flex;align-items:center;gap:12px;
-      `;
+      card.style.cssText = `flex-shrink:0;width:160px;background:#242437;border-radius:14px;padding:14px;cursor:pointer;`;
       card.innerHTML = `
-        <div style="
-          width:56px;height:56px;border-radius:10px;
-          background:linear-gradient(135deg,#1a1a2e,#242437);
-          display:flex;align-items:center;justify-content:center;
-          font-size:24px;flex-shrink:0;
-        ">🍜</div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-weight:700;color:#e9e6f9;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-            ${r.name}
-          </div>
-          <div style="font-size:12px;color:#0ea5e9;margin-top:2px;">
-            ${r.avg_rating ? `⭐ ${r.avg_rating.toFixed(1)}` : '⭐ Mới'}
-          </div>
-          <div style="font-size:11px;color:#aba9bb;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-            📍 ${r.address || 'Phố Vĩnh Khánh'}
-          </div>
-        </div>
+        <div style="height:80px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;font-size:32px;border-radius:10px;margin-bottom:10px;">🍜</div>
+        <div style="color:#e9e6f9;font-weight:700;font-size:13px;">${r.name}</div>
+        <div style="color:#0ea5e9;font-size:11px;">${r.avg_rating ? `⭐ ${r.avg_rating.toFixed(1)}` : '⭐ Mới'}</div>
       `;
-      card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateX(4px)';
-        card.style.boxShadow = '0 4px 16px rgba(14,165,233,0.2)';
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-        card.style.boxShadow = '';
-      });
-      card.addEventListener('click', () => {
-        window.location.href = `restaurant.html?id=${r.id}`;
-      });
+      card.addEventListener('click', () => window.location.href = `restaurant.html?id=${r.id}`);
       container.appendChild(card);
     });
-
-    if (restaurants.length === 0) {
-      container.innerHTML = '<div style="color:#aba9bb;text-align:center;padding:20px;">Chưa có nhà hàng</div>';
-    }
   });
-
-  // Also populate nav drawer restaurant links
-  const navRestaurants = document.querySelector('.nav-restaurants, [class*="drawer"] .restaurant-list');
-  if (navRestaurants && !listContainers.length) {
-    navRestaurants.innerHTML = restaurants.slice(0, 5).map((r) => `
-      <a href="restaurant.html?id=${r.id}" style="
-        display:block;padding:8px 16px 8px 32px;
-        color:#e9e6f9;text-decoration:none;font-size:14px;
-        transition:color 0.2s;
-      " onmouseenter="this.style.color='#0ea5e9'" onmouseleave="this.style.color='#e9e6f9'">
-        🍜 ${r.name}
-      </a>
-    `).join('');
-  }
 }
 
-/** Populate the navigation drawer user info */
-function populateNavDrawer() {
-  const { username, role } = getAuth();
-  const userNameEls = document.querySelectorAll('.drawer-username, .nav-username, [class*="user-name"]');
-  userNameEls.forEach((el) => (el.textContent = username || 'Khách'));
-
-  const userRoleEls = document.querySelectorAll('.drawer-role, .nav-role');
-  userRoleEls.forEach((el) => (el.textContent = role === 'owner' ? '🏪 Chủ quán' : role === 'admin' ? '⚙️ Admin' : '👤 Khách hàng'));
-}
-
-/** Wire navigation drawer open/close */
+// ==================== DRAWER ====================
 function setupDrawer() {
-  const menuBtns = document.querySelectorAll('#menu-toggle, .btn-menu');
   const drawer = document.getElementById('side-menu');
   const overlay = document.getElementById('drawer-overlay');
 
-  menuBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      if (drawer) drawer.style.transform = 'translateX(0)';
-      if (overlay) overlay.style.display = 'block';
-    });
+  document.getElementById('menu-toggle')?.addEventListener('click', () => {
+    drawer.style.transform = 'translateX(0)';
+    overlay.style.display = 'block';
   });
 
-  if (overlay) {
-    overlay.addEventListener('click', () => {
-      if (drawer) drawer.style.transform = 'translateX(-100%)';
-      overlay.style.display = 'none';
-    });
-  }
+  overlay?.addEventListener('click', () => {
+    drawer.style.transform = 'translateX(-100%)';
+    overlay.style.display = 'none';
+  });
 
-  // Wire logout
-  document.querySelectorAll('#btn-logout, .btn-logout, #logout-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      clearAuth();
-      window.location.href = 'login.html';
-    });
+  document.getElementById('btn-logout')?.addEventListener('click', () => {
+    clearAuth();
+    window.location.href = 'login.html';
   });
 }
 
-/** Wire QR scan button — opens scanner page */
-function setupQRButton() {
-  const qrBtns = document.querySelectorAll('#qr-scan-btn, .btn-qr');
-  qrBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
+// ==================== QR SCANNER (ĐÃ SỬA) ====================
+function setupQrButtons() {
+  document.querySelectorAll('#qr-scan-btn, #qr-scan-btn-fab').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
       openScannerModal();
     });
   });
 }
 
-/** Inline QR scanner modal using html5-qrcode */
 function openScannerModal() {
+  if (document.getElementById('qr-modal')) return;
+
   const modal = document.createElement('div');
   modal.id = 'qr-modal';
-  modal.style.cssText = `
-    position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-  `;
+  modal.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:9999;display:flex;justify-content:center;align-items:center;`;
+
   modal.innerHTML = `
-    <div style="background:#181828;border-radius:16px;padding:24px;width:90%;max-width:400px;">
+    <div style="background:#181828;padding:24px;border-radius:16px;width:90%;max-width:420px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-        <h3 style="color:#0ea5e9;font-family:'Plus Jakarta Sans',sans-serif;margin:0;">📷 Quét Mã QR</h3>
-        <button id="close-scanner" style="
-          background:none;border:none;color:#aba9bb;font-size:24px;cursor:pointer;
-        ">✕</button>
+        <h3 style="color:#0ea5e9;margin:0;">📷 Quét Mã QR</h3>
+        <button id="close-qr" style="background:none;border:none;color:#aba9bb;font-size:26px;cursor:pointer;">✕</button>
       </div>
-      <div id="qr-reader" style="border-radius:12px;overflow:hidden;"></div>
-      <p style="color:#aba9bb;font-size:13px;text-align:center;margin-top:12px;">
-        Hướng camera vào mã QR tại bàn ăn
-      </p>
+      <div id="qr-reader" style="min-height:280px;background:#000;border-radius:12px;overflow:hidden;"></div>
+      <div style="margin-top:16px;text-align:center;">
+        <label style="display:inline-block;padding:12px 24px;background:#0ea5e9;color:#000;border-radius:10px;cursor:pointer;font-weight:700;">
+          📁 Tải ảnh QR từ thư viện
+          <input type="file" id="qr-file" accept="image/*" style="display:none;">
+        </label>
+      </div>
+      <p style="color:#aba9bb;font-size:13px;text-align:center;margin-top:16px;">Hướng camera vào QR hoặc chọn ảnh</p>
     </div>
   `;
+
   document.body.appendChild(modal);
 
-  document.getElementById('close-scanner').addEventListener('click', () => {
-    const reader = window._html5QrcodeScanner;
-    if (reader) reader.clear().catch(() => { });
-    modal.remove();
-  });
+  document.getElementById('close-qr').addEventListener('click', closeScanner);
 
-  // Load html5-qrcode if not already loaded
   if (!window.Html5Qrcode) {
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js';
-    script.onload = () => startScanner();
+    script.onload = () => {
+      startCameraScanner();
+      setupFileUpload();
+    };
     document.head.appendChild(script);
   } else {
-    startScanner();
+    startCameraScanner();
+    setupFileUpload();
   }
 }
 
-function startScanner() {
-  const html5QrCode = new Html5Qrcode('qr-reader');
-  window._html5QrcodeScanner = html5QrCode;
-  html5QrCode.start(
-    { facingMode: 'environment' },
-    { fps: 10, qrbox: { width: 250, height: 250 } },
-    (decodedText) => {
-      html5QrCode.stop().then(() => {
-        document.getElementById('qr-modal')?.remove();
-        // Parse restaurant ID from URL
-        try {
-          const url = new URL(decodedText);
-          const id = url.searchParams.get('id');
-          if (id) {
-            window.location.href = `restaurant.html?id=${id}`;
-          } else {
-            window.location.href = decodedText;
-          }
-        } catch {
-          alert('QR không hợp lệ: ' + decodedText);
-        }
-      });
-    },
-    () => { } // ignore per-frame errors
-  ).catch((err) => {
-    console.error('QR start error:', err);
-    alert('Không thể mở camera: ' + err);
+function startCameraScanner() {
+  stopScanner(); // đảm bảo không có instance cũ
+
+  qrInstance = new Html5Qrcode("qr-reader");
+
+  qrInstance.start(
+    { facingMode: "environment" },
+    { fps: 12, qrbox: { width: 260, height: 260 } },
+    onScanSuccess,
+    (error) => {} // im lặng lỗi quét liên tục
+  ).catch(err => {
+    console.error("Không mở được camera:", err);
+    alert("Không thể truy cập camera. Vui lòng kiểm tra quyền.");
   });
 }
 
-/** Main init */
-async function init() {
-  // Check auth and populate avatar
-  const { username } = getAuth();
-  const avatarEls = document.querySelectorAll('.avatar, .user-avatar, [class*="avatar"]');
-  avatarEls.forEach((el) => {
-    if (el.tagName !== 'IMG') el.textContent = username ? username[0].toUpperCase() : '?';
-  });
+function setupFileUpload() {
+  const fileInput = document.getElementById('qr-file');
+  fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  setupDrawer();
-  setupQRButton();
-  populateNavDrawer();
+    try {
+      stopScanner(); // dừng camera trước khi scan file
 
-  // Init Leaflet map
-  const mapContainer = document.querySelector('#map-container, .map-container, [class*="leaflet"]');
-  if (mapContainer) {
-    mapContainer.id = 'map-container';
-    mapContainer.style.height = mapContainer.style.height || '60vh';
+      const qr = new Html5Qrcode("qr-reader"); // tạo instance mới cho scanFile
+      const decodedText = await qr.scanFile(file, true); // true = scan both inverted & normal
 
-    // Load Leaflet CSS + JS dynamically
-    if (!window.L) {
-      await loadLeaflet();
+      onScanSuccess(decodedText);
+    } catch (err) {
+      console.error("Scan file error:", err);
+      alert("Không đọc được QR từ ảnh.\n\n→ Hãy thử ảnh rõ nét, không mờ, không phản chiếu.");
     }
-    initMap();
-  }
+  });
+}
 
-  // Fetch restaurants from API
+function onScanSuccess(decodedText) {
+  stopScanner();
+  document.getElementById('qr-modal')?.remove();
+
+  console.log("✅ QR Decoded:", decodedText); // giúp debug
+
   try {
-    const restaurantData = await api.get('/api/restaurants');
+    const url = new URL(decodedText);
+
+    const id = url.searchParams.get('id');
+    if (id) {
+      window.location.href = `restaurant.html?id=${id}`;
+    } else {
+      window.location.href = decodedText;
+    }
+  } catch (e) {
+    // Không phải URL → hiển thị nội dung text
+    showQRContentModal(decodedText);
+  }
+}
+
+function showQRContentModal(content) {
+  const modal = document.createElement('div');
+  modal.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:10000;display:flex;align-items:center;justify-content:center;`;
+
+  modal.innerHTML = `
+    <div style="background:#181828;border-radius:20px;padding:28px;width:90%;max-width:420px;text-align:center;">
+      <div style="font-size:52px;margin-bottom:12px;">✅</div>
+      <h3 style="color:#0ea5e9;margin-bottom:20px;">Đã quét thành công!</h3>
+      <div style="background:#242437;padding:18px;border-radius:12px;margin-bottom:24px;text-align:left;word-break:break-all;">
+        <div style="color:#aba9bb;font-size:13px;margin-bottom:8px;">Nội dung:</div>
+        <div style="color:#e9e6f9;line-height:1.5;">${content}</div>
+      </div>
+      <div style="display:flex;gap:12px;">
+        <button id="copy-btn" style="flex:1;padding:14px;background:#242437;color:#fff;border:none;border-radius:12px;font-weight:600;">📋 Sao chép</button>
+        <button id="close-btn" style="flex:1;padding:14px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#000;border:none;border-radius:12px;font-weight:700;">Đóng</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  document.getElementById('copy-btn').addEventListener('click', () => {
+    navigator.clipboard.writeText(content);
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✅ Đã sao chép!';
+    setTimeout(() => btn.textContent = '📋 Sao chép', 2000);
+  });
+
+  document.getElementById('close-btn').addEventListener('click', () => modal.remove());
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+}
+
+function stopScanner() {
+  if (qrInstance) {
+    qrInstance.stop().catch(() => {}).finally(() => {
+      qrInstance = null;
+    });
+  }
+}
+
+function closeScanner() {
+  stopScanner();
+  document.getElementById('qr-modal')?.remove();
+}
+
+// ==================== MAIN INIT ====================
+async function init() {
+  setupDrawer();
+  setupQrButtons();
+
+  if (!window.L) await loadLeaflet();
+  initMap();
+
+  try {
+    restaurantData = await api.get('/api/restaurants');
     renderMarkers(restaurantData);
     renderRestaurantList(restaurantData);
   } catch (err) {
-    console.error('Failed to load restaurants:', err);
+    console.error('Lỗi tải danh sách quán:', err);
   }
 }
 
 function loadLeaflet() {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
