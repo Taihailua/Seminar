@@ -4,7 +4,6 @@
  */
 import { api, getAuth, clearAuth } from './api.js';
 
-const API_BASE = 'http://localhost:8000';
 let map;
 let markersLayer;
 let restaurantData = [];
@@ -250,7 +249,7 @@ function openScannerModal() {
 
   document.getElementById('close-scanner').addEventListener('click', () => {
     const reader = window._html5QrcodeScanner;
-    if (reader) reader.clear().catch(() => {});
+    if (reader) reader.clear().catch(() => { });
     modal.remove();
   });
 
@@ -288,7 +287,7 @@ function startScanner() {
         }
       });
     },
-    () => {} // ignore per-frame errors
+    () => { } // ignore per-frame errors
   ).catch((err) => {
     console.error('QR start error:', err);
     alert('Không thể mở camera: ' + err);
@@ -297,10 +296,7 @@ function startScanner() {
 
 /** Main init */
 async function init() {
-  // Check auth
-  const { token } = getAuth();
-
-  // If user avatar exists, populate it
+  // Check auth and populate avatar
   const { username } = getAuth();
   const avatarEls = document.querySelectorAll('.avatar, .user-avatar, [class*="avatar"]');
   avatarEls.forEach((el) => {
@@ -326,7 +322,7 @@ async function init() {
 
   // Fetch restaurants from API
   try {
-    restaurantData = await api.get('/api/restaurants');
+    const restaurantData = await api.get('/api/restaurants');
     renderMarkers(restaurantData);
     renderRestaurantList(restaurantData);
   } catch (err) {
