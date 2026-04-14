@@ -462,7 +462,7 @@ function populatePage(r) {
   if (nameEl) nameEl.textContent = r.name;
 
   // Address
-  const addrEl = document.querySelector('.restaurant-address');
+  const addrEl = document.getElementById('restaurant-address-text');
   if (addrEl) addrEl.textContent = r.address || 'Phố Vĩnh Khánh, Q.4';
 
   // Description
