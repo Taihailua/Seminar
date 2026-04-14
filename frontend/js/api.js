@@ -4,8 +4,9 @@
  */
 
 // Automatically switch API base based on hostname. For production, update the production URL.
-// Use an empty string for relative paths so the app works on any domain/port it's served from.
-export const API_BASE = '';
+export const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+  ? 'http://localhost:8000' 
+  : 'https://api.your-production-domain.com'; // TODO: Update this when deploying to the cloud
 
 /**
  * Core fetch wrapper. Attaches Bearer token automatically.
