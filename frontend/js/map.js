@@ -4,7 +4,6 @@
  */
 import { api, getAuth, clearAuth } from './api.js';
 
-const API_BASE = 'http://localhost:8000';
 let map;
 let markersLayer;
 let restaurantData = [];
@@ -160,149 +159,99 @@ function openScannerModal() {
 
   document.body.appendChild(modal);
 
-  // Close button
-  document.getElementById('close-scanner').addEventListener('click', closeScanner);
+  document.getElementById('close-scanner').addEventListener('click', () => {
+    const reader = window._html5QrcodeScanner;
+    if (reader) reader.clear().catch(() => { });
+    modal.remove();
+  });
 
-  // Upload QR button
-  document.getElementById('upload-qr-btn').addEventListener('click', handleQRUpload);
-
-  // Start camera scanner
-  startCameraScanner();
-}
-
-function closeScanner() {
-  const reader = window._html5QrcodeScanner;
-  if (reader) reader.clear().catch(() => {});
-  document.getElementById('qr-modal')?.remove();
-}
-
-/** Start camera scanner */
-function startCameraScanner() {
-  if (!window.Html5Qrcode) {
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js';
-    script.onload = () => initCamera();
-    document.head.appendChild(script);
-  } else {
-    initCamera();
-  }
-}
-
-function initCamera() {
-  const html5QrCode = new Html5Qrcode('qr-reader');
-  window._html5QrcodeScanner = html5QrCode;
-
-  html5QrCode.start(
-    { facingMode: 'environment' },
-    { fps: 10, qrbox: { width: 250, height: 250 } },
-    (decodedText) => {
-      html5QrCode.stop().then(() => {
-        closeScanner();
-        handleDecodedQR(decodedText);
-      });
-    },
-    () => {} // ignore errors
-  ).catch(err => console.error('Camera error:', err));
-}
-
-/** Handle when QR is decoded (from camera or uploaded image) */
-function handleDecodedQR(decodedText) {
-  try {
-    const url = new URL(decodedText);
-    const id = url.searchParams.get('id');
-    if (id) {
-      window.location.href = `restaurant.html?id=${id}`;
+  /** Start camera scanner */
+  function startCameraScanner() {
+    if (!window.Html5Qrcode) {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js';
+      script.onload = () => initCamera();
+      document.head.appendChild(script);
     } else {
-      window.location.href = decodedText;
+      initCamera();
     }
-  } catch {
-    alert('QR không hợp lệ: ' + decodedText);
-  }
-}
-
-/** Handle uploaded QR image */
-async function handleQRUpload() {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  
-  input.onchange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      try {
-        const img = new Image();
-        img.src = event.target.result;
-        await new Promise(r => img.onload = r);
-
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0);
-
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const code = jsQR(imageData.data, canvas.width, canvas.height);
-
-        if (code && code.data) {
-          closeScanner();           // Đóng modal
-          handleDecodedQR(code.data);
-        } else {
-          alert('Không đọc được mã QR từ ảnh. Vui lòng thử ảnh khác hoặc quét bằng camera.');
-        }
-      } catch (err) {
-        console.error(err);
-        alert('Có lỗi khi xử lý ảnh QR.');
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  input.click();
-}
-
-/** Main init */
-async function init() {
-  const { username } = getAuth();
-
-  document.querySelectorAll('.avatar, .user-avatar, [class*="avatar"]').forEach(el => {
-    if (el.tagName !== 'IMG') el.textContent = username ? username[0].toUpperCase() : '?';
-  });
-
-  setupDrawer();
-  populateNavDrawer();
-
-  const mapContainer = document.querySelector('#map-container, .map-container');
-  if (mapContainer) {
-    mapContainer.id = 'map-container';
-    mapContainer.style.height = mapContainer.style.height || '60vh';
-    if (!window.L) await loadLeaflet();
-    initMap();
   }
 
-  try {
-    restaurantData = await api.get('/api/restaurants');
-    renderMarkers(restaurantData);
-    renderRestaurantList(restaurantData);
-  } catch (err) {
-    console.error('Failed to load restaurants:', err);
+  function initCamera() {
+    const html5QrCode = new Html5Qrcode('qr-reader');
+    window._html5QrcodeScanner = html5QrCode;
+
+    html5QrCode.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      (decodedText) => {
+        html5QrCode.stop().then(() => {
+          document.getElementById('qr-modal')?.remove();
+          // Parse restaurant ID from URL
+          try {
+            const url = new URL(decodedText);
+            const id = url.searchParams.get('id');
+            if (id) {
+              window.location.href = `restaurant.html?id=${id}`;
+            } else {
+              window.location.href = decodedText;
+            }
+          } catch {
+            alert('QR không hợp lệ: ' + decodedText);
+          }
+        });
+      },
+      () => { } // ignore per-frame errors
+    ).catch((err) => {
+      console.error('QR start error:', err);
+      alert('Không thể mở camera: ' + err);
+    });
   }
-}
 
-function loadLeaflet() {
-  return new Promise((resolve) => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-    document.head.appendChild(link);
+  /** Main init */
+  async function init() {
+    // Check auth
+    const { token } = getAuth();
 
-    const script = document.createElement('script');
-    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-    script.onload = resolve;
-    document.head.appendChild(script);
-  });
-}
+    // If user avatar exists, populate it
+    const { username } = getAuth();
 
-document.addEventListener('DOMContentLoaded', init);
+    document.querySelectorAll('.avatar, .user-avatar, [class*="avatar"]').forEach(el => {
+      if (el.tagName !== 'IMG') el.textContent = username ? username[0].toUpperCase() : '?';
+    });
+
+    setupDrawer();
+    populateNavDrawer();
+
+    const mapContainer = document.querySelector('#map-container, .map-container');
+    if (mapContainer) {
+      mapContainer.id = 'map-container';
+      mapContainer.style.height = mapContainer.style.height || '60vh';
+      if (!window.L) await loadLeaflet();
+      initMap();
+    }
+
+    try {
+      const restaurantData = await api.get('/api/restaurants');
+      renderMarkers(restaurantData);
+      renderRestaurantList(restaurantData);
+    } catch (err) {
+      console.error('Failed to load restaurants:', err);
+    }
+  }
+
+  function loadLeaflet() {
+    return new Promise((resolve) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(link);
+
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.onload = resolve;
+      document.head.appendChild(script);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
