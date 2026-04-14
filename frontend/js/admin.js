@@ -24,17 +24,9 @@ function showToast(message, type = 'error') {
 
   const toast = document.createElement('div');
   toast.id = 'admin-toast';
-  toast.style.cssText = `
-    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
-    background:${c.bg};border:1px solid ${c.border};color:${c.text};
-    padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;
-    font-family:'Plus Jakarta Sans',sans-serif;
-    z-index:9999;white-space:nowrap;
-    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-    box-shadow:0 4px 24px rgba(0,0,0,0.4);
-    transition:opacity 0.3s ease, transform 0.3s ease;
-    opacity:0;
-  `;
+  // Responsive toast — capped width, centered, safe on mobile
+  toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] max-w-[90vw] sm:max-w-sm px-4 py-2.5 rounded-xl text-xs sm:text-[13px] font-semibold backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.4)] transition-all duration-300 opacity-0 translate-y-5 whitespace-nowrap';
+  toast.style.cssText = `background:${c.bg};border:1px solid ${c.border};color:${c.text};font-family:'Plus Jakarta Sans',sans-serif;`;
   toast.textContent = `${c.icon} ${message}`;
   document.body.appendChild(toast);
 
@@ -100,47 +92,31 @@ function renderPendingRestaurants(restaurants) {
   container.innerHTML = '';
 
   if (!restaurants.length) {
-    container.innerHTML = '<p style="color:#4ade80;text-align:center;padding:16px;">✅ Không có nhà hàng nào chờ duyệt</p>';
+    container.innerHTML = '<p class="text-[#4ade80] text-center py-4 text-sm">✅ Không có nhà hàng nào chờ duyệt</p>';
     return;
   }
 
   restaurants.forEach((r) => {
     const card = document.createElement('div');
-    card.style.cssText = `
-      background:#181828;border-radius:12px;padding:16px;margin-bottom:12px;
-      transition:opacity 0.3s ease;
-    `;
+    card.className = 'bg-[#181828] rounded-xl p-4 transition-opacity';
+
     card.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
-        <div style="flex:1;min-width:0;">
-          <div style="font-weight:700;color:#e9e6f9;font-size:15px;margin-bottom:4px;">${r.name}</div>
-          <div style="font-size:12px;color:#aba9bb;">📍 ${r.address || 'Chưa có địa chỉ'}</div>
-          <div style="font-size:12px;color:#aba9bb;margin-top:2px;">
-            🕐 ${new Date(r.created_at).toLocaleDateString('vi-VN')}
-          </div>
+      <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+        <div class="flex-1 min-w-0">
+          <div class="font-bold text-[#e9e6f9] text-sm sm:text-[15px] mb-1">${r.name}</div>
+          <div class="text-xs text-[#aba9bb]">📍 ${r.address || 'Chưa có địa chỉ'}</div>
+          <div class="text-xs text-[#aba9bb] mt-0.5">🕐 ${new Date(r.created_at).toLocaleDateString('vi-VN')}</div>
         </div>
-        <span style="
-          background:rgba(251,191,36,0.2);color:#fbbf24;
-          padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;
-          flex-shrink:0;margin-left:8px;
-        ">🟡 Đang chờ</span>
+        <span class="self-start flex-shrink-0 bg-[rgba(251,191,36,0.2)] text-[#fbbf24] px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-semibold">🟡 Đang chờ</span>
       </div>
-      ${r.description ? `<p style="color:#aba9bb;font-size:13px;margin:0 0 12px;line-height:1.5;">${r.description.substring(0, 120)}...</p>` : ''}
-      <div style="display:flex;gap:8px;">
-        <button data-approve="${r.id}" style="
-          flex:1;padding:10px;border-radius:8px;border:none;cursor:pointer;
-          background:linear-gradient(135deg,#22c55e,#16a34a);
-          color:#fff;font-weight:700;font-size:13px;
-          font-family:'Plus Jakarta Sans',sans-serif;
-          transition:opacity 0.2s;
-        ">✅ Duyệt</button>
-        <button data-reject="${r.id}" style="
-          flex:1;padding:10px;border-radius:8px;border:none;cursor:pointer;
-          background:linear-gradient(135deg,#ef4444,#b91c1c);
-          color:#fff;font-weight:700;font-size:13px;
-          font-family:'Plus Jakarta Sans',sans-serif;
-          transition:opacity 0.2s;
-        ">❌ Từ chối</button>
+      ${r.description ? `<p class="text-[#aba9bb] text-xs sm:text-[13px] mb-3 leading-relaxed line-clamp-2">${r.description.substring(0, 120)}...</p>` : ''}
+      <div class="flex gap-2">
+        <button data-approve="${r.id}" class="flex-1 py-2.5 rounded-lg border-none cursor-pointer bg-gradient-to-br from-[#22c55e] to-[#16a34a] text-white font-bold text-xs sm:text-[13px] font-['Plus_Jakarta_Sans'] transition-opacity active:scale-[0.98]">
+          ✅ Duyệt
+        </button>
+        <button data-reject="${r.id}" class="flex-1 py-2.5 rounded-lg border-none cursor-pointer bg-gradient-to-br from-[#ef4444] to-[#b91c1c] text-white font-bold text-xs sm:text-[13px] font-['Plus_Jakarta_Sans'] transition-opacity active:scale-[0.98]">
+          ❌ Từ chối
+        </button>
       </div>
     `;
 
@@ -153,7 +129,7 @@ function renderPendingRestaurants(restaurants) {
       try {
         await api.post(`/api/admin/restaurants/${id}/approve`);
         card.style.opacity = '0.5';
-        card.innerHTML = '<div style="color:#4ade80;text-align:center;padding:12px;">✅ Đã duyệt</div>';
+        card.innerHTML = '<div class="text-[#4ade80] text-center py-3 text-sm">✅ Đã duyệt</div>';
         setTimeout(() => card.remove(), 1500);
         updatePendingCount(-1);
         showToast('Đã duyệt nhà hàng thành công!', 'success');
@@ -174,7 +150,7 @@ function renderPendingRestaurants(restaurants) {
       try {
         await api.post(`/api/admin/restaurants/${id}/reject`);
         card.style.opacity = '0.5';
-        card.innerHTML = '<div style="color:#f87171;text-align:center;padding:12px;">❌ Đã từ chối</div>';
+        card.innerHTML = '<div class="text-[#f87171] text-center py-3 text-sm">❌ Đã từ chối</div>';
         setTimeout(() => card.remove(), 1500);
         updatePendingCount(-1);
         showToast('Đã từ chối nhà hàng.', 'info');
@@ -206,50 +182,29 @@ function renderUsersTable(users) {
     const role = roleColors[user.role] || roleColors.user;
     const row = document.createElement('div');
     row.dataset.userId = user.id;
-    row.style.cssText = `
-      display:flex;align-items:center;gap:12px;padding:12px 16px;
-      background:#1a1a2e;border-radius:10px;margin-bottom:8px;
-      transition:opacity 0.2s ease;
-    `;
+    row.className = 'flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-3 bg-[#1a1a2e] rounded-xl transition-opacity';
 
     const initial = user.username[0].toUpperCase();
     row.innerHTML = `
-      <div style="
-        width:40px;height:40px;border-radius:50%;
-        background:linear-gradient(135deg,#0ea5e9,#0284c7);
-        display:flex;align-items:center;justify-content:center;
-        font-weight:700;color:#521f00;font-size:15px;flex-shrink:0;
-      ">${initial}</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-weight:700;color:#e9e6f9;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-          ${user.username}
-        </div>
-        <div style="font-size:11px;color:#aba9bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${user.email}</div>
+      <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] flex items-center justify-center font-bold text-[#521f00] text-sm flex-shrink-0">
+        ${initial}
       </div>
-      <span style="
-        background:${role.bg};color:${role.color};
-        padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;
-        white-space:nowrap;flex-shrink:0;
-      ">${role.label}</span>
-      <span class="user-status-badge" style="
-        background:${user.is_active ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'};
-        color:${user.is_active ? '#4ade80' : '#f87171'};
-        padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;
-        white-space:nowrap;flex-shrink:0;
-      ">${user.is_active ? 'Hoạt động' : 'Đã cấm'}</span>
+      <div class="flex-1 min-w-0">
+        <div class="font-bold text-[#e9e6f9] text-xs sm:text-sm truncate">${user.username}</div>
+        <div class="text-[10px] sm:text-[11px] text-[#aba9bb] truncate">${user.email}</div>
+      </div>
+      <span class="hidden sm:inline-flex px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold whitespace-nowrap flex-shrink-0"
+        style="background:${role.bg};color:${role.color};">${role.label}</span>
+      <span class="user-status-badge px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold whitespace-nowrap flex-shrink-0"
+        style="background:${user.is_active ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'};color:${user.is_active ? '#4ade80' : '#f87171'};">
+        ${user.is_active ? 'Hoạt động' : 'Đã cấm'}
+      </span>
       <button
-        class="ban-toggle-btn"
+        class="ban-toggle-btn flex-shrink-0 px-2.5 sm:px-3 py-1.5 rounded-lg border-none cursor-pointer text-[11px] sm:text-xs font-semibold whitespace-nowrap font-['Plus_Jakarta_Sans'] transition-all"
         data-user-id="${user.id}"
         data-is-active="${user.is_active}"
         data-username="${user.username}"
-        style="
-          padding:6px 12px;border-radius:6px;border:none;cursor:pointer;
-          background:${user.is_active ? 'rgba(239,68,68,0.2)' : 'rgba(34,197,94,0.2)'};
-          color:${user.is_active ? '#f87171' : '#4ade80'};
-          font-size:12px;font-weight:600;white-space:nowrap;flex-shrink:0;
-          font-family:'Plus Jakarta Sans',sans-serif;
-          transition:background 0.25s,color 0.25s;
-        "
+        style="background:${user.is_active ? 'rgba(239,68,68,0.2)' : 'rgba(34,197,94,0.2)'};color:${user.is_active ? '#f87171' : '#4ade80'};"
       >${user.is_active ? '🚫 Cấm' : '✅ Mở'}</button>
     `;
 
