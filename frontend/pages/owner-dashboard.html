@@ -198,7 +198,7 @@
 </label>
 <div class="relative">
 <textarea id="restaurant-audio" class="bg-surface-container-high border-none rounded-xl text-on-surface focus:ring-1 focus:ring-primary/40 p-4 font-medium w-full resize-none transition-all" rows="4" placeholder="Nhập kịch bản thuyết minh tự động khi khách hàng bấm nút nghe giới thiệu..."></textarea>
-<div class="absolute bottom-3 right-3 p-2 bg-primary/20 rounded-full cursor-pointer hover:bg-primary/30 transition-colors">
+<div id="preview-audio-btn" class="absolute bottom-3 right-3 p-2 bg-primary/20 rounded-full cursor-pointer hover:bg-primary/30 transition-colors">
 <span class="material-symbols-outlined text-primary text-xl notranslate">play_circle</span>
 </div>
 </div>
@@ -241,20 +241,7 @@
 </section>
 </main>
 <!-- Bottom Navigation Bar (Shared Component Logic) -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-4 bg-[#181828]/70 backdrop-blur-xl rounded-t-2xl shadow-[0px_-8px_24px_rgba(14,165,233,0.15)] border-t border-[#242437]/15">
-<a class="flex flex-col items-center justify-center text-[#0ea5e9] bg-[#242437] rounded-xl px-4 py-1 active:scale-90 transition-transform" href="#">
-<span class="material-symbols-outlined notranslate">dashboard</span>
-<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Dashboard</span>
-</a>
-<a class="flex flex-col items-center justify-center text-[#e9e6f9]/60 hover:text-[#0ea5e9] active:scale-90 transition-transform" href="#" onclick="alert('Trình quản lý Menu chuyên sâu đang được nâng cấp!'); return false;">
-<span class="material-symbols-outlined notranslate">menu_book</span>
-<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Menu</span>
-</a>
-<a class="flex flex-col items-center justify-center text-[#e9e6f9]/60 hover:text-[#0ea5e9] active:scale-90 transition-transform" href="#" onclick="alert('Trang thiết lập Cửa Hàng đang được nâng cấp!'); return false;">
-<span class="material-symbols-outlined notranslate">settings</span>
-<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Settings</span>
-</a>
-</nav>
+
 <script type="module" src="../js/owner.js"></script>
 <script src="../js/translator.js"></script>
 </body></html>

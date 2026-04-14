@@ -5,6 +5,8 @@
 import { api, getAuth, clearAuth, requireAuth } from './api.js';
 
 let currentRestaurant = null;
+let ttsUtterance = null;
+let isSpeaking = false;
 
 // ── Auth Guard ────────────────────────────────────────────────────────────────
 function checkAuth() {
@@ -15,6 +17,67 @@ function checkAuth() {
     return false;
   }
   return true;
+}
+
+// ── TTS Logic for Owner Preview ───────────────────────────────────────────────
+function startTTS(text) {
+  if (!text) { alert('Vui lòng nhập nội dung thuyết minh trước khi nghe thử.'); return; }
+  if (!window.speechSynthesis) { alert('Trình duyệt không hỗ trợ Text-to-Speech.'); return; }
+
+  stopTTS();
+  window.speechSynthesis.resume();
+
+  ttsUtterance = new SpeechSynthesisUtterance(text);
+  ttsUtterance.lang = 'vi-VN';
+  ttsUtterance.rate = 1.0;
+  
+  ttsUtterance.onstart = () => {
+    isSpeaking = true;
+    updateAudioButton(true);
+  };
+  ttsUtterance.onend = () => {
+    isSpeaking = false;
+    updateAudioButton(false);
+  };
+  ttsUtterance.onerror = (e) => {
+    console.error('[TTS] Preview Error:', e);
+    isSpeaking = false;
+    updateAudioButton(false);
+  };
+
+  window.speechSynthesis.speak(ttsUtterance);
+}
+
+function stopTTS() {
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+  }
+  isSpeaking = false;
+  updateAudioButton(false);
+}
+
+function updateAudioButton(playing) {
+  const btn = document.getElementById('preview-audio-btn');
+  if (!btn) return;
+  const icon = btn.querySelector('.material-symbols-outlined');
+  if (icon) {
+    icon.textContent = playing ? 'pause_circle' : 'play_circle';
+  }
+  btn.style.background = playing ? 'rgba(14,165,233,0.4)' : 'rgba(14,165,233,0.2)';
+}
+
+function wireAudioPreview() {
+  const btn = document.getElementById('preview-audio-btn');
+  const textArea = document.getElementById('restaurant-audio');
+  if (!btn || !textArea) return;
+
+  btn.addEventListener('click', () => {
+    if (isSpeaking) {
+      stopTTS();
+    } else {
+      startTTS(textArea.value.trim());
+    }
+  });
 }
 
 // ── Populate header ───────────────────────────────────────────────────────────
@@ -402,6 +465,11 @@ function renderOwnerDishes(dishes, restaurantId) {
       " title="Xóa">🗑️</button>
     `;
     container.appendChild(row);
+
+    // Wire edit button
+    row.querySelector('[data-edit-dish]').addEventListener('click', () => {
+      showDishDialog('edit', dish, restaurantId);
+    });
   });
 
   // Wire availability toggles
@@ -424,63 +492,98 @@ function renderOwnerDishes(dishes, restaurantId) {
     btn.addEventListener('click', async () => {
       if (!confirm('Xóa món này?')) return;
       const dishId = btn.dataset.deleteDish;
+      const originalText = btn.textContent;
       try {
+        btn.disabled = true;
+        btn.textContent = '⏳';
         await api.delete(`/api/dishes/${dishId}`);
-        btn.closest('div').remove();
+        btn.closest('div').style.opacity = '0.5';
+        setTimeout(() => btn.closest('div').remove(), 300);
       } catch (err) {
         alert('Lỗi xóa món: ' + err.message);
+        btn.disabled = false;
+        btn.textContent = originalText;
       }
     });
   });
 }
 
-// ── Add Dish Form ─────────────────────────────────────────────────────────────
+// ── Shared Dish Dialog (Add/Edit) ─────────────────────────────────────────────
+function showDishDialog(mode, dish = null, restaurantId) {
+  const isEdit = mode === 'edit';
+  const existing = document.getElementById('dish-dialog');
+  if (existing) existing.remove();
+
+  const dialog = document.createElement('div');
+  dialog.id = 'dish-dialog';
+  dialog.style.cssText = `
+    position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9998;
+    display:flex;align-items:center;justify-content:center;
+  `;
+  dialog.innerHTML = `
+    <div style="background:#181828;border-radius:16px;padding:24px;width:90%;max-width:400px;box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);">
+      <h3 style="color:#0ea5e9;font-family:'Plus Jakarta Sans',sans-serif;margin:0 0 20px;display:flex;align-items:center;gap:8px;">
+        ${isEdit ? '✏️ Sửa Món Ăn' : '➕ Thêm Món Mới'}
+      </h3>
+      <div style="margin-bottom:12px;">
+        <label style="display:block;color:#aba9bb;font-size:12px;margin-bottom:4px;margin-left:4px;">Tên món ăn *</label>
+        <input id="dish-name" placeholder="Ví dụ: Phở bò" style="${inputStyle}" value="${isEdit ? dish.name : ''}">
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="display:block;color:#aba9bb;font-size:12px;margin-bottom:4px;margin-left:4px;">Giá (VNĐ)</label>
+        <input id="dish-price" type="number" placeholder="Ví dụ: 50000" style="${inputStyle}" value="${isEdit ? dish.price || '' : ''}">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;color:#aba9bb;font-size:12px;margin-bottom:4px;margin-left:4px;">Link ảnh (tùy chọn)</label>
+        <input id="dish-image" placeholder="https://..." style="${inputStyle}" value="${isEdit ? dish.image_url || '' : ''}">
+      </div>
+      <div style="display:flex;gap:12px;">
+        <button id="save-dish-btn" style="${btnStyle}">✅ ${isEdit ? 'Lưu Thay Đổi' : 'Lưu Món'}</button>
+        <button id="cancel-dish-btn" style="${cancelBtnStyle}">Hủy</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(dialog);
+
+  document.getElementById('cancel-dish-btn').addEventListener('click', () => dialog.remove());
+  
+  const saveBtn = document.getElementById('save-dish-btn');
+  saveBtn.addEventListener('click', async () => {
+    if (saveBtn.disabled) return;
+    
+    const name = document.getElementById('dish-name').value.trim();
+    if (!name) { alert('Vui lòng nhập tên món.'); return; }
+    const price = parseFloat(document.getElementById('dish-price').value) || null;
+    const image_url = document.getElementById('dish-image').value.trim() || null;
+    
+    try {
+      saveBtn.disabled = true;
+      saveBtn.textContent = '⏳ Đang lưu...';
+      saveBtn.style.opacity = '0.7';
+
+      if (isEdit) {
+        await api.put(`/api/dishes/${dish.id}`, { name, price, image_url });
+      } else {
+        await api.post(`/api/restaurants/${restaurantId}/dishes`, { name, price, image_url });
+      }
+      
+      dialog.remove();
+      // Refresh dish list
+      const r = await api.get(`/api/restaurants/${restaurantId}`);
+      renderOwnerDishes(r.dishes || [], restaurantId);
+    } catch (err) {
+      alert('Lỗi: ' + err.message);
+      saveBtn.disabled = false;
+      saveBtn.textContent = isEdit ? '✅ Lưu Thay Đổi' : '✅ Lưu Món';
+      saveBtn.style.opacity = '1';
+    }
+  });
+}
+
 function wireAddDish(restaurantId) {
   const addBtn = document.querySelector('#add-dish-btn, [class*="thêm-món"], .add-dish-btn');
   if (!addBtn) return;
-
-  addBtn.addEventListener('click', () => {
-    // Build inline add dish dialog
-    const existing = document.getElementById('add-dish-dialog');
-    if (existing) { existing.remove(); return; }
-
-    const dialog = document.createElement('div');
-    dialog.id = 'add-dish-dialog';
-    dialog.style.cssText = `
-      position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9998;
-      display:flex;align-items:center;justify-content:center;
-    `;
-    dialog.innerHTML = `
-      <div style="background:#181828;border-radius:16px;padding:24px;width:90%;max-width:400px;">
-        <h3 style="color:#0ea5e9;font-family:'Plus Jakarta Sans',sans-serif;margin:0 0 16px;">➕ Thêm Món Mới</h3>
-        <input id="new-dish-name" placeholder="Tên món ăn *" style="${inputStyle}">
-        <input id="new-dish-price" type="number" placeholder="Giá (VNĐ)" style="${inputStyle}">
-        <input id="new-dish-image" placeholder="Link ảnh (tùy chọn)" style="${inputStyle}">
-        <div style="display:flex;gap:8px;margin-top:16px;">
-          <button id="save-dish-btn" style="${btnStyle}">✅ Lưu Món</button>
-          <button id="cancel-dish-btn" style="${cancelBtnStyle}">Hủy</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(dialog);
-
-    document.getElementById('cancel-dish-btn').addEventListener('click', () => dialog.remove());
-    document.getElementById('save-dish-btn').addEventListener('click', async () => {
-      const name = document.getElementById('new-dish-name').value.trim();
-      if (!name) { alert('Vui lòng nhập tên món.'); return; }
-      const price = parseFloat(document.getElementById('new-dish-price').value) || null;
-      const image_url = document.getElementById('new-dish-image').value.trim() || null;
-      try {
-        await api.post(`/api/restaurants/${restaurantId}/dishes`, { name, price, image_url });
-        dialog.remove();
-        // Refresh dish list
-        const r = await api.get(`/api/restaurants/${restaurantId}`);
-        renderOwnerDishes(r.dishes || [], restaurantId);
-      } catch (err) {
-        alert('Lỗi thêm món: ' + err.message);
-      }
-    });
-  });
+  addBtn.addEventListener('click', () => showDishDialog('add', null, restaurantId));
 }
 
 const inputStyle = `
@@ -582,6 +685,7 @@ async function init() {
   if (!checkAuth()) return;
 
   wireLogout();
+  wireAudioPreview();
 
   try {
     // Fetch owner's restaurant(s)
