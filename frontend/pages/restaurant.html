@@ -94,13 +94,32 @@
       line-height: 1;
     }
 
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
+    @media (max-width: 640px) {
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
     }
 
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
+    /* Minimal scrollbar for larger screens */
+    @media (min-width: 641px) {
+      .no-scrollbar::-webkit-scrollbar {
+        height: 8px;
+      }
+      .no-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .no-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 4px;
+      }
+      .no-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.4);
+      }
     }
   </style>
 </head>
@@ -122,7 +141,7 @@
   <!-- 1. Hero Section — responsive height -->
   <section class="relative w-full overflow-hidden" style="height: clamp(220px, 45vw, 360px); padding-top: 0;">
     <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/30 to-transparent z-10"></div>
-    <img class="w-full h-full object-cover"
+    <img id="restaurant-hero-img" class="w-full h-full object-cover"
       data-alt="Cinematic night shot of a bustling Vietnamese Bun Bo stall in Saigon"
       src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSzTN9rl-2PyJdMCYuv6WvOJXTpwgGLJx06q6QlKVgliXmIrcrqAk7Y2bCnpeKyLGgMrwaF659Tfhu9WJNNA10HDfNs-2T8km6tP9fsS83LEPekMzFsEyPBw4Bt6nqmxdsz7969uDzaf32oO23-KHfhEB_Rj_4cyrmzNaX921qpNJPbkEUTz2D4nAnhbUGTN6mkEmZlkRCfE-wDgUHuAp2wSUa7aI9VYXw5lnthVyR75lz6EIGr5Mw4ugEx-MuH-c8OAlUFLz4REw" />
     <div class="absolute bottom-12 sm:bottom-8 left-0 px-4 sm:px-6 z-20 w-full">

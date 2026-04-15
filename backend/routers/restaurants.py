@@ -72,6 +72,7 @@ async def list_restaurants(db: AsyncSession = Depends(get_db)):
             address=r.address,
             latitude=float(r.latitude) if r.latitude else None,
             longitude=float(r.longitude) if r.longitude else None,
+            image_url=r.image_url,
             avg_rating=round(float(avg), 2) if avg else None,
             status=r.status.value,
         ))

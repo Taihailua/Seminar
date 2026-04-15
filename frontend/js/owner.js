@@ -157,6 +157,7 @@ function populateForm(restaurant) {
   const fieldMap = {
     '#restaurant-name, [name="name"], [placeholder*="tên nhà"]': restaurant.name,
     '#restaurant-address, [name="address"], [placeholder*="địa chỉ"]': restaurant.address || '',
+    '#restaurant-image, [name="image_url"]': restaurant.image_url || '',
     '#restaurant-description, [name="description"], [placeholder*="mô tả"]': restaurant.description || '',
     '#restaurant-audio, [name="audio_text"], [placeholder*="thuyết minh"]': restaurant.audio_text || '',
     '#restaurant-lat, [name="latitude"], [placeholder*="vĩ độ"]': restaurant.latitude || '',
@@ -622,8 +623,7 @@ function wireSaveForm(restaurantId) {
 
     const payload = {
       name: getName('#restaurant-name, [name="name"]'),
-      address: getName('#restaurant-address, [name="address"]'),
-      description: getName('#restaurant-description, [name="description"]'),
+      address: getName('#restaurant-address, [name="address"]'),        image_url: getName('#restaurant-image, [name="image_url"]'),      description: getName('#restaurant-description, [name="description"]'),
       audio_text: getName('#restaurant-audio, [name="audio_text"]'),
       latitude: parseFloat(document.querySelector('#restaurant-lat, [name="latitude"]')?.value) || null,
       longitude: parseFloat(document.querySelector('#restaurant-lng, [name="longitude"]')?.value) || null,

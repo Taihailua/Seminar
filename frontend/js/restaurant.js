@@ -287,6 +287,12 @@ function renderReviews(reviews, avgRating) {
     el.textContent = avgRating ? avgRating.toFixed(1) : '—';
   });
 
+  const reviewCountEl = document.getElementById('review-count');
+  if (reviewCountEl) {
+    const count = reviews ? reviews.length : 0;
+    reviewCountEl.textContent = `${count} đánh giá`;
+  }
+
   const container = document.getElementById('reviews-container');
   if (!container) return;
 
@@ -485,6 +491,12 @@ function buildLanguageSelector() {
 // ── Populate Page ─────────────────────────────────────────────────────────────
 function populatePage(r) {
   document.title = `${r.name} — Phố Vĩnh Khánh`;
+
+  // Hero Image
+  const heroImg = document.getElementById('restaurant-hero-img');
+  if (heroImg && r.image_url) {
+    heroImg.src = r.image_url;
+  }
 
   // Name
   const nameEl = document.getElementById('restaurant-name');
