@@ -11,16 +11,24 @@ let isSpeaking = false;
 let geofenceWatchId = null;
 
 // Initial language detection
-let selectedLang = 'vi-VN';
-const browserLang = navigator.language;
-if (browserLang) {
-  // Map common browser codes to our supported ones if possible
-  if (browserLang.startsWith('en')) selectedLang = 'en-US';
-  else if (browserLang.startsWith('fr')) selectedLang = 'fr-FR';
-  else if (browserLang.startsWith('zh')) selectedLang = 'zh-CN';
-  else if (browserLang.startsWith('ja')) selectedLang = 'ja-JP';
-  else if (browserLang.startsWith('ko')) selectedLang = 'ko-KR';
-  // Keep vi-VN if starts with vi
+let selectedLang = localStorage.getItem('appLang') || 'vi-VN';
+if (selectedLang.length === 2 || selectedLang === 'zh-CN') {
+  const mapLang = { 'vi': 'vi-VN', 'en': 'en-US', 'ko': 'ko-KR', 'zh-CN': 'zh-CN', 'fr': 'fr-FR' };
+  if (mapLang[selectedLang]) {
+    selectedLang = mapLang[selectedLang];
+  }
+}
+if (!localStorage.getItem('appLang')) {
+  const browserLang = navigator.language;
+  if (browserLang) {
+    // Map common browser codes to our supported ones if possible
+    if (browserLang.startsWith('en')) selectedLang = 'en-US';
+    else if (browserLang.startsWith('fr')) selectedLang = 'fr-FR';
+    else if (browserLang.startsWith('zh')) selectedLang = 'zh-CN';
+    else if (browserLang.startsWith('ja')) selectedLang = 'ja-JP';
+    else if (browserLang.startsWith('ko')) selectedLang = 'ko-KR';
+    // Keep vi-VN if starts with vi
+  }
 }
 
 const GEOFENCE_RADIUS_M = 20;
@@ -39,59 +47,96 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
 }
 
 // ── TTS ───────────────────────────────────────────────────────────────────────
-function startTTS(text) {
+async function startTTS(text) {
   if (!text) { alert('Quán này chưa có nội dung thuyết minh.'); return; }
   if (!window.speechSynthesis) { alert('Trình duyệt không hỗ trợ Text-to-Speech.'); return; }
 
+  // Stop any ongoing speech
   stopTTS();
+  isSpeaking = true; // Set to true early to prevent duplicate clicks
+
+  updatePlayButton(true);
+  updateStatus('🔄 Đang chuẩn bị thuyết minh...');
+
+  // Fallback: If backend failed to translate (text still in Vietnamese), translate it on the client
+  let textToSpeak = text;
+  // A simple heuristic to skip translation if the string does not contain Vietnamese characters/words
+  // Improve check: looking for common Vietnamese diacritics
+  const isVietnamese = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/.test(text.toLowerCase());
+  
+  if (selectedLang !== 'vi-VN' && isVietnamese) {
+      try {
+          const tl = selectedLang.includes('zh') ? selectedLang : selectedLang.split('-')[0];
+          const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=vi&tl=${tl}&dt=t&q=${encodeURIComponent(text)}`);
+          const data = await res.json();
+          textToSpeak = data[0].map(item => item[0]).join(' ');
+      } catch (err) {
+          console.warn('[TTS] Fallback translation failed:', err);
+      }
+  }
+
+  // Verify we didn't cancel while awaiting
+  if (!isSpeaking) return;
 
   // On some browsers, we need to resume first
   window.speechSynthesis.resume();
 
-  ttsUtterance = new SpeechSynthesisUtterance(text);
+  const playTTS = () => {
+    ttsUtterance = new SpeechSynthesisUtterance(textToSpeak);
 
-  // Find a voice that matches the selectedLang or just use the system default
-  const voices = window.speechSynthesis.getVoices();
-  const voice = voices.find(v => v.lang === selectedLang) || voices.find(v => v.lang.startsWith(selectedLang.split('-')[0]));
-  if (voice) {
-    ttsUtterance.voice = voice;
-  }
-
-  ttsUtterance.lang = selectedLang;
-  ttsUtterance.rate = 1.0;
-  ttsUtterance.pitch = 1.0;
-  ttsUtterance.volume = 1.0;
-
-  let startTimeout = setTimeout(() => {
-    if (!isSpeaking) {
-      console.warn('[TTS] Failed to start speaking within 2s. Trying second voice fallback...');
-      // Fallback is just to let user know or retry without voice setting
+    // Find a voice that matches the selectedLang or just use the system default
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang.replace('_', '-') === selectedLang) || 
+                  voices.find(v => v.lang.startsWith(selectedLang.split('-')[0]));
+    if (voice) {
+      ttsUtterance.voice = voice;
     }
-  }, 2000);
 
-  ttsUtterance.onstart = () => {
-    clearTimeout(startTimeout);
-    isSpeaking = true;
-    updatePlayButton(true);
-    updateStatus('🎧 Đang phát thuyết minh...');
-    startGeofence();
-  };
-  ttsUtterance.onend = () => {
-    isSpeaking = false;
-    updatePlayButton(false);
-    updateStatus('Nhấn để nghe thuyết minh...');
-    stopGeofence();
-  };
-  ttsUtterance.onerror = (e) => {
-    clearTimeout(startTimeout);
-    console.error('[TTS] Error:', e);
-    isSpeaking = false;
-    updatePlayButton(false);
-    updateStatus('Lỗi phát âm: ' + (e.error || 'Unknown'));
-    stopGeofence();
+    ttsUtterance.lang = selectedLang;
+    ttsUtterance.rate = 1.0;
+    ttsUtterance.pitch = 1.0;
+    ttsUtterance.volume = 1.0;
+
+    let startTimeout = setTimeout(() => {
+      if (!isSpeaking) {
+        console.warn('[TTS] Failed to start speaking within 2s. Trying second voice fallback...');
+        // Fallback is just to let user know or retry without voice setting
+      }
+    }, 2000);
+
+    ttsUtterance.onstart = () => {
+      clearTimeout(startTimeout);
+      isSpeaking = true;
+      updatePlayButton(true);
+      updateStatus('🎧 Đang phát thuyết minh...');
+      startGeofence();
+    };
+    ttsUtterance.onend = () => {
+      isSpeaking = false;
+      updatePlayButton(false);
+      updateStatus('Nhấn để nghe thuyết minh...');
+      stopGeofence();
+    };
+    ttsUtterance.onerror = (e) => {
+      clearTimeout(startTimeout);
+      console.error('[TTS] Error:', e);
+      isSpeaking = false;
+      updatePlayButton(false);
+      updateStatus('Lỗi phát âm: ' + (e.error || 'Unknown'));
+      stopGeofence();
+    };
+
+    window.speechSynthesis.speak(ttsUtterance);
   };
 
-  window.speechSynthesis.speak(ttsUtterance);
+  if (window.speechSynthesis.getVoices().length > 0) {
+    playTTS();
+  } else {
+    window.speechSynthesis.onvoiceschanged = () => {
+      playTTS();
+      window.speechSynthesis.onvoiceschanged = null;
+    };
+  }
 }
 
 
@@ -407,13 +452,21 @@ function buildLanguageSelector() {
         pill.style.color = '#521f00';
         pill.classList.add('active');
         selectedLang = code;
+        
+        let gtCode = code.split('-')[0];
+        if (code.startsWith('zh')) gtCode = 'zh-CN';
+        
+        localStorage.setItem('appLang', gtCode);
+        if (window.changeLanguage) {
+            window.changeLanguage(gtCode);
+        }
 
         // Trigger re-fetch for translation
         const urlParams = new URLSearchParams(window.location.search);
         const rid = urlParams.get('id');
         if (rid) {
           updateStatus('🔄 Đang dịch nội dung...');
-          await loadRestaurantData(rid, code);
+          loadRestaurantData(rid, code);
         }
       });
 

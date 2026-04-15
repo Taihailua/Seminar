@@ -28,24 +28,41 @@ function startTTS(text) {
   window.speechSynthesis.resume();
 
   ttsUtterance = new SpeechSynthesisUtterance(text);
-  ttsUtterance.lang = 'vi-VN';
-  ttsUtterance.rate = 1.0;
+  
+  const setVoiceAndSpeak = () => {
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang.replace('_', '-') === 'vi-VN' || v.lang.startsWith('vi'));
+    if (voice) {
+      ttsUtterance.voice = voice;
+    }
+    ttsUtterance.lang = 'vi-VN';
+    ttsUtterance.rate = 1.0;
 
-  ttsUtterance.onstart = () => {
-    isSpeaking = true;
-    updateAudioButton(true);
-  };
-  ttsUtterance.onend = () => {
-    isSpeaking = false;
-    updateAudioButton(false);
-  };
-  ttsUtterance.onerror = (e) => {
-    console.error('[TTS] Preview Error:', e);
-    isSpeaking = false;
-    updateAudioButton(false);
+    ttsUtterance.onstart = () => {
+      isSpeaking = true;
+      updateAudioButton(true);
+    };
+    ttsUtterance.onend = () => {
+      isSpeaking = false;
+      updateAudioButton(false);
+    };
+    ttsUtterance.onerror = (e) => {
+      console.error('[TTS] Preview Error:', e);
+      isSpeaking = false;
+      updateAudioButton(false);
+    };
+
+    window.speechSynthesis.speak(ttsUtterance);
   };
 
-  window.speechSynthesis.speak(ttsUtterance);
+  if (window.speechSynthesis.getVoices().length > 0) {
+    setVoiceAndSpeak();
+  } else {
+    window.speechSynthesis.onvoiceschanged = () => {
+      setVoiceAndSpeak();
+      window.speechSynthesis.onvoiceschanged = null;
+    };
+  }
 }
 
 function stopTTS() {
