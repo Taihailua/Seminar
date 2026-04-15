@@ -91,9 +91,11 @@ function renderRestaurantList(restaurants) {
         restaurants.forEach(r => {
             const card = document.createElement('div');
             // Tailwind responsive card — snap-center to smooth swipe on mobile
-            card.className = 'flex-shrink-0 w-32 sm:w-40 snap-center bg-[#242437] rounded-[14px] p-3 sm:p-3.5 cursor-pointer hover:bg-[#2a2a45] active:scale-[0.97] transition-all';
+            card.className = 'flex-shrink-0 w-32 sm:w-40 snap-center bg-[#242437] rounded-[14px] p-3 sm:p-3.5 cursor-pointer hover:bg-[#2a2a45] active:scale-[0.97] transition-all overflow-hidden flex flex-col';
             card.innerHTML = `
-                <div class="h-16 sm:h-20 bg-[#1a1a2e] flex items-center justify-center text-3xl rounded-[10px] mb-2 sm:mb-2.5">🍜</div>
+                <div class="h-16 sm:h-20 bg-[#1a1a2e] flex items-center justify-center text-3xl rounded-[10px] mb-2 sm:mb-2.5 overflow-hidden">
+                    ${r.image_url ? `<img src="${r.image_url}" alt="${r.name}" class="w-full h-full object-cover" loading="lazy" />` : '🍲'}
+                </div>
                 <div class="text-[#e9e6f9] font-bold text-xs sm:text-[13px] leading-tight mb-1 line-clamp-2">${r.name}</div>
                 <div class="text-[#0ea5e9] text-[10px] sm:text-[11px] font-semibold">${r.avg_rating ? `⭐ ${r.avg_rating.toFixed(1)}` : '⭐ Mới'}</div>
             `;

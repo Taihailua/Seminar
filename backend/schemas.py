@@ -96,6 +96,7 @@ class RestaurantCreate(BaseModel):
     latitude: Optional[float] = None
     longitude: Optional[float] = None
     address: Optional[str] = None
+    image_url: Optional[str] = None
 
 
 class RestaurantUpdate(BaseModel):
@@ -105,6 +106,7 @@ class RestaurantUpdate(BaseModel):
     latitude: Optional[float] = None
     longitude: Optional[float] = None
     address: Optional[str] = None
+    image_url: Optional[str] = None
 
 
 class RestaurantOut(BaseModel):
@@ -118,6 +120,7 @@ class RestaurantOut(BaseModel):
     latitude: Optional[float]
     longitude: Optional[float]
     address: Optional[str]
+    image_url: Optional[str]
     qr_code_url: Optional[str]
     status: str
     created_at: datetime
@@ -136,6 +139,7 @@ class RestaurantListItem(BaseModel):
     address: Optional[str]
     latitude: Optional[float]
     longitude: Optional[float]
+    image_url: Optional[str] = None
     avg_rating: Optional[float] = None
     status: str
 
