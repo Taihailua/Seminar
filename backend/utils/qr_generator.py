@@ -28,7 +28,7 @@ def generate_qr_base64(restaurant_id: str) -> str:
     qr.add_data(url)
     qr.make(fit=True)
 
-    img = qr.make_image(fill_color="#f26c0d", back_color="#1a1a2e")
+    img = qr.make_image(fill_color="black", back_color="white")
     buffer = io.BytesIO()
     img.save(buffer, format="PNG")
     buffer.seek(0)

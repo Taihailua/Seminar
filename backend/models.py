@@ -56,7 +56,7 @@ class Restaurant(Base):
     latitude = Column(Numeric(10, 8))
     longitude = Column(Numeric(11, 8))
     address = Column(String(255))
-    qr_code_url = Column(String(255))
+    qr_code_url = Column(Text)
     status = Column(SAEnum(RestaurantStatus, name="restaurant_status"), default=RestaurantStatus.pending)
     created_at = Column(DateTime, default=datetime.utcnow)
 

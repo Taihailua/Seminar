@@ -4,9 +4,8 @@
  */
 
 // Automatically switch API base based on hostname. For production, update the production URL.
-export const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-  ? 'http://localhost:8000' 
-  : 'https://api.your-production-domain.com'; // TODO: Update this when deploying to the cloud
+// Use an empty string for relative paths so the app works on any domain/port it's served from.
+export const API_BASE = 'http://localhost:8000';
 
 /**
  * Core fetch wrapper. Attaches Bearer token automatically.
@@ -54,7 +53,7 @@ export async function apiFetch(path, options = {}) {
 /** Convenience helpers */
 export const api = {
   get: (path) => apiFetch(path),
-  post: (path, body) => apiFetch(path, { method: 'POST', body: JSON.stringify(body) }),
+  post: (path, body) => apiFetch(path, { method: 'POST', body: JSON.stringify(body)}),
   put: (path, body) => apiFetch(path, { method: 'PUT', body: JSON.stringify(body) }),
   delete: (path) => apiFetch(path, { method: 'DELETE' }),
 };
