@@ -94,3 +94,27 @@ export function requireAuth(requiredRole = null) {
   }
   return true;
 }
+
+/** Active Devices Tracking (Heartbeat) */
+function initHeartbeat() {
+  let deviceId = localStorage.getItem('device_id');
+  if (!deviceId) {
+    deviceId = 'device_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+    localStorage.setItem('device_id', deviceId);
+  }
+
+  const sendHeartbeat = () => {
+    fetch(`${API_BASE}/api/heartbeat?device_id=${deviceId}`, {
+      method: 'POST'
+    }).catch(err => console.warn('Heartbeat failed:', err));
+  };
+
+  // Send immediately, then every 15 seconds
+  sendHeartbeat();
+  setInterval(sendHeartbeat, 15000);
+}
+
+// Start heartbeat if in browser
+if (typeof window !== 'undefined') {
+  initHeartbeat();
+}
