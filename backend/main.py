@@ -110,13 +110,6 @@ async def root():
         "docs": "/docs",
     }
 
-app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
-
-
-@app.get("/health")
-async def health():
-    return {"status": "ok"}
-
 @app.post("/api/heartbeat")
 async def heartbeat(device_id: str):
     active_sessions[device_id] = time.time()
@@ -133,3 +126,9 @@ async def get_active_devices():
     # Filter sessions active within the last 30 seconds
     active_count = sum(1 for t in active_sessions.values() if current_time - t <= 30)
     return {"count": active_count}
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
