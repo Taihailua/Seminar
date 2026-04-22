@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-FRONTEND_URL = os.getenv("FRONTEND_URL", "https://seminar-iv5y.vercel.app")
+# Dùng cứng đường dẫn thật để QR code khi tạo mới luôn trỏ về trang public
+FRONTEND_URL = "https://seminar-iv5y.vercel.app"
 
 
 def generate_qr_base64(restaurant_id: str) -> str:

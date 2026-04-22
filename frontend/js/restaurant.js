@@ -85,6 +85,7 @@ async function startTTS(text) {
     ttsUtterance = new SpeechSynthesisUtterance(textToSpeak);
 
     // Cải thiện logic tìm giọng đọc (đặc biệt cho tiếng Trung)
+    const voices = window.speechSynthesis.getVoices();
     const targetLang = selectedLang.toLowerCase();
     const baseLang = selectedLang.split('-')[0].toLowerCase();
     
