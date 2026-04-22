@@ -90,11 +90,25 @@ async function playAudioGuide(restaurant) {
 
         ttsUtterance = new SpeechSynthesisUtterance(text);
         const voices = window.speechSynthesis.getVoices();
-        const voice = voices.find(v => v.lang.replace('_', '-') === lang) || 
-                      voices.find(v => v.lang.startsWith(lang.split('-')[0]));
         
-        if (voice) ttsUtterance.voice = voice;
-        ttsUtterance.lang = lang;
+        // Cải thiện logic tìm giọng đọc (đặc biệt cho tiếng Trung)
+        const targetLang = lang.toLowerCase();
+        const baseLang = lang.split('-')[0].toLowerCase();
+        
+        let voice = voices.find(v => v.lang.replace('_', '-').toLowerCase() === targetLang) || 
+                    voices.find(v => v.lang.toLowerCase().startsWith(baseLang));
+                    
+        // Nếu không tìm thấy bằng mã ngôn ngữ, thử tìm theo tên giọng đọc
+        if (!voice && baseLang === 'zh') {
+            voice = voices.find(v => v.name.toLowerCase().includes('chinese') || v.name.toLowerCase().includes('taiwan'));
+        }
+        
+        if (voice) {
+            ttsUtterance.voice = voice;
+            ttsUtterance.lang = voice.lang; // Sử dụng mã ngôn ngữ chuẩn của giọng đọc đó
+        } else {
+            ttsUtterance.lang = lang;
+        }
 
         ttsUtterance.onstart = () => isSpeaking = true;
         ttsUtterance.onend = () => isSpeaking = false;

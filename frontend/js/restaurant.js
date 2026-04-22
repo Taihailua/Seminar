@@ -84,15 +84,23 @@ async function startTTS(text) {
   const playTTS = () => {
     ttsUtterance = new SpeechSynthesisUtterance(textToSpeak);
 
-    // Find a voice that matches the selectedLang or just use the system default
-    const voices = window.speechSynthesis.getVoices();
-    const voice = voices.find(v => v.lang.replace('_', '-') === selectedLang) || 
-                  voices.find(v => v.lang.startsWith(selectedLang.split('-')[0]));
-    if (voice) {
-      ttsUtterance.voice = voice;
+    // Cải thiện logic tìm giọng đọc (đặc biệt cho tiếng Trung)
+    const targetLang = selectedLang.toLowerCase();
+    const baseLang = selectedLang.split('-')[0].toLowerCase();
+    
+    let voice = voices.find(v => v.lang.replace('_', '-').toLowerCase() === targetLang) || 
+                voices.find(v => v.lang.toLowerCase().startsWith(baseLang));
+                
+    if (!voice && baseLang === 'zh') {
+        voice = voices.find(v => v.name.toLowerCase().includes('chinese') || v.name.toLowerCase().includes('taiwan'));
     }
 
-    ttsUtterance.lang = selectedLang;
+    if (voice) {
+      ttsUtterance.voice = voice;
+      ttsUtterance.lang = voice.lang;
+    } else {
+      ttsUtterance.lang = selectedLang;
+    }
     ttsUtterance.rate = 1.0;
     ttsUtterance.pitch = 1.0;
     ttsUtterance.volume = 1.0;
