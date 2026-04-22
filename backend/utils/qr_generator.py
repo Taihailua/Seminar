@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5500")
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://seminar-iv5y.vercel.app")
 
 
 def generate_qr_base64(restaurant_id: str) -> str:

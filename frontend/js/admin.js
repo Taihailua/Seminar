@@ -315,6 +315,17 @@ async function populateProfile() {
   }
 }
 
+// ── Active Devices ─────────────────────────────────────────────────────────────
+async function fetchActiveDevices() {
+  try {
+    const res = await api.get('/api/admin/active-devices');
+    const countEl = document.querySelector('.stat-active-devices');
+    if (countEl) countEl.textContent = res.count;
+  } catch (err) {
+    console.warn('Failed to fetch active devices:', err);
+  }
+}
+
 // ── Main Init ─────────────────────────────────────────────────────────────────
 async function init() {
   if (!checkAuth()) return;
@@ -333,6 +344,11 @@ async function init() {
     renderPendingRestaurants(pending);
     renderUsersTable(users);
     setupSearch(users);
+
+    // Initial fetch for active devices and then poll every 15s
+    fetchActiveDevices();
+    setInterval(fetchActiveDevices, 15000);
+
   } catch (err) {
     console.error('Admin init error:', err);
     if (err.message?.includes('401') || err.message?.includes('403')) {

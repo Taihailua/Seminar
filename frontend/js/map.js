@@ -7,6 +7,9 @@ let userMarker;
 let restaurantData = [];
 let qrInstance = null;
 
+let ttsUtterance = null;
+let isSpeaking = false;
+
 const VK_CENTER = [10.7553, 106.7009];
 
 // ==================== INIT MAP ====================
@@ -24,7 +27,85 @@ function initMap() {
 
     L.control.zoom({ position: 'bottomright' }).addTo(map);
     markersLayer = L.layerGroup().addTo(map);
+
+    map.on('click', handleMapClick);
 }
+
+// ==================== TTS & GEOFENCE LOGIC ====================
+function handleMapClick(e) {
+    if (!userMarker) {
+        userMarker = L.marker(e.latlng, { icon: createUserMarkerIcon() }).addTo(map);
+    } else {
+        userMarker.setLatLng(e.latlng);
+    }
+
+    // Stop current TTS if any
+    if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        isSpeaking = false;
+    }
+
+    const clickedLatLng = e.latlng;
+    let candidates = [];
+
+    restaurantData.forEach(r => {
+        if (!r.latitude || !r.longitude) return;
+        const dist = map.distance(clickedLatLng, [r.latitude, r.longitude]);
+        if (dist <= 20) {
+            candidates.push({ ...r, distance: dist });
+        }
+    });
+
+    if (candidates.length === 0) return;
+
+    // Sort by distance, tie-breaker: owner_id
+    candidates.sort((a, b) => {
+        if (Math.abs(a.distance - b.distance) < 0.1) {
+            return (a.owner_id || 0) - (b.owner_id || 0);
+        }
+        return a.distance - b.distance;
+    });
+
+    const targetRestaurant = candidates[0];
+    playAudioGuide(targetRestaurant);
+}
+
+async function playAudioGuide(restaurant) {
+    if (!window.speechSynthesis) return;
+    
+    // Get language
+    let lang = localStorage.getItem('appLang') || 'vi-VN';
+    if (lang.length === 2 || lang === 'zh-CN') {
+        const mapLang = { 'vi': 'vi-VN', 'en': 'en-US', 'ko': 'ko-KR', 'zh-CN': 'zh-CN', 'fr': 'fr-FR', 'ja': 'ja-JP' };
+        if (mapLang[lang]) lang = mapLang[lang];
+    }
+
+    try {
+        // Fetch translated text if necessary
+        const query = (lang && lang !== 'vi-VN') ? `?lang=${lang}` : '';
+        const data = await api.get(`/api/restaurants/${restaurant.id}${query}`);
+        const text = data.audio_text;
+
+        if (!text) return;
+
+        ttsUtterance = new SpeechSynthesisUtterance(text);
+        const voices = window.speechSynthesis.getVoices();
+        const voice = voices.find(v => v.lang.replace('_', '-') === lang) || 
+                      voices.find(v => v.lang.startsWith(lang.split('-')[0]));
+        
+        if (voice) ttsUtterance.voice = voice;
+        ttsUtterance.lang = lang;
+
+        ttsUtterance.onstart = () => isSpeaking = true;
+        ttsUtterance.onend = () => isSpeaking = false;
+        ttsUtterance.onerror = () => isSpeaking = false;
+
+        window.speechSynthesis.speak(ttsUtterance);
+    } catch (err) {
+        console.warn("Failed to play audio guide:", err);
+    }
+}
+
 
 // ==================== MARKERS ====================
 function createOrangeMarker(isSelected = false) {
@@ -55,6 +136,15 @@ function renderMarkers(restaurants) {
     markersLayer.clearLayers();
     restaurants.forEach(r => {
         if (!r.latitude || !r.longitude) return;
+
+        // Draw 20m circle
+        L.circle([r.latitude, r.longitude], {
+            color: '#0ea5e9',
+            fillColor: '#0ea5e9',
+            fillOpacity: 0.1,
+            weight: 1,
+            radius: 20
+        }).addTo(markersLayer);
 
         const marker = L.marker([r.latitude, r.longitude], { icon: createOrangeMarker(false) });
 
@@ -268,6 +358,29 @@ function setupGeolocation() {
 async function init() {
     setupDrawer();
     setupQrButtons();
+
+    // Setup Language Selector
+    const langSelector = document.getElementById('map-lang-selector');
+    if (langSelector) {
+        const savedLang = localStorage.getItem('appLang');
+        if (savedLang) {
+            // map standard code if it's short
+            const mapLang = { 'vi': 'vi-VN', 'en': 'en-US', 'ko': 'ko-KR', 'zh-CN': 'zh-CN', 'fr': 'fr-FR', 'ja': 'ja-JP' };
+            const fullCode = mapLang[savedLang] || savedLang;
+            if (Array.from(langSelector.options).some(opt => opt.value === fullCode)) {
+                langSelector.value = fullCode;
+            }
+        }
+        langSelector.addEventListener('change', (e) => {
+            const val = e.target.value;
+            let gtCode = val.split('-')[0];
+            if (val.startsWith('zh')) gtCode = 'zh-CN';
+            localStorage.setItem('appLang', gtCode);
+            if (window.changeLanguage) {
+                window.changeLanguage(gtCode);
+            }
+        });
+    }
 
     if (!window.L) {
         await new Promise(resolve => {
